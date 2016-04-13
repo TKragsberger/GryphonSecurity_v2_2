@@ -5,6 +5,8 @@ VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GryphonSecurity_v2_2", "GryphonSecurity_v2_2\GryphonSecurity_v2_2.csproj", "{7349C169-AB04-4025-8369-BA9159DD7B7D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GryphonSecurityUnitTest", "GryphonSecurityUnitTest\GryphonSecurityUnitTest.csproj", "{5B44EFA6-914C-43A2-BC81-44FBBF50B595}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,20 @@ Global
 		{7349C169-AB04-4025-8369-BA9159DD7B7D}.Release|x86.ActiveCfg = Release|x86
 		{7349C169-AB04-4025-8369-BA9159DD7B7D}.Release|x86.Build.0 = Release|x86
 		{7349C169-AB04-4025-8369-BA9159DD7B7D}.Release|x86.Deploy.0 = Release|x86
+		{5B44EFA6-914C-43A2-BC81-44FBBF50B595}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{5B44EFA6-914C-43A2-BC81-44FBBF50B595}.Debug|ARM.ActiveCfg = Debug|ARM
+		{5B44EFA6-914C-43A2-BC81-44FBBF50B595}.Debug|ARM.Build.0 = Debug|ARM
+		{5B44EFA6-914C-43A2-BC81-44FBBF50B595}.Debug|ARM.Deploy.0 = Debug|ARM
+		{5B44EFA6-914C-43A2-BC81-44FBBF50B595}.Debug|x86.ActiveCfg = Debug|x86
+		{5B44EFA6-914C-43A2-BC81-44FBBF50B595}.Debug|x86.Build.0 = Debug|x86
+		{5B44EFA6-914C-43A2-BC81-44FBBF50B595}.Debug|x86.Deploy.0 = Debug|x86
+		{5B44EFA6-914C-43A2-BC81-44FBBF50B595}.Release|Any CPU.ActiveCfg = Release|x86
+		{5B44EFA6-914C-43A2-BC81-44FBBF50B595}.Release|ARM.ActiveCfg = Release|ARM
+		{5B44EFA6-914C-43A2-BC81-44FBBF50B595}.Release|ARM.Build.0 = Release|ARM
+		{5B44EFA6-914C-43A2-BC81-44FBBF50B595}.Release|ARM.Deploy.0 = Release|ARM
+		{5B44EFA6-914C-43A2-BC81-44FBBF50B595}.Release|x86.ActiveCfg = Release|x86
+		{5B44EFA6-914C-43A2-BC81-44FBBF50B595}.Release|x86.Build.0 = Release|x86
+		{5B44EFA6-914C-43A2-BC81-44FBBF50B595}.Release|x86.Deploy.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
