@@ -26,7 +26,7 @@ namespace GryphonSecurity_v2_2
         {
             try
             {
-                User localUser = new User(user.Id, user.Firstname, user.Lastname, user.Address, user.Phonenumber, user.Username, user.Password);
+                User localUser = new User(user.Id, user.Firstname, user.Lastname);
                 if (controller.createUser(localUser))
                 {
                     MessageBox.Show(AppResources.UserCreated);
@@ -53,8 +53,6 @@ namespace GryphonSecurity_v2_2
             {
                 Firstname.Text = AppResources.UserFirstname + " " + user.Firstname;
                 Lastname.Text = AppResources.UserLastname + " " + user.Lastname;
-                Address.Text = AppResources.UserAddress + " " + user.Address;
-                Phonenumber.Text = AppResources.UserPhonenumber + " " + user.Phonenumber;
             }
             else
             {

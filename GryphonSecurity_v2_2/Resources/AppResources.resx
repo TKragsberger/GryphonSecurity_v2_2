@@ -141,9 +141,6 @@
   <data name="LayoutTitleScanNFC" xml:space="preserve">
     <value>Scan NFC</value>
   </data>
-  <data name="LoginError" xml:space="preserve">
-    <value>There was an error when tryed to login</value>
-  </data>
   <data name="PendingAlarmReports" xml:space="preserve">
     <value>Pending alarmreports: </value>
   </data>
@@ -290,9 +287,6 @@
   <data name="SearchUserRegisterButton" xml:space="preserve">
     <value>Search for user</value>
   </data>
-  <data name="UserAddress" xml:space="preserve">
-    <value>Address</value>
-  </data>
   <data name="UserCreated" xml:space="preserve">
     <value>User created</value>
   </data>
@@ -305,32 +299,11 @@
   <data name="UserLastname" xml:space="preserve">
     <value>Lastname</value>
   </data>
-  <data name="UserLoginButton" xml:space="preserve">
-    <value>Login</value>
-  </data>
-  <data name="Username" xml:space="preserve">
-    <value>Username</value>
-  </data>
-  <data name="UsernamePasswordError" xml:space="preserve">
-    <value>Username or password is wrong</value>
-  </data>
   <data name="UserNotCreated" xml:space="preserve">
     <value>User not created</value>
   </data>
   <data name="UserNotFound" xml:space="preserve">
     <value>User not found, wrong id</value>
-  </data>
-  <data name="UserPassword" xml:space="preserve">
-    <value>Password</value>
-  </data>
-  <data name="UserPasswordConfirm" xml:space="preserve">
-    <value>Confirm Password</value>
-  </data>
-  <data name="UserPasswordNotEquel" xml:space="preserve">
-    <value>Passwords was not the same</value>
-  </data>
-  <data name="UserPhonenumber" xml:space="preserve">
-    <value>Phonenumber</value>
   </data>
   <data name="UserRegisterButton" xml:space="preserve">
     <value>Register</value>

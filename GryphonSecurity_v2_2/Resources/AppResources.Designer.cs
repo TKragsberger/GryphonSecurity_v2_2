@@ -133,15 +133,6 @@ namespace GryphonSecurity_v2_2.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to There was an error when tryed to login.
-        /// </summary>
-        public static string LoginError {
-            get {
-                return ResourceManager.GetString("LoginError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Pending alarmreports: .
         /// </summary>
         public static string PendingAlarmReports {
@@ -574,15 +565,6 @@ namespace GryphonSecurity_v2_2.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Address.
-        /// </summary>
-        public static string UserAddress {
-            get {
-                return ResourceManager.GetString("UserAddress", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to User created.
         /// </summary>
         public static string UserCreated {
@@ -619,33 +601,6 @@ namespace GryphonSecurity_v2_2.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Login.
-        /// </summary>
-        public static string UserLoginButton {
-            get {
-                return ResourceManager.GetString("UserLoginButton", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Username.
-        /// </summary>
-        public static string Username {
-            get {
-                return ResourceManager.GetString("Username", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Username or password is wrong.
-        /// </summary>
-        public static string UsernamePasswordError {
-            get {
-                return ResourceManager.GetString("UsernamePasswordError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to User not created.
         /// </summary>
         public static string UserNotCreated {
@@ -660,42 +615,6 @@ namespace GryphonSecurity_v2_2.Resources {
         public static string UserNotFound {
             get {
                 return ResourceManager.GetString("UserNotFound", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Password.
-        /// </summary>
-        public static string UserPassword {
-            get {
-                return ResourceManager.GetString("UserPassword", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Confirm Password.
-        /// </summary>
-        public static string UserPasswordConfirm {
-            get {
-                return ResourceManager.GetString("UserPasswordConfirm", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Passwords was not the same.
-        /// </summary>
-        public static string UserPasswordNotEquel {
-            get {
-                return ResourceManager.GetString("UserPasswordNotEquel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Phonenumber.
-        /// </summary>
-        public static string UserPhonenumber {
-            get {
-                return ResourceManager.GetString("UserPhonenumber", resourceCulture);
             }
         }
         

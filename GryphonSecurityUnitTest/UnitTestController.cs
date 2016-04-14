@@ -13,7 +13,7 @@ namespace GryphonSecurityTest
     {
 
         Controller control = Controller.Instance;
-        User userTest = new User(1000, "firstnameTest", "lastnameTest", "addressTest", 12345678, "usernameTest", "passwordTest");
+        User userTest = new User(1000, "firstnameTest", "lastnameTest");
         AlarmReport alarmReportTest;
 
         [TestMethod]

@@ -17,10 +17,6 @@ namespace GryphonSecurity_v2_2.DataSource
 
         private String KEY_DUMMY_FIRSTNAME = "DUMMY_FIRSTNAME";
         private String KEY_DUMMY_LASTNAME = "DUMMY_LASTNAME";
-        private String KEY_DUMMY_ADDRESS = "DUMMY_ADDRESS";
-        private String KEY_DUMMY_PHONENUMBER = "DUMMY_PHONENUMBER";
-        private String KEY_DUMMY_USERNAME = "DUMMY_USERNAME";
-        private String KEY_DUMMY_PASSWORD = "DUMMY_PASSWORD";
 
         private String KEY_DUMMY_ID_NFC = "DUMMY_ID_NFC";
         private String KEY_DUMMY_ID_ALARMREPORT = "DUMMY_ID_ALARMREPORT";
@@ -92,22 +88,10 @@ namespace GryphonSecurity_v2_2.DataSource
                 {
                     appSettings.Add(1 + KEY_DUMMY_FIRSTNAME, "Thomas");
                     appSettings.Add(1 + KEY_DUMMY_LASTNAME, "Kragsberger");
-                    appSettings.Add(1 + KEY_DUMMY_ADDRESS, "Farum");
-                    appSettings.Add(1 + KEY_DUMMY_PHONENUMBER, "22708834");
-                    appSettings.Add(1 + KEY_DUMMY_USERNAME, "Ydii");
-                    appSettings.Add(1 + KEY_DUMMY_PASSWORD, "1234");
                     appSettings.Add(2 + KEY_DUMMY_FIRSTNAME, "Jannik");
                     appSettings.Add(2 + KEY_DUMMY_LASTNAME, "Vangsgaard");
-                    appSettings.Add(2 + KEY_DUMMY_ADDRESS, "Søborg");
-                    appSettings.Add(2 + KEY_DUMMY_PHONENUMBER, "22250898");
-                    appSettings.Add(2 + KEY_DUMMY_USERNAME, "Jansemand");
-                    appSettings.Add(2 + KEY_DUMMY_PASSWORD, "1234");
                     appSettings.Add(3 + KEY_DUMMY_FIRSTNAME, "Mike");
                     appSettings.Add(3 + KEY_DUMMY_LASTNAME, "Heerwagen");
-                    appSettings.Add(3 + KEY_DUMMY_ADDRESS, "Lyngby");
-                    appSettings.Add(3 + KEY_DUMMY_PHONENUMBER, "41836990");
-                    appSettings.Add(3 + KEY_DUMMY_USERNAME, "Masas");
-                    appSettings.Add(3 + KEY_DUMMY_PASSWORD, "1234");
                     appSettings.Save();
                 }
             }
@@ -119,15 +103,11 @@ namespace GryphonSecurity_v2_2.DataSource
 
         public User getUser(long id)
         {
-            if (appSettings.Contains(id + KEY_DUMMY_USERNAME))
+            if (appSettings.Contains(id + KEY_DUMMY_FIRSTNAME))
             {
                 String firstname = appSettings[id + KEY_DUMMY_FIRSTNAME] as String;
                 String lastname = appSettings[id + KEY_DUMMY_LASTNAME] as String;
-                String address = appSettings[id + KEY_DUMMY_ADDRESS] as String;
-                long phonenumber = Convert.ToInt64(appSettings[id + KEY_DUMMY_PHONENUMBER] as String);
-                String username = appSettings[id + KEY_DUMMY_USERNAME] as String;
-                String password = appSettings[id + KEY_DUMMY_PASSWORD] as String;
-                return new User(id, firstname, lastname, address, phonenumber, username, password);
+                return new User(id, firstname, lastname);
             }
             else
             {
@@ -216,7 +196,7 @@ namespace GryphonSecurity_v2_2.DataSource
 
         public AlarmReport getAlarmReport(long id)
         {
-            if (appSettings.Contains(id + KEY_DUMMY_USERNAME))
+            if (appSettings.Contains(id + KEY_DUMMY_REPORT_CUSTOMERNAME))
             {
                 String customerName = appSettings[id + KEY_DUMMY_REPORT_CUSTOMERNAME] as String;
                 long customerNumber = Convert.ToInt64(appSettings[id + KEY_DUMMY_REPORT_CUSTOMERNUMBER] as String);

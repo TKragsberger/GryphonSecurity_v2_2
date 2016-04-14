@@ -287,14 +287,14 @@
   <data name="SearchUserRegisterButton" xml:space="preserve">
     <value>Søg</value>
   </data>
-  <data name="User" xml:space="preserve">
-    <value>ID</value>
-  </data>
   <data name="UserCreated" xml:space="preserve">
-    <value>Bruger oprettet</value>
+    <value>Bruger Oprettet</value>
   </data>
   <data name="UserFirstname" xml:space="preserve">
     <value>Fornavn</value>
+  </data>
+  <data name="UserId" xml:space="preserve">
+    <value>ID</value>
   </data>
   <data name="UserLastname" xml:space="preserve">
     <value>Efternavn</value>
@@ -304,9 +304,6 @@
   </data>
   <data name="UserNotFound" xml:space="preserve">
     <value>Bruger blev ikke funder, forkert id</value>
-  </data>
-  <data name="UserPhonenumber" xml:space="preserve">
-    <value>Telefonnummer</value>
   </data>
   <data name="UserRegisterButton" xml:space="preserve">
     <value>Registrere</value>
