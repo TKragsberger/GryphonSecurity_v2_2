@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Diagnostics;
 using GryphonSecurity_v2_2.Domain;
+using System.Device.Location;
 
 namespace GryphonSecurityTest
 {
@@ -84,68 +85,82 @@ namespace GryphonSecurityTest
             Assert.AreSame(expectedResult, actualResult);
 
         }
+        //[TestMethod]
+        //public void TestMethodReadDataFromNFCTag()
+        //{
+        //    String expectedResult = null;
+
+        //    Boolean isConnected = control.checkNetworkConnection();
+        //    String actualResult = control.readDataFromNFCTag(null, isConnected);
+
+        //    Assert.AreSame(expectedResult, actualResult);
+        //}
         [TestMethod]
-        public void TestMethodReadDataFromNFCTag()
+        public void testGetDistance()
         {
-            String expectedResult = null;
+            GeoCoordinate targetCoordinate = new GeoCoordinate(55.767944, 12.505161499999986);
+            GeoCoordinate presentCoordinate = new GeoCoordinate(55.7705618401085, 12.5117938768867);
+            Boolean expectedResult = true;
+            Boolean actualResult = control.getDistance(presentCoordinate, targetCoordinate, "Lyngby st.");
+            Assert.AreEqual(expectedResult,actualResult);
 
-            Boolean isConnected = control.checkNetworkConnection();
-            String actualResult = control.readDataFromNFCTag(null, isConnected);
-
-            Assert.AreSame(expectedResult, actualResult);
+            
         }
         [TestMethod]
-        public void TestMethodOnLocationScan()
+        public async Task TestMethodOnLocationScanNoConnectionMaibe()
         {
-            Boolean expectedResult = false;
-            Boolean isConnected = control.checkNetworkConnection();
-            Task<String> actualResult = control.onLocationScan("Lyngby St.", isConnected);
+            String expectedResult = "1";
+            String actualResult;
+            actualResult= await control.onLocationScan("1", true);
+            Debug.WriteLine("tagadress: " + actualResult);
             Assert.AreEqual(expectedResult, actualResult);
+        }
+        [TestMethod]
+        public async Task TestMethodOnLocationScan()
+        {
+            String expectedResult = "Lyngby st.";
+            String actuaclResult = "";
+            actuaclResult = await control.onLocationScan("1", true);
+            Assert.AreEqual(expectedResult, actuaclResult);
         }
         [TestMethod]
         public void TestMethodcalcPosition()
         {
-            Boolean expectedResult = false;
-            Boolean isConnect = control.checkNetworkConnection();
-            String actualResult = control.calcPosition("Lyngby St.", null, isConnect);
+            String expectedResult = "Lyngby st.";
+            GeoCoordinate presentCoordinate = new GeoCoordinate(55.767944, 12.505161499999986);
+            String actualResult = control.calcPosition("1", presentCoordinate, true);
+
             Assert.AreSame(expectedResult, actualResult);
         }
 
-        //These two method does not exsist anymore.
-        //
-        //[TestMethod]
-        //public void TestMethodCreateAlarmReport()
-        //{
-        //    //setting up a Alarm Report.
-        //    setupAlarmReport();
-        //    //creating a Alarm Report, this is the method we are testing.
-        //    instance.createAlarmReport(alarmReportTest);
-        //    //the Expected Result
-        //    String expectedResult = "customerNameTest";
-        //    //the Actual Result
-        //    String actualResult = instance.
-        //    //
-        //    Assert.AreSame(expectedResult, actualResult);
+        [TestMethod]
+        public void TestCheckNetworkConnection()
+        {
+            Boolean expectedResult = true;
+            Boolean actualResult = control.checkNetworkConnection();
+            Assert.AreEqual(expectedResult, actualResult);
+        }
 
-        //}
-        //[TestMethod]
-        //public void TestMethodLogin()
-        //{
-        //    //setting up username and password.
-        //    String loginUsername = "UsernameTest";
-        //    String loginPassword = "passwordTest";
-        //    //this is the method we are testing.
-        //    instance.login(loginUsername, loginPassword);
-        //    String expectedResult = loginUsername;
-        //    String actualResult = instance.getUsername();
-        //    Assert.AreSame(expectedResult, actualResult);
-
-        //}
-
-
-
-
-
+        [TestMethod]
+        public void TestSendPendingNFCs()
+        {
+            
+            control.createUser(userTest);
+            control.createLocalStorageNFCsTest(55.767944, 12.505161499999986,"1");
+            control.createLocalStorageNFCsTest(55.6713363, 12.566796599999975, "2");
+            int expectedResult = 2;
+            Assert.AreEqual(expectedResult, control.getLocalStorageNFCs());
+            control.sendPendingNFCs();
+            Assert.AreEqual(0, control.getLocalStorageNFCs());
+        }
+        [TestMethod]
+        public void TestsendPendingAlarmReports()
+        {
+            control.createUser(userTest);
+            setupAlarmReport("bums");
+            control.createAlarmReport(alarmReportTest);
+            Assert.AreEqual(false, true);
+        }
 
         private void setupAlarmReport(String name)
         {
