@@ -45,12 +45,12 @@ namespace GryphonSecurityTest
             Assert.AreEqual(expectedResult, actualResult);
         }
         [TestMethod]
-        public void TestMethodCreateAlarmReport()
+        public async void TestMethodCreateAlarmReport()
         {
             //Setting up alarm report object.
             setupAlarmReport("Test");
             //This is the method we are testing. We will need internet connection for it to be able to save it, if this is false it will save it locally (this will be tested later).
-            Boolean actualResult = control.createAlarmReport(alarmReportTest);
+            Boolean actualResult = await control.createAlarmReport(alarmReportTest);
             //We expect it to be true, since we have internet connection.
             Assert.AreEqual(true, actualResult);
         }
@@ -154,11 +154,11 @@ namespace GryphonSecurityTest
             Assert.AreEqual(0, control.getLocalStorageNFCs());
         }
         [TestMethod]
-        public void TestsendPendingAlarmReports()
+        public async void TestsendPendingAlarmReports()
         {
             control.createUser(userTest);
             setupAlarmReport("test");
-            control.createAlarmReport(alarmReportTest);
+            await control.createAlarmReport(alarmReportTest);
             Assert.AreEqual(false, true);
         }
 

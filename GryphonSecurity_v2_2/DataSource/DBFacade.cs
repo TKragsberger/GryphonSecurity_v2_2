@@ -33,9 +33,9 @@ namespace GryphonSecurity_v2_2.DataSource
             return await connection.getCustomer(id);
         }
 
-        public Boolean createAlarmReport(AlarmReport alarmReport)
+        public async Task<Boolean> createAlarmReport(AlarmReport alarmReport)
         {
-            return connection.createAlarmReport(alarmReport);
+            return await connection.createAlarmReport(alarmReport);
         }
 
         public Boolean createAlarmReports(List<AlarmReport> alarmReports)

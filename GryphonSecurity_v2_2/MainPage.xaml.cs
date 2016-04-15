@@ -12,6 +12,7 @@ using GryphonSecurity_v2_2.Domain;
 using GryphonSecurity_v2_2.Domain.Entity;
 using Windows.Networking.Proximity;
 using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace GryphonSecurity_v2_2
 {
@@ -33,7 +34,7 @@ namespace GryphonSecurity_v2_2
             BuildLocalizedApplicationBar();
         }
 
-        public Boolean checkAlarmReport()
+        public async Task<Boolean> checkAlarmReport()
         {
             Boolean check = true;
             if (textBoxCustomerName.Text.Equals(""))
@@ -112,7 +113,7 @@ namespace GryphonSecurity_v2_2
             DateTime doneTB = (DateTime)textBoxDone.Value;
             if (check)
             {
-                if (controller.createAlarmReport(new AlarmReport(customerNameTB, customerNumberTB, streetAndHouseNumberTB, zipCodeTB, cityTB, phonenumberTB, dateTB, timeTB, zoneTB, burglaryVandalismCB,
+                if (await controller.createAlarmReport(new AlarmReport(customerNameTB, customerNumberTB, streetAndHouseNumberTB, zipCodeTB, cityTB, phonenumberTB, dateTB, timeTB, zoneTB, burglaryVandalismCB,
                                             windowDoorClosedCB, apprehendedPersonCB, staffErrorCB, nothingToReportCB, technicalErrorCB, unknownReasonCB, otherCB, cancelDuringEmergencyCB, coverMadeCB,
                                             remarkTB, nameTB, installerTB, controlCenterTB, guardRadioedDateTB, guardRadioedFromTB, guardRadioedToTB, arrivedAtTB, doneTB, controller.getUser())))
                 {
@@ -156,9 +157,9 @@ namespace GryphonSecurity_v2_2
             textBoxControlCenter.Text = "";
         }
 
-        private void sendReport_Click(object sender, RoutedEventArgs e)
+        private async void sendReport_Click(object sender, RoutedEventArgs e)
         {
-            Boolean check = checkAlarmReport();
+            Boolean check =await checkAlarmReport();
             if (!check)
             {
                 MessageBox.Show(AppResources.ReportFillSpaces);
@@ -249,7 +250,7 @@ namespace GryphonSecurity_v2_2
             textBoxDone.Value = DateTime.Now;
         }
 
-        private void Pivot_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void Pivot_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             try
             {
@@ -264,7 +265,7 @@ namespace GryphonSecurity_v2_2
                         textBoxName.Text = user.Firstname + " " + user.Lastname;
                     }
                     device.StopSubscribingForMessage(deviceId);
-                    if (!checkAlarmReport())
+                    if (! await checkAlarmReport())
                     {
                         updateAlarmReportDateTime();
                     }

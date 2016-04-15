@@ -9,7 +9,7 @@ namespace GryphonSecurity_v2_2.Domain.Entity
     public class AlarmReport
     {
         String customerName;
-        long customerNumber;
+        long customerNumber;    
         String streetAndHouseNumber;
         int zipCode;
         String city;
