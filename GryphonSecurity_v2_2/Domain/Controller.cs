@@ -123,8 +123,10 @@ namespace GryphonSecurity_v2_2.Domain
             Geolocator geolocator = new Geolocator();
             geolocator.DesiredAccuracyInMeters = 50;
             String address = tagAddress;
+            Debug.WriteLine("1: " + tagAddress);
             try
             {
+               
                 Geoposition geoposition = await geolocator.GetGeopositionAsync(
                     maximumAge: TimeSpan.FromMinutes(5),
                     timeout: TimeSpan.FromSeconds(10)
@@ -134,7 +136,7 @@ namespace GryphonSecurity_v2_2.Domain
                 Debug.WriteLine("longtitude " + longitude + " latitude: " + latitude);
                 presentCoordinate = new GeoCoordinate(latitude, longitude);
                 address = calcPosition(tagAddress, presentCoordinate, isConnected);
-
+               
             }
             catch (Exception ex)
             {
@@ -144,7 +146,7 @@ namespace GryphonSecurity_v2_2.Domain
                     Debug.WriteLine("location  is disabled in phone settings.");
                 }
             }
-
+            Debug.WriteLine("return " + address);
             return address;
         }
 
@@ -161,6 +163,7 @@ namespace GryphonSecurity_v2_2.Domain
                 if (!isConnected)
                 {
                     dBFacade.createLocalStorageNFCs(presentCoordinate.Latitude, presentCoordinate.Longitude, tagAddress);
+                    Debug.WriteLine("1: " + tagAddress);
                     return tagAddress;
                 }
                 cts.CancelAfter(10000);
@@ -172,10 +175,12 @@ namespace GryphonSecurity_v2_2.Domain
                     latitude = (Double)Convert.ToDecimal(tag[2]);
                     targetCoordinate = new GeoCoordinate(latitude, longitude);
                     check = getDistance(presentCoordinate, targetCoordinate, address);
+                    Debug.WriteLine("2: " + address);
                 }
                 else
                 {
                     getDistance(presentCoordinate, presentCoordinate, tagAddress);
+                    Debug.WriteLine("kommer i else mhmhm");
                 }
 
             }
@@ -183,6 +188,7 @@ namespace GryphonSecurity_v2_2.Domain
             {
                 Debug.WriteLine("cancellation token");
             }
+            Debug.WriteLine("return: " + address);
             return address;
         }
 
@@ -202,6 +208,7 @@ namespace GryphonSecurity_v2_2.Domain
                     rangeCheck = true;
                 }
                 check = dBFacade.createNFC(new NFC(rangeCheck, tagAddress, DateTime.Now, dBFacade.getLocalStorageUser()));
+                   
             }
             else
             {
@@ -210,6 +217,10 @@ namespace GryphonSecurity_v2_2.Domain
             return check;
 
 
+        }
+        public void createLocalStorageNFCsTest(double latitude,double longitude, String tagAdress)
+        {
+            dBFacade.createLocalStorageNFCs(latitude, longitude, tagAdress);
         }
 
         public bool checkNetworkConnection()
@@ -222,6 +233,7 @@ namespace GryphonSecurity_v2_2.Domain
                 IsConnected = false;
             return IsConnected;
         }
+
 
         public AlarmReport getLocalTempAlarmReport(long id)
         {
@@ -262,6 +274,7 @@ namespace GryphonSecurity_v2_2.Domain
             dBFacade.removeLocalStorageNFCs();
             return check;
         }
+     
 
         public Boolean sendPendingAlarmReports()
         {
