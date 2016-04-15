@@ -157,11 +157,12 @@ namespace GryphonSecurityTest
         public void TestsendPendingAlarmReports()
         {
             control.createUser(userTest);
-            setupAlarmReport("bums");
+            setupAlarmReport("test");
             control.createAlarmReport(alarmReportTest);
             Assert.AreEqual(false, true);
         }
 
+        
         private void setupAlarmReport(String name)
         {
             //random time needed for alarm report object.
