@@ -45,10 +45,10 @@ namespace GryphonSecurity_v2_2
 
         }
 
-        private void SearchForUserButton_Click(object sender, RoutedEventArgs e)
+        private async void SearchForUserButton_Click(object sender, RoutedEventArgs e)
         {
             long id = Convert.ToInt64(textBoxUserId.Text);
-            user = controller.getUser(id);
+            user = await controller.getUser(id);
             if (!object.ReferenceEquals(user, null))
             {
                 Firstname.Text = AppResources.UserFirstname + " " + user.Firstname;

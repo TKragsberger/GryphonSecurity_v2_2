@@ -76,10 +76,6 @@ namespace GryphonSecurity_v2_2
             }
             DateTime dateTB = (DateTime)textBoxDate.Value;
             DateTime timeTB = (DateTime)textBoxTime.Value;
-            if (textBoxZone.Text.Equals(""))
-            {
-                check = false;
-            }
             String zoneTB = textBoxZone.Text;
 
             Boolean burglaryVandalismCB = (Boolean)checkBoxBurglaryVandalism.IsChecked;
@@ -204,7 +200,8 @@ namespace GryphonSecurity_v2_2
         {
             isConnected = controller.checkNetworkConnection();
             String tagAddress = controller.readDataFromNFCTag(message, isConnected);
-                Dispatcher.BeginInvoke(() =>
+            Debug.WriteLine("Tagaddress" + tagAddress);
+            Dispatcher.BeginInvoke(() =>
                 {
                     gps(tagAddress, isConnected);
                 });         
@@ -439,10 +436,10 @@ namespace GryphonSecurity_v2_2
 
         }
 
-        private void searchForCustomerButton_Click(object sender, RoutedEventArgs e)
+        private async void searchForCustomerButton_Click(object sender, RoutedEventArgs e)
         {
             long customerNumber = Convert.ToInt64(textBoxCustomerNumber.Text);
-            Customer customer = controller.getCustomer(customerNumber);
+            Customer customer = await controller.getCustomer(customerNumber);
             if (!object.ReferenceEquals(customer, null))
             {
                 textBoxCustomerName.Text = customer.CustomerName;
@@ -450,7 +447,6 @@ namespace GryphonSecurity_v2_2
                 textBoxZipCode.Text = customer.ZipCode + "";
                 textBoxCity.Text = customer.City;
                 textBoxPhonenumber.Text = customer.Phonenumber + "";
-                textBoxZone.Text = customer.Zone;
             } else
             {
                 MessageBox.Show(AppResources.ReportCustomerNotFound);

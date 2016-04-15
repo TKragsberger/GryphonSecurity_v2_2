@@ -14,9 +14,8 @@ namespace GryphonSecurity_v2_2.Domain.Entity
         int zipCode;
         String city;
         long phonenumber;
-        String zone;
 
-        public Customer(String customerName, long customerNumber, String streetHouseNumber, int zipCode, String city, long phonenumber, String zone)
+        public Customer(String customerName, long customerNumber, String streetHouseNumber, int zipCode, String city, long phonenumber)
         {
             this.customerName = customerName;
             this.customerNumber = customerNumber;
@@ -24,7 +23,6 @@ namespace GryphonSecurity_v2_2.Domain.Entity
             this.zipCode = zipCode;
             this.city = city;
             this.phonenumber = phonenumber;
-            this.zone = zone;
         }
 
         public String CustomerName
@@ -63,10 +61,5 @@ namespace GryphonSecurity_v2_2.Domain.Entity
             set { phonenumber = value; }
         }
 
-        public String Zone
-        {
-            get { return zone; }
-            set { zone = value; }
-        }
     }
 }
