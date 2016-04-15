@@ -131,6 +131,7 @@ namespace GryphonSecurity_v2_2.Domain
                     );
                 double latitude = geoposition.Coordinate.Point.Position.Latitude;
                 double longitude = geoposition.Coordinate.Point.Position.Longitude;
+                Debug.WriteLine("longtitude " + longitude + " latitude: " + latitude);
                 presentCoordinate = new GeoCoordinate(latitude, longitude);
                 address = calcPosition(tagAddress, presentCoordinate, isConnected);
 
@@ -163,7 +164,7 @@ namespace GryphonSecurity_v2_2.Domain
                     return tagAddress;
                 }
                 cts.CancelAfter(10000);
-                List<String> tag = dBFacade.getAdress(tagAddress);
+                List<String> tag = dBFacade.getAddress(tagAddress);
                 if (!cts.IsCancellationRequested)
                 {
                     address = tag[0];
@@ -250,7 +251,7 @@ namespace GryphonSecurity_v2_2.Domain
             {
                 double presentLatitude = Convert.ToDouble(tag[0]);
                 double presentLongitude = Convert.ToDouble(tag[1]);
-                List<String> nfcs = dBFacade.getAdress(tag[2]);
+                List<String> nfcs = dBFacade.getAddress(tag[2]);
                 String tagAddress = nfcs[0];
                 double targetLongtitude = Convert.ToDouble(nfcs[1]);
                 double targetLatitude = Convert.ToDouble(nfcs[2]);
@@ -276,14 +277,14 @@ namespace GryphonSecurity_v2_2.Domain
             return alarmReportCheck;
         }
 
-        public User getUser(long id)
+        public async Task<User> getUser(long id)
         {
-            return dBFacade.getUser(id);
+            return await dBFacade.getUser(id);
         }
 
-        public Customer getCustomer(long id)
+        public async Task<Customer> getCustomer(long id)
         {
-            return dBFacade.getCustomer(id);
+            return await dBFacade.getCustomer(id);
         }
     }
 }

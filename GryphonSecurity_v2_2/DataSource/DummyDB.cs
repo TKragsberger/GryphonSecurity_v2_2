@@ -69,7 +69,6 @@ namespace GryphonSecurity_v2_2.DataSource
         private String KEY_DUMMY_CUSTOMER_ZIP_CODE = "DUMMY_CUSTOMER_ZIP_CODE";
         private String KEY_DUMMY_CUSTOMER_CITY = "DUMMY_CUSTOMER_CITY";
         private String KEY_DUMMY_CUSTOMER_PHONENUMBER = "DUMMY_CUSTOMER_PHONENUMBER";
-        private String KEY_DUMMY_CUSTOMER_ZONE = "DUMMY_CUSTOMER_ZONE";
 
         private List<String> address = new List<String>();
 
@@ -283,21 +282,18 @@ namespace GryphonSecurity_v2_2.DataSource
                     appSettings.Add(1 + KEY_DUMMY_CUSTOMER_ZIP_CODE, "3520");
                     appSettings.Add(1 + KEY_DUMMY_CUSTOMER_CITY, "Farum");
                     appSettings.Add(1 + KEY_DUMMY_CUSTOMER_PHONENUMBER, "27708834");
-                    appSettings.Add(1 + KEY_DUMMY_CUSTOMER_ZONE, "ZONE 1");
                     appSettings.Add(2 + KEY_DUMMY_CUSTOMER_NAME, "Jannik Vangsgaard");
                     appSettings.Add(2 + KEY_DUMMY_CUSTOMER_NUMBER, "2");
                     appSettings.Add(2 + KEY_DUMMY_CUSTOMER_STREET_AND_HOUSE_NUMBER, "Hovedgade 40");
                     appSettings.Add(2 + KEY_DUMMY_CUSTOMER_ZIP_CODE, "2860");
                     appSettings.Add(2 + KEY_DUMMY_CUSTOMER_CITY, "Søborg");
                     appSettings.Add(2 + KEY_DUMMY_CUSTOMER_PHONENUMBER, "22250898");
-                    appSettings.Add(2 + KEY_DUMMY_CUSTOMER_ZONE, "ZONE 2");
                     appSettings.Add(3 + KEY_DUMMY_CUSTOMER_NAME, "Mike Heerwagen");
                     appSettings.Add(3 + KEY_DUMMY_CUSTOMER_NUMBER, "3");
                     appSettings.Add(3 + KEY_DUMMY_CUSTOMER_STREET_AND_HOUSE_NUMBER, "Kollegiebakken 9");
                     appSettings.Add(3 + KEY_DUMMY_CUSTOMER_ZIP_CODE, "2800");
                     appSettings.Add(3 + KEY_DUMMY_CUSTOMER_CITY, "Lyngby");
                     appSettings.Add(3 + KEY_DUMMY_CUSTOMER_PHONENUMBER, "41836990");
-                    appSettings.Add(3 + KEY_DUMMY_CUSTOMER_ZONE, "ZONE 3");
                     appSettings.Save();
                 }
             }
@@ -317,8 +313,7 @@ namespace GryphonSecurity_v2_2.DataSource
                 int zipCode = Convert.ToInt32(appSettings[id + KEY_DUMMY_CUSTOMER_ZIP_CODE] as String);
                 String city = appSettings[id + KEY_DUMMY_CUSTOMER_CITY] as String;
                 long phonenumber = Convert.ToInt64(appSettings[id + KEY_DUMMY_CUSTOMER_PHONENUMBER] as String);
-                String zone = appSettings[id + KEY_DUMMY_CUSTOMER_ZONE] as String;
-                return new Customer(customerName, customerNumber, streetHouseNumber, zipCode, city, phonenumber, zone);
+                return new Customer(customerName, customerNumber, streetHouseNumber, zipCode, city, phonenumber);
             }
             return null;
         }

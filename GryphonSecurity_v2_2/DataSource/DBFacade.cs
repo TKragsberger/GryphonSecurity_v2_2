@@ -9,7 +9,8 @@ namespace GryphonSecurity_v2_2.DataSource
 {
     public class DBFacade
     {
-        DummyDB connection = new DummyDB();
+        //DummyDB connection = new DummyDB();
+        Mapper connection = new Mapper();
         LocalStorage localStorage = new LocalStorage();
 
         public Boolean createUser(User user)
@@ -17,9 +18,9 @@ namespace GryphonSecurity_v2_2.DataSource
             return localStorage.createUser(user);
         }
 
-        public User getUser(long id)
+        public async Task<User> getUser(long id)
         {
-            return connection.getUser(id);
+            return await connection.getUser(id);
         }
 
         public User getLocalStorageUser()
@@ -27,9 +28,9 @@ namespace GryphonSecurity_v2_2.DataSource
             return localStorage.getUser();
         }
 
-        public Customer getCustomer(long id)
+        public async Task<Customer> getCustomer(long id)
         {
-            return connection.getCustomer(id);
+            return await connection.getCustomer(id);
         }
 
         public Boolean createAlarmReport(AlarmReport alarmReport)
@@ -47,7 +48,7 @@ namespace GryphonSecurity_v2_2.DataSource
             return localStorage.createTempAlarmReport(alarmReport);
         }
 
-        public List<String> getAdress(String id)
+        public List<String> getAddress(String id)
         {
             return connection.getAddress(id);
         }
