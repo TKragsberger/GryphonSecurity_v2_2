@@ -124,11 +124,11 @@ namespace GryphonSecurityTest
             Assert.AreEqual(expectedResult, actuaclResult);
         }
         [TestMethod]
-        public void TestMethodcalcPosition()
+        public async void TestMethodcalcPosition()
         {
             String expectedResult = "Lyngby st.";
             GeoCoordinate presentCoordinate = new GeoCoordinate(55.767944, 12.505161499999986);
-            String actualResult = control.calcPosition("1", presentCoordinate, true);
+            String actualResult = await control.calcPosition("1", presentCoordinate, true);
 
             Assert.AreSame(expectedResult, actualResult);
         }

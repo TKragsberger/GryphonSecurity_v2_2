@@ -38,9 +38,9 @@ namespace GryphonSecurity_v2_2.DataSource
             return await connection.createAlarmReport(alarmReport);
         }
 
-        public Boolean createAlarmReports(List<AlarmReport> alarmReports)
+        public async Task<Boolean> createAlarmReports(List<AlarmReport> alarmReports)
         {
-            return connection.createAlarmReports(alarmReports);
+            return await connection.createAlarmReports(alarmReports);
         }
 
         public Boolean createTempLocalStorageAlarmReport(AlarmReport alarmReport)
@@ -48,9 +48,9 @@ namespace GryphonSecurity_v2_2.DataSource
             return localStorage.createTempAlarmReport(alarmReport);
         }
 
-        public List<String> getAddress(String id)
+        public async Task<String> getAddress(String id)
         {
-            return connection.getAddress(id);
+            return await connection.getAddress(id);
         }
 
         public Boolean createNFC(NFC nfc)

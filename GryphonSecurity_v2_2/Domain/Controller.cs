@@ -106,19 +106,27 @@ namespace GryphonSecurity_v2_2.Domain
         {
             DataReader buffer = DataReader.FromBuffer(message.Data);
             Debug.WriteLine(buffer.ReadByte());
-            Debug.WriteLine(buffer.ReadByte());
+            int typeLength = buffer.ReadByte();
             int payloadLength = buffer.ReadByte();
-            Debug.WriteLine(buffer.ReadByte());
+            //Debug.WriteLine(buffer.ReadByte());
+            byte[] type = new byte[typeLength];
             byte[] payload = new byte[payloadLength];
+            buffer.ReadBytes(type);
+            buffer.ReadBytes(payload);  
+            if ((Encoding.UTF8.GetString(type, 0, typeLength) == "U"))
+            {
+                return getUri(payload);
+            } else if(Encoding.UTF8.GetString(type, 0, typeLength) == "T")
+            {
+                byte langLen = (byte)(payload[0] & 0x3f);
+                int textleng = payload.Length - 1 - langLen;
+                byte[] textbuf = new byte[textleng];
+                System.Buffer.BlockCopy(payload, 1 + langLen, textbuf, 0, textleng);
+                Debug.WriteLine("This is text");
+                return Encoding.UTF8.GetString(textbuf, 0, textbuf.Length);
+            }
+            return null;
 
-            buffer.ReadBytes(payload);
-            String fullUri = getUri(payload);
-            return fullUri;
-            //byte langLen = (byte)(payload[0] & 0x3f);
-            //int textLeng = payload.Length - 1 - langLen;
-            //byte[] textBuf = new byte[textLeng];
-            //System.Buffer.BlockCopy(payload, 1 + langLen, textBuf, 0, textLeng);
-            //return Encoding.UTF8.GetString(textBuf, 0, textBuf.Length);
         }
         private String getUri(byte[] payload)
         {
@@ -266,7 +274,7 @@ namespace GryphonSecurity_v2_2.Domain
                 double longitude = geoposition.Coordinate.Point.Position.Longitude;
                 Debug.WriteLine("longtitude " + longitude + " latitude: " + latitude);
                 presentCoordinate = new GeoCoordinate(latitude, longitude);
-                address = calcPosition(tagAddress, presentCoordinate, isConnected);
+                address = await calcPosition(tagAddress, presentCoordinate, isConnected);
                
             }
             catch (Exception ex)
@@ -281,7 +289,7 @@ namespace GryphonSecurity_v2_2.Domain
             return address;
         }
 
-        public String calcPosition(String tagAddress, GeoCoordinate presentCoordinate, Boolean isConnected)
+        public async Task<String> calcPosition(String tagAddress, GeoCoordinate presentCoordinate, Boolean isConnected)
         {
             double latitude = 0d;
             double longitude = 0d;
@@ -298,13 +306,13 @@ namespace GryphonSecurity_v2_2.Domain
                     return tagAddress;
                 }
                 cts.CancelAfter(10000);
-                List<String> tag = dBFacade.getAddress(tagAddress);
+                address = await dBFacade.getAddress(tagAddress);
                 if (!cts.IsCancellationRequested)
                 {
-                    address = tag[0];
-                    longitude = (Double)Convert.ToDecimal(tag[1]);
-                    latitude = (Double)Convert.ToDecimal(tag[2]);
-                    targetCoordinate = new GeoCoordinate(latitude, longitude);
+                    //address = tag[0];
+                    //longitude = (Double)Convert.ToDecimal(tag[1]);
+                    //latitude = (Double)Convert.ToDecimal(tag[2]);
+                    //targetCoordinate = new GeoCoordinate(latitude, longitude);
                     check = getDistance(presentCoordinate, targetCoordinate, address);
                     Debug.WriteLine("2: " + address);
                 }
@@ -386,7 +394,7 @@ namespace GryphonSecurity_v2_2.Domain
             return dBFacade.getLocalStorageNumberOfAlarmReports();
         }
 
-        public Boolean sendPendingNFCs()
+        public async Task<Boolean> sendPendingNFCs()
         {
             List<List<String>> tags = dBFacade.getLocalStorageNFCs();
             check = false;
@@ -394,24 +402,24 @@ namespace GryphonSecurity_v2_2.Domain
             {
                 double presentLatitude = Convert.ToDouble(tag[0]);
                 double presentLongitude = Convert.ToDouble(tag[1]);
-                List<String> nfcs = dBFacade.getAddress(tag[2]);
-                String tagAddress = nfcs[0];
-                double targetLongtitude = Convert.ToDouble(nfcs[1]);
-                double targetLatitude = Convert.ToDouble(nfcs[2]);
+                String address = await dBFacade.getAddress(tag[2]);
+                //String tagAddress = nfcs[0];
+                //double targetLongtitude = Convert.ToDouble(nfcs[1]);
+                //double targetLatitude = Convert.ToDouble(nfcs[2]);
                 presentCoordinate = new GeoCoordinate(presentLatitude, presentLongitude);
-                targetCoordinate = new GeoCoordinate(targetLatitude, targetLongtitude);
-                check = getDistance(presentCoordinate, targetCoordinate, tagAddress);
+                //targetCoordinate = new GeoCoordinate(targetLatitude, targetLongtitude);
+                check = getDistance(presentCoordinate, targetCoordinate, address);
             }
             dBFacade.removeLocalStorageNFCs();
             return check;
         }
      
 
-        public Boolean sendPendingAlarmReports()
+        public async Task<Boolean> sendPendingAlarmReports()
         {
             Boolean alarmReportCheck = false;
             List<AlarmReport> alarmReports = dBFacade.getLocalStorageAlarmReports();
-            alarmReportCheck = dBFacade.createAlarmReports(alarmReports);
+            alarmReportCheck = await dBFacade.createAlarmReports(alarmReports);
 
             if (alarmReportCheck)
             {

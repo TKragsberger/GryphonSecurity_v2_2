@@ -364,17 +364,17 @@ namespace GryphonSecurity_v2_2
             textBoxDone.Value = alarmReport.Done;
         }
 
-        private void sendPendingButton_Click(object sender, RoutedEventArgs e)
+        private async void sendPendingButton_Click(object sender, RoutedEventArgs e)
         {
             isConnected = controller.checkNetworkConnection();
             if (isConnected)
             {
-                if (controller.sendPendingNFCs())
+                if (await controller.sendPendingNFCs())
                 {
                     textBlockPendingNFCScans.Text = "Pending NFCs: " + 0;
                 }
 
-                if (controller.sendPendingAlarmReports())
+                if (await controller.sendPendingAlarmReports())
                 {
                     textBlockPendingAlarmReports.Text = "Pending Alarm Reports: " + 0;
                 }
