@@ -118,12 +118,7 @@ namespace GryphonSecurity_v2_2.Domain
                 return getUri(payload);
             } else if(Encoding.UTF8.GetString(type, 0, typeLength) == "T")
             {
-                byte langLen = (byte)(payload[0] & 0x3f);
-                int textleng = payload.Length - 1 - langLen;
-                byte[] textbuf = new byte[textleng];
-                System.Buffer.BlockCopy(payload, 1 + langLen, textbuf, 0, textleng);
-                Debug.WriteLine("This is text");
-                return Encoding.UTF8.GetString(textbuf, 0, textbuf.Length);
+                return getText(payload);
             }
             return null;
 
@@ -134,6 +129,15 @@ namespace GryphonSecurity_v2_2.Domain
             String uri = Encoding.UTF8.GetString(payload, 1, payload.Length - 1);
             String fullUri = identifier + uri;
             return fullUri;
+        }
+
+        private String getText(byte[] payload)
+        {
+            byte langLen = (byte)(payload[0] & 0x3f);
+            int textleng = payload.Length - 1 - langLen;
+            byte[] textbuf = new byte[textleng];
+            System.Buffer.BlockCopy(payload, 1 + langLen, textbuf, 0, textleng);
+            return Encoding.UTF8.GetString(textbuf, 0, textbuf.Length);
         }
 
         private string getUriIdentifier(byte abbrByte)
@@ -262,7 +266,6 @@ namespace GryphonSecurity_v2_2.Domain
             Geolocator geolocator = new Geolocator();
             geolocator.DesiredAccuracyInMeters = 50;
             String address = tagAddress;
-            Debug.WriteLine("1: " + tagAddress);
             try
             {
                
@@ -272,7 +275,6 @@ namespace GryphonSecurity_v2_2.Domain
                     );
                 double latitude = geoposition.Coordinate.Point.Position.Latitude;
                 double longitude = geoposition.Coordinate.Point.Position.Longitude;
-                Debug.WriteLine("longtitude " + longitude + " latitude: " + latitude);
                 presentCoordinate = new GeoCoordinate(latitude, longitude);
                 address = await calcPosition(tagAddress, presentCoordinate, isConnected);
                
@@ -291,35 +293,29 @@ namespace GryphonSecurity_v2_2.Domain
 
         public async Task<String> calcPosition(String tagAddress, GeoCoordinate presentCoordinate, Boolean isConnected)
         {
-            double latitude = 0d;
-            double longitude = 0d;
-            String address = tagAddress;
+            String addressName = tagAddress;
             Boolean check = false;
             CancellationTokenSource cts = new CancellationTokenSource();
-
+            
             try
             {
                 if (!isConnected)
                 {
                     dBFacade.createLocalStorageNFCs(presentCoordinate.Latitude, presentCoordinate.Longitude, tagAddress);
-                    Debug.WriteLine("1: " + tagAddress);
                     return tagAddress;
                 }
                 cts.CancelAfter(10000);
-                address = await dBFacade.getAddress(tagAddress);
+                
                 if (!cts.IsCancellationRequested)
                 {
-                    //address = tag[0];
-                    //longitude = (Double)Convert.ToDecimal(tag[1]);
-                    //latitude = (Double)Convert.ToDecimal(tag[2]);
-                    //targetCoordinate = new GeoCoordinate(latitude, longitude);
-                    check = getDistance(presentCoordinate, targetCoordinate, address);
-                    Debug.WriteLine("2: " + address);
+                    Address address = await dBFacade.getAddress(tagAddress);
+                    addressName = address.AddressName;
+                    targetCoordinate = new GeoCoordinate(address.Latitude, address.Longtitude);
+                    check = getDistance(presentCoordinate, targetCoordinate, addressName);
                 }
                 else
                 {
                     getDistance(presentCoordinate, presentCoordinate, tagAddress);
-                    Debug.WriteLine("kommer i else mhmhm");
                 }
 
             }
@@ -327,8 +323,7 @@ namespace GryphonSecurity_v2_2.Domain
             {
                 Debug.WriteLine("cancellation token");
             }
-            Debug.WriteLine("return: " + address);
-            return address;
+            return addressName;
         }
 
         public Boolean getDistance(GeoCoordinate presentCoordinate, GeoCoordinate targetCoordinates, String tagAddress)
@@ -402,13 +397,12 @@ namespace GryphonSecurity_v2_2.Domain
             {
                 double presentLatitude = Convert.ToDouble(tag[0]);
                 double presentLongitude = Convert.ToDouble(tag[1]);
-                String address = await dBFacade.getAddress(tag[2]);
-                //String tagAddress = nfcs[0];
-                //double targetLongtitude = Convert.ToDouble(nfcs[1]);
-                //double targetLatitude = Convert.ToDouble(nfcs[2]);
+                Address address = await dBFacade.getAddress(tag[2]);
+                double targetLatitude = address.Latitude;
+                double targetLongtitude = address.Longtitude;
                 presentCoordinate = new GeoCoordinate(presentLatitude, presentLongitude);
-                //targetCoordinate = new GeoCoordinate(targetLatitude, targetLongtitude);
-                check = getDistance(presentCoordinate, targetCoordinate, address);
+                targetCoordinate = new GeoCoordinate(targetLatitude, targetLongtitude);
+                check = getDistance(presentCoordinate, targetCoordinate, address.AddressName);
             }
             dBFacade.removeLocalStorageNFCs();
             return check;

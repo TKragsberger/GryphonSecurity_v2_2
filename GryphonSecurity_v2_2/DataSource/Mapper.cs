@@ -78,19 +78,15 @@ namespace GryphonSecurity_v2_2.DataSource
         }
 
 
-        public async Task<String> getAddress(String id)
+        public async Task<Address> getAddress(String id)
         {
             using (HttpClient client = new HttpClient())
             {
-                Debug.WriteLine("getAddress mapper 1");
                 String json = JsonConvert.SerializeObject(id);
                 var resultWebservice = await client.PostAsync("http://kragsberger.dk/GryphonSecurityRestFullWebservice/webServices/getAddress.php/", new StringContent(json, Encoding.UTF8, "application/json"));
                 //var resultWebservice = await client.GetAsync("http://kragsberger.dk/rest/" + name);
-                Debug.WriteLine("getAddress mapper 2");
                 resultWebservice.EnsureSuccessStatusCode();
-                Debug.WriteLine("getAddress mapper 3");
-                String result = JsonConvert.DeserializeObject<String>(await resultWebservice.Content.ReadAsStringAsync());
-                Debug.WriteLine(result + "what we get from getAddress webservice");
+                Address result = JsonConvert.DeserializeObject<Address>(await resultWebservice.Content.ReadAsStringAsync());
                 return result;
             }
         }

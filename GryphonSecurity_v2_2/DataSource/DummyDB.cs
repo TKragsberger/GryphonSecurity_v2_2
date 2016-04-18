@@ -70,8 +70,6 @@ namespace GryphonSecurity_v2_2.DataSource
         private String KEY_DUMMY_CUSTOMER_CITY = "DUMMY_CUSTOMER_CITY";
         private String KEY_DUMMY_CUSTOMER_PHONENUMBER = "DUMMY_CUSTOMER_PHONENUMBER";
 
-        private List<String> address = new List<String>();
-
         public DummyDB()
         {
             createAddresses();
@@ -318,14 +316,14 @@ namespace GryphonSecurity_v2_2.DataSource
             return null;
         }
 
-        public List<String> getAddress(String id)
+        public Address getAddress(String id)
         {
             if (appSettings.Contains(id + KEY_DUMMY_ADDRESS_NAME))
             {
-                address.Add(appSettings[id + KEY_DUMMY_ADDRESS_NAME] as String);
-                address.Add(appSettings[id + KEY_DUMMY_ADDRESS_LONGTITUDE] as String);
-                address.Add(appSettings[id + KEY_DUMMY_ADDRESS_LATITUDE] as String);
-                return address;
+                String addressName = appSettings[id + KEY_DUMMY_ADDRESS_NAME] as String;
+                double latitude = Convert.ToDouble(appSettings[id + KEY_DUMMY_ADDRESS_LATITUDE] as String);
+                double longtitude = Convert.ToDouble(appSettings[id + KEY_DUMMY_ADDRESS_LONGTITUDE] as String);
+                return new Address(addressName, latitude, longtitude);
             }
 
             return null;

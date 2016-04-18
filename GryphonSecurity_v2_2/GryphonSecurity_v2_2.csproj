@@ -100,6 +100,7 @@
     <Compile Include="DataSource\LocalStorage.cs" />
     <Compile Include="DataSource\Mapper.cs" />
     <Compile Include="Domain\Controller.cs" />
+    <Compile Include="Domain\Entity\Address.cs" />
     <Compile Include="Domain\Entity\AlarmReport.cs" />
     <Compile Include="Domain\Entity\Customer.cs" />
     <Compile Include="Domain\Entity\NFC.cs" />

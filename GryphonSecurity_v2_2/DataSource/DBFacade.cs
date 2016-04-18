@@ -48,7 +48,7 @@ namespace GryphonSecurity_v2_2.DataSource
             return localStorage.createTempAlarmReport(alarmReport);
         }
 
-        public async Task<String> getAddress(String id)
+        public async Task<Address> getAddress(String id)
         {
             return await connection.getAddress(id);
         }
