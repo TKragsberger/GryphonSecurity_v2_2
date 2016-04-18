@@ -105,17 +105,148 @@ namespace GryphonSecurity_v2_2.Domain
         public String readDataFromNFCTag(ProximityMessage message, Boolean isConnected)
         {
             DataReader buffer = DataReader.FromBuffer(message.Data);
-            Debug.WriteLine("1: " + buffer.ReadByte());
-            Debug.WriteLine("2: " + buffer.ReadByte());
+            Debug.WriteLine(buffer.ReadByte());
+            Debug.WriteLine(buffer.ReadByte());
             int payloadLength = buffer.ReadByte();
-            Debug.WriteLine("5: " + buffer.ReadByte());
+            Debug.WriteLine(buffer.ReadByte());
             byte[] payload = new byte[payloadLength];
+
             buffer.ReadBytes(payload);
-            byte langLen = (byte)(payload[0] & 0x3f);
-            int textLeng = payload.Length - 1 - langLen;
-            byte[] textBuf = new byte[textLeng];
-            System.Buffer.BlockCopy(payload, 1 + langLen, textBuf, 0, textLeng);
-            return Encoding.UTF8.GetString(textBuf, 0, textBuf.Length);
+            String fullUri = getUri(payload);
+            return fullUri;
+            //byte langLen = (byte)(payload[0] & 0x3f);
+            //int textLeng = payload.Length - 1 - langLen;
+            //byte[] textBuf = new byte[textLeng];
+            //System.Buffer.BlockCopy(payload, 1 + langLen, textBuf, 0, textLeng);
+            //return Encoding.UTF8.GetString(textBuf, 0, textBuf.Length);
+        }
+        private String getUri(byte[] payload)
+        {
+            String identifier = getUriIdentifier(payload[0]);
+            String uri = Encoding.UTF8.GetString(payload, 1, payload.Length - 1);
+            String fullUri = identifier + uri;
+            return fullUri;
+        }
+
+        private string getUriIdentifier(byte abbrByte)
+        {
+            var identifier = "";
+
+            switch (abbrByte)
+            {
+                case 0x00:
+                    identifier = "";
+                    break;
+                case 0x01:
+                    identifier = "http://www.";
+                    break;
+                case 0x02:
+                    identifier = "https://www.";
+                    break;
+                case 0x03:
+                    identifier = "http://";
+                    break;
+                case 0x04:
+                    identifier = "https://";
+                    break;
+                case 0x05:
+                    identifier = "tel:";
+                    break;
+                case 0x06:
+                    identifier = "mailto:";
+                    break;
+                case 0x07:
+                    identifier = "ftp://anonymous:anonymous@";
+                    break;
+                case 0x08:
+                    identifier = "ftp://ftp.";
+                    break;
+                case 0x09:
+                    identifier = "ftps://";
+                    break;
+                case 0x0A:
+                    identifier = "sftp://";
+                    break;
+                case 0x0B:
+                    identifier = "smb://";
+                    break;
+                case 0x0c:
+                    identifier = "nfs://";
+                    break;
+                case 0x0d:
+                    identifier = "ftp://";
+                    break;
+                case 0x0e:
+                    identifier = "dav://";
+                    break;
+                case 0x0f:
+                    identifier = "news:";
+                    break;
+                case 0x10:
+                    identifier = "telnet://";
+                    break;
+                case 0x11:
+                    identifier = "imap:";
+                    break;
+                case 0x12:
+                    identifier = "rtsp://";
+                    break;
+                case 0x13:
+                    identifier = "urn:";
+                    break;
+                case 0x14:
+                    identifier = "pop:";
+                    break;
+                case 0x15:
+                    identifier = "sip:";
+                    break;
+                case 0x16:
+                    identifier = "sips:";
+                    break;
+                case 0x17:
+                    identifier = "tftp:";
+                    break;
+                case 0x18:
+                    identifier = "btspp://";
+                    break;
+                case 0x19:
+                    identifier = "btl2cap://";
+                    break;
+                case 0x1a:
+                    identifier = "btgoep://";
+                    break;
+                case 0x1b:
+                    identifier = "tepobex://";
+                    break;
+                case 0x1c:
+                    identifier = "irdaobex://";
+                    break;
+                case 0x1d:
+                    identifier = "file://";
+                    break;
+                case 0x1e:
+                    identifier = "urn:epc:id:";
+                    break;
+                case 0x1f:
+                    identifier = "urn:epc:tag:";
+                    break;
+                case 0x20:
+                    identifier = "urn:epc:pat:";
+                    break;
+                case 0x21:
+                    identifier = "urn:epc:raw:";
+                    break;
+                case 0x22:
+                    identifier = "urn:epc:";
+                    break;
+                case 0x23:
+                    identifier = "urn:nfc:";
+                    break;
+                default:
+                    identifier = "RFU";
+                    break;
+            }
+            return identifier;
         }
 
         public async Task<String> onLocationScan(String tagAddress, Boolean isConnected)

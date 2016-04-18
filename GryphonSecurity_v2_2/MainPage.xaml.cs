@@ -200,7 +200,7 @@ namespace GryphonSecurity_v2_2
         {
             isConnected = controller.checkNetworkConnection();
             String tagAddress = controller.readDataFromNFCTag(message, isConnected);
-            Debug.WriteLine("Tagaddress" + tagAddress);
+            //Debug.WriteLine("Tagaddress" + tagAddress);
             Dispatcher.BeginInvoke(() =>
                 {
                     gps(tagAddress, isConnected);
