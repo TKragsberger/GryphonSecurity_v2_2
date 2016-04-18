@@ -66,12 +66,12 @@ namespace GryphonSecurity_v2_2.Domain
             return dBFacade.getLocalStorageUser();
         }
 
-        public Boolean createAlarmReport(AlarmReport alarmReport)
+        public async Task<Boolean> createAlarmReport(AlarmReport alarmReport)
         {
             if (checkNetworkConnection())
             {
                 Debug.WriteLine("DB");
-                return dBFacade.createAlarmReport(alarmReport);
+                return await dBFacade.createAlarmReport(alarmReport);
             }
             else
             {

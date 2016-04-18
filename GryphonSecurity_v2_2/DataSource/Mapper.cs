@@ -46,9 +46,21 @@ namespace GryphonSecurity_v2_2.DataSource
             }
         }
 
-        public Boolean createAlarmReport(AlarmReport alarmReport)
+        public async Task<Boolean> createAlarmReport(AlarmReport alarmReport)
         {
-            return false;
+            using (HttpClient client = new HttpClient())
+            {
+
+                String json = JsonConvert.SerializeObject(alarmReport);
+                var resultWebservice = await client.PostAsync("http://kragsberger.dk/GryphonSecurityRestFullWebservice/webServices/createAlarmReport.php/", new StringContent(json, Encoding.UTF8, "application/json"));
+                //var resultWebservice = await client.GetAsync("http://kragsberger.dk/rest/" + name);
+
+                resultWebservice.EnsureSuccessStatusCode();
+                Boolean result = JsonConvert.DeserializeObject<Boolean>(await resultWebservice.Content.ReadAsStringAsync());
+              // Boolean result = await Boolean.Parse resultWebservice.Content.ReadAsStringAsync());
+                return result;
+            }
+            
         }
 
         public Boolean createAlarmReports(List<AlarmReport> alarmReports)
