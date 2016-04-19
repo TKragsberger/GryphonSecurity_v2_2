@@ -160,7 +160,7 @@
     <value>Scan NFC</value>
   </data>
   <data name="PendingAlarmReports" xml:space="preserve">
-    <value>Afventende Alarmrapporter</value>
+    <value>Afventende Alarmrapporter:</value>
   </data>
   <data name="PendingCustomers" xml:space="preserve">
     <value>Afventende kunder: </value>

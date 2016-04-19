@@ -331,12 +331,12 @@ namespace GryphonSecurity_v2_2.DataSource
             return null;
         }
 
-        public Boolean createNFCs(List<NFC> nfcs)
+        public async Task<Boolean> createNFCs(List<NFC> nfcs)
         {
             Boolean check = false;
             foreach (NFC nfc in nfcs)
             {
-                check = createNFC(nfc);
+                check = await createNFC(nfc);
                 if (!check)
                 {
                     return check;
@@ -345,7 +345,7 @@ namespace GryphonSecurity_v2_2.DataSource
             return check;
         }
 
-        public Boolean createNFC(NFC nfc)
+        public async Task<Boolean> createNFC(NFC nfc)
         {
             long id = getNextNfcId();
 

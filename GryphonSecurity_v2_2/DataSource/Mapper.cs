@@ -117,6 +117,17 @@ namespace GryphonSecurity_v2_2.DataSource
             }
         }
 
-        
+        public async Task<Boolean> createCustomer(Customer customer)
+        {
+
+            return true;
+        }
+
+        public async Task<Boolean> createCustomers(List<Customer> customers)
+        {
+            return true;
+        }
+
+
     }
 }
