@@ -312,11 +312,11 @@ namespace GryphonSecurity_v2_2.Domain
                     Address address = await dBFacade.getAddress(tagAddress);
                     addressName = address.AddressName;
                     targetCoordinate = new GeoCoordinate(address.Latitude, address.Longtitude);
-                    check = getDistance(presentCoordinate, targetCoordinate, addressName);
+                    check = await getDistance(presentCoordinate, targetCoordinate, addressName);
                 }
                 else
                 {
-                    getDistance(presentCoordinate, presentCoordinate, tagAddress);
+                    await getDistance(presentCoordinate, presentCoordinate, tagAddress);
                 }
 
             }
@@ -327,7 +327,7 @@ namespace GryphonSecurity_v2_2.Domain
             return addressName;
         }
 
-        public Boolean getDistance(GeoCoordinate presentCoordinate, GeoCoordinate targetCoordinates, String tagAddress)
+        public async Task<Boolean> getDistance(GeoCoordinate presentCoordinate, GeoCoordinate targetCoordinates, String tagAddress)
         {
             Boolean check = false;
             if (!presentCoordinate.Latitude.Equals(targetCoordinates.Latitude))
@@ -342,7 +342,7 @@ namespace GryphonSecurity_v2_2.Domain
                 {
                     rangeCheck = true;
                 }
-                check = dBFacade.createNFC(new NFC(rangeCheck, tagAddress, DateTime.Now, dBFacade.getLocalStorageUser()));
+                check = await dBFacade.createNFC(new NFC(rangeCheck, tagAddress, DateTime.Now, dBFacade.getLocalStorageUser()));
                    
             }
             else
@@ -403,7 +403,7 @@ namespace GryphonSecurity_v2_2.Domain
                 double targetLongtitude = address.Longtitude;
                 presentCoordinate = new GeoCoordinate(presentLatitude, presentLongitude);
                 targetCoordinate = new GeoCoordinate(targetLatitude, targetLongtitude);
-                check = getDistance(presentCoordinate, targetCoordinate, address.AddressName);
+                check = await getDistance(presentCoordinate, targetCoordinate, address.AddressName);
             }
             dBFacade.removeLocalStorageNFCs();
             return check;

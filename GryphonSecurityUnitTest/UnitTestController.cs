@@ -96,12 +96,12 @@ namespace GryphonSecurityTest
         //    Assert.AreSame(expectedResult, actualResult);
         //}
         [TestMethod]
-        public void testGetDistance()
+        public async void testGetDistance()
         {
             GeoCoordinate targetCoordinate = new GeoCoordinate(55.767944, 12.505161499999986);
             GeoCoordinate presentCoordinate = new GeoCoordinate(55.7705618401085, 12.5117938768867);
             Boolean expectedResult = true;
-            Boolean actualResult = control.getDistance(presentCoordinate, targetCoordinate, "Lyngby st.");
+            Boolean actualResult = await control.getDistance(presentCoordinate, targetCoordinate, "Lyngby st.");
             Assert.AreEqual(expectedResult,actualResult);
 
             
