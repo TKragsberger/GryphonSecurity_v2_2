@@ -91,14 +91,30 @@ namespace GryphonSecurity_v2_2.DataSource
             }
         }
 
-        public Boolean createNFC(NFC nfc)
+        public async Task<Boolean> createNFC(NFC nfc)
         {
-            return false;
+            using (HttpClient client = new HttpClient())
+            {
+                String json = JsonConvert.SerializeObject(nfc);
+                var resultWebservice = await client.PostAsync("http://kragsberger.dk/GryphonSecurityRestFullWebservice/webServices/getAddress.php/", new StringContent(json, Encoding.UTF8, "application/json"));
+                //var resultWebservice = await client.GetAsync("http://kragsberger.dk/rest/" + name);
+                resultWebservice.EnsureSuccessStatusCode();
+                Boolean result = Convert.ToBoolean(JsonConvert.DeserializeObject<String>(await resultWebservice.Content.ReadAsStringAsync()));
+                return result;
+            }
         }
 
-        public Boolean createNFCs(List<NFC> nfcs)
+        public async Task<Boolean> createNFCs(List<NFC> nfcs)
         {
-            return false;
+            using (HttpClient client = new HttpClient())
+            {
+                String json = JsonConvert.SerializeObject(nfcs);
+                var resultWebservice = await client.PostAsync("http://kragsberger.dk/GryphonSecurityRestFullWebservice/webServices/getAddress.php/", new StringContent(json, Encoding.UTF8, "application/json"));
+                //var resultWebservice = await client.GetAsync("http://kragsberger.dk/rest/" + name);
+                resultWebservice.EnsureSuccessStatusCode();
+                Boolean result = Convert.ToBoolean(JsonConvert.DeserializeObject<String>(await resultWebservice.Content.ReadAsStringAsync()));
+                return result;
+            }
         }
 
         

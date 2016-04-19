@@ -53,14 +53,14 @@ namespace GryphonSecurity_v2_2.DataSource
             return await connection.getAddress(id);
         }
 
-        public Boolean createNFC(NFC nfc)
+        public async Task<Boolean> createNFC(NFC nfc)
         {
-            return connection.createNFC(nfc);
+            return await connection.createNFC(nfc);
         }
 
-        public Boolean createNFCs(List<NFC> nfcs)
+        public async Task<Boolean> createNFCs(List<NFC> nfcs)
         {
-            return connection.createNFCs(nfcs);
+            return await connection.createNFCs(nfcs);
         }
 
         public Boolean createLocalStorageNFCs(double presentLatitude, double presentLongitude, String tagAddress)
