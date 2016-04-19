@@ -105,17 +105,160 @@ namespace GryphonSecurity_v2_2.Domain
         public String readDataFromNFCTag(ProximityMessage message, Boolean isConnected)
         {
             DataReader buffer = DataReader.FromBuffer(message.Data);
-            Debug.WriteLine("1: " + buffer.ReadByte());
-            Debug.WriteLine("2: " + buffer.ReadByte());
+            Debug.WriteLine(buffer.ReadByte());
+            int typeLength = buffer.ReadByte();
             int payloadLength = buffer.ReadByte();
-            Debug.WriteLine("5: " + buffer.ReadByte());
+            //Debug.WriteLine(buffer.ReadByte());
+            byte[] type = new byte[typeLength];
             byte[] payload = new byte[payloadLength];
-            buffer.ReadBytes(payload);
+            buffer.ReadBytes(type);
+            buffer.ReadBytes(payload);  
+            if ((Encoding.UTF8.GetString(type, 0, typeLength) == "U"))
+            {
+                return getUri(payload);
+            } else if(Encoding.UTF8.GetString(type, 0, typeLength) == "T")
+            {
+                return getText(payload);
+            }
+            return null;
+
+        }
+        private String getUri(byte[] payload)
+        {
+            String identifier = getUriIdentifier(payload[0]);
+            String uri = Encoding.UTF8.GetString(payload, 1, payload.Length - 1);
+            String fullUri = identifier + uri;
+            return fullUri;
+        }
+
+        private String getText(byte[] payload)
+        {
             byte langLen = (byte)(payload[0] & 0x3f);
-            int textLeng = payload.Length - 1 - langLen;
-            byte[] textBuf = new byte[textLeng];
-            System.Buffer.BlockCopy(payload, 1 + langLen, textBuf, 0, textLeng);
-            return Encoding.UTF8.GetString(textBuf, 0, textBuf.Length);
+            int textleng = payload.Length - 1 - langLen;
+            byte[] textbuf = new byte[textleng];
+            System.Buffer.BlockCopy(payload, 1 + langLen, textbuf, 0, textleng);
+            return Encoding.UTF8.GetString(textbuf, 0, textbuf.Length);
+        }
+
+        private string getUriIdentifier(byte abbrByte)
+        {
+            var identifier = "";
+
+            switch (abbrByte)
+            {
+                case 0x00:
+                    identifier = "";
+                    break;
+                case 0x01:
+                    identifier = "http://www.";
+                    break;
+                case 0x02:
+                    identifier = "https://www.";
+                    break;
+                case 0x03:
+                    identifier = "http://";
+                    break;
+                case 0x04:
+                    identifier = "https://";
+                    break;
+                case 0x05:
+                    identifier = "tel:";
+                    break;
+                case 0x06:
+                    identifier = "mailto:";
+                    break;
+                case 0x07:
+                    identifier = "ftp://anonymous:anonymous@";
+                    break;
+                case 0x08:
+                    identifier = "ftp://ftp.";
+                    break;
+                case 0x09:
+                    identifier = "ftps://";
+                    break;
+                case 0x0A:
+                    identifier = "sftp://";
+                    break;
+                case 0x0B:
+                    identifier = "smb://";
+                    break;
+                case 0x0c:
+                    identifier = "nfs://";
+                    break;
+                case 0x0d:
+                    identifier = "ftp://";
+                    break;
+                case 0x0e:
+                    identifier = "dav://";
+                    break;
+                case 0x0f:
+                    identifier = "news:";
+                    break;
+                case 0x10:
+                    identifier = "telnet://";
+                    break;
+                case 0x11:
+                    identifier = "imap:";
+                    break;
+                case 0x12:
+                    identifier = "rtsp://";
+                    break;
+                case 0x13:
+                    identifier = "urn:";
+                    break;
+                case 0x14:
+                    identifier = "pop:";
+                    break;
+                case 0x15:
+                    identifier = "sip:";
+                    break;
+                case 0x16:
+                    identifier = "sips:";
+                    break;
+                case 0x17:
+                    identifier = "tftp:";
+                    break;
+                case 0x18:
+                    identifier = "btspp://";
+                    break;
+                case 0x19:
+                    identifier = "btl2cap://";
+                    break;
+                case 0x1a:
+                    identifier = "btgoep://";
+                    break;
+                case 0x1b:
+                    identifier = "tepobex://";
+                    break;
+                case 0x1c:
+                    identifier = "irdaobex://";
+                    break;
+                case 0x1d:
+                    identifier = "file://";
+                    break;
+                case 0x1e:
+                    identifier = "urn:epc:id:";
+                    break;
+                case 0x1f:
+                    identifier = "urn:epc:tag:";
+                    break;
+                case 0x20:
+                    identifier = "urn:epc:pat:";
+                    break;
+                case 0x21:
+                    identifier = "urn:epc:raw:";
+                    break;
+                case 0x22:
+                    identifier = "urn:epc:";
+                    break;
+                case 0x23:
+                    identifier = "urn:nfc:";
+                    break;
+                default:
+                    identifier = "RFU";
+                    break;
+            }
+            return identifier;
         }
 
         public async Task<String> onLocationScan(String tagAddress, Boolean isConnected)
@@ -123,7 +266,6 @@ namespace GryphonSecurity_v2_2.Domain
             Geolocator geolocator = new Geolocator();
             geolocator.DesiredAccuracyInMeters = 50;
             String address = tagAddress;
-            Debug.WriteLine("1: " + tagAddress);
             try
             {
                
@@ -133,9 +275,8 @@ namespace GryphonSecurity_v2_2.Domain
                     );
                 double latitude = geoposition.Coordinate.Point.Position.Latitude;
                 double longitude = geoposition.Coordinate.Point.Position.Longitude;
-                Debug.WriteLine("longtitude " + longitude + " latitude: " + latitude);
                 presentCoordinate = new GeoCoordinate(latitude, longitude);
-                address = calcPosition(tagAddress, presentCoordinate, isConnected);
+                address = await calcPosition(tagAddress, presentCoordinate, isConnected);
                
             }
             catch (Exception ex)
@@ -150,37 +291,31 @@ namespace GryphonSecurity_v2_2.Domain
             return address;
         }
 
-        public String calcPosition(String tagAddress, GeoCoordinate presentCoordinate, Boolean isConnected)
+        public async Task<String> calcPosition(String tagAddress, GeoCoordinate presentCoordinate, Boolean isConnected)
         {
-            double latitude = 0d;
-            double longitude = 0d;
-            String address = tagAddress;
+            String addressName = tagAddress;
             Boolean check = false;
             CancellationTokenSource cts = new CancellationTokenSource();
-
+            
             try
             {
                 if (!isConnected)
                 {
                     dBFacade.createLocalStorageNFCs(presentCoordinate.Latitude, presentCoordinate.Longitude, tagAddress);
-                    Debug.WriteLine("1: " + tagAddress);
                     return tagAddress;
                 }
                 cts.CancelAfter(10000);
-                List<String> tag = dBFacade.getAddress(tagAddress);
+                
                 if (!cts.IsCancellationRequested)
                 {
-                    address = tag[0];
-                    longitude = (Double)Convert.ToDecimal(tag[1]);
-                    latitude = (Double)Convert.ToDecimal(tag[2]);
-                    targetCoordinate = new GeoCoordinate(latitude, longitude);
-                    check = getDistance(presentCoordinate, targetCoordinate, address);
-                    Debug.WriteLine("2: " + address);
+                    Address address = await dBFacade.getAddress(tagAddress);
+                    addressName = address.AddressName;
+                    targetCoordinate = new GeoCoordinate(address.Latitude, address.Longtitude);
+                    check = getDistance(presentCoordinate, targetCoordinate, addressName);
                 }
                 else
                 {
                     getDistance(presentCoordinate, presentCoordinate, tagAddress);
-                    Debug.WriteLine("kommer i else mhmhm");
                 }
 
             }
@@ -188,8 +323,7 @@ namespace GryphonSecurity_v2_2.Domain
             {
                 Debug.WriteLine("cancellation token");
             }
-            Debug.WriteLine("return: " + address);
-            return address;
+            return addressName;
         }
 
         public Boolean getDistance(GeoCoordinate presentCoordinate, GeoCoordinate targetCoordinates, String tagAddress)
@@ -255,7 +389,7 @@ namespace GryphonSecurity_v2_2.Domain
             return dBFacade.getLocalStorageNumberOfAlarmReports();
         }
 
-        public Boolean sendPendingNFCs()
+        public async Task<Boolean> sendPendingNFCs()
         {
             List<List<String>> tags = dBFacade.getLocalStorageNFCs();
             check = false;
@@ -263,24 +397,23 @@ namespace GryphonSecurity_v2_2.Domain
             {
                 double presentLatitude = Convert.ToDouble(tag[0]);
                 double presentLongitude = Convert.ToDouble(tag[1]);
-                List<String> nfcs = dBFacade.getAddress(tag[2]);
-                String tagAddress = nfcs[0];
-                double targetLongtitude = Convert.ToDouble(nfcs[1]);
-                double targetLatitude = Convert.ToDouble(nfcs[2]);
+                Address address = await dBFacade.getAddress(tag[2]);
+                double targetLatitude = address.Latitude;
+                double targetLongtitude = address.Longtitude;
                 presentCoordinate = new GeoCoordinate(presentLatitude, presentLongitude);
                 targetCoordinate = new GeoCoordinate(targetLatitude, targetLongtitude);
-                check = getDistance(presentCoordinate, targetCoordinate, tagAddress);
+                check = getDistance(presentCoordinate, targetCoordinate, address.AddressName);
             }
             dBFacade.removeLocalStorageNFCs();
             return check;
         }
      
 
-        public Boolean sendPendingAlarmReports()
+        public async Task<Boolean> sendPendingAlarmReports()
         {
             Boolean alarmReportCheck = false;
             List<AlarmReport> alarmReports = dBFacade.getLocalStorageAlarmReports();
-            alarmReportCheck = dBFacade.createAlarmReports(alarmReports);
+            alarmReportCheck = await dBFacade.createAlarmReports(alarmReports);
 
             if (alarmReportCheck)
             {

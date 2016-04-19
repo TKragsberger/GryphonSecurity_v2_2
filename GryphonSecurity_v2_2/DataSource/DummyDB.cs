@@ -70,8 +70,6 @@ namespace GryphonSecurity_v2_2.DataSource
         private String KEY_DUMMY_CUSTOMER_CITY = "DUMMY_CUSTOMER_CITY";
         private String KEY_DUMMY_CUSTOMER_PHONENUMBER = "DUMMY_CUSTOMER_PHONENUMBER";
 
-        private List<String> address = new List<String>();
-
         public DummyDB()
         {
             createAddresses();
@@ -100,7 +98,7 @@ namespace GryphonSecurity_v2_2.DataSource
             }
         }
 
-        public User getUser(long id)
+        public async Task<User> getUser(long id)
         {
             if (appSettings.Contains(id + KEY_DUMMY_FIRSTNAME))
             {
@@ -114,13 +112,13 @@ namespace GryphonSecurity_v2_2.DataSource
             }
         }
 
-        public Boolean createAlarmReports(List<AlarmReport> alarmReports)
+        public async Task<Boolean> createAlarmReports(List<AlarmReport> alarmReports)
         {
             Boolean check = false;
 
             foreach (AlarmReport alarmReport in alarmReports)
             {
-                check = createAlarmReport(alarmReport);
+                check = await createAlarmReport(alarmReport);
                 if (!check)
                 {
                     return check;
@@ -129,7 +127,7 @@ namespace GryphonSecurity_v2_2.DataSource
             return check;
         }
 
-        public Boolean createAlarmReport(AlarmReport alarmReport)
+        public async Task<Boolean> createAlarmReport(AlarmReport alarmReport)
         {
             long id = getNextAlarmReportId();
 
@@ -174,7 +172,7 @@ namespace GryphonSecurity_v2_2.DataSource
             return dummyDBStatus;
         }
 
-        public List<AlarmReport> getAlarmReports()
+        public async Task<List<AlarmReport>> getAlarmReports()
         {
             List<AlarmReport> alarmReports = new List<AlarmReport>();
             int length = currentNumberOfAlarmReports();
@@ -185,7 +183,7 @@ namespace GryphonSecurity_v2_2.DataSource
                 for (int i = 0; i < length; i++)
                 {
                     id = i + 1;
-                    AlarmReport alarmReport = getAlarmReport(id);
+                    AlarmReport alarmReport = await getAlarmReport(id);
                     alarmReports.Add(alarmReport);
                 }
             }
@@ -193,7 +191,7 @@ namespace GryphonSecurity_v2_2.DataSource
             return alarmReports;
         }
 
-        public AlarmReport getAlarmReport(long id)
+        public async Task<AlarmReport> getAlarmReport(long id)
         {
             if (appSettings.Contains(id + KEY_DUMMY_REPORT_CUSTOMERNAME))
             {
@@ -225,7 +223,7 @@ namespace GryphonSecurity_v2_2.DataSource
                 DateTime guardRadioedTo = DateTime.Parse(appSettings[id + KEY_DUMMY_REPORT_GUARDRADIOEDTO] as String, CultureInfo.InvariantCulture);
                 DateTime arrivedAt = DateTime.Parse(appSettings[id + KEY_DUMMY_REPORT_ARRIVEDAT] as String, CultureInfo.InvariantCulture);
                 DateTime done = DateTime.Parse(appSettings[id + KEY_DUMMY_REPORT_DONE] as String, CultureInfo.InvariantCulture);
-                User user = getUser(Convert.ToInt64(appSettings[id + KEY_DUMMY_REPORT_USER_ID] as String));
+                User user = await getUser(Convert.ToInt64(appSettings[id + KEY_DUMMY_REPORT_USER_ID] as String));
                 return new AlarmReport(customerName, customerNumber, streetAndHouseNumber, zipCode, city, phonenumber, date, time, zone, burglaryVandalism,
                                         windowDoorClosed, apprehendedPerson, staffError, nothingToReport, technicalError, unknownReason, other, cancelDuringEmergency, coverMade,
                                         remark, name, installer, controlCenter, guardRadioedDate, guardRadioedFrom, guardRadioedTo, arrivedAt, done, user);
@@ -303,7 +301,7 @@ namespace GryphonSecurity_v2_2.DataSource
             }
         }
 
-        public Customer getCustomer(long id)
+        public async Task<Customer> getCustomer(long id)
         {
             if (appSettings.Contains(id + KEY_DUMMY_CUSTOMER_NUMBER))
             {
@@ -318,14 +316,14 @@ namespace GryphonSecurity_v2_2.DataSource
             return null;
         }
 
-        public List<String> getAddress(String id)
+        public Address getAddress(String id)
         {
             if (appSettings.Contains(id + KEY_DUMMY_ADDRESS_NAME))
             {
-                address.Add(appSettings[id + KEY_DUMMY_ADDRESS_NAME] as String);
-                address.Add(appSettings[id + KEY_DUMMY_ADDRESS_LONGTITUDE] as String);
-                address.Add(appSettings[id + KEY_DUMMY_ADDRESS_LATITUDE] as String);
-                return address;
+                String addressName = appSettings[id + KEY_DUMMY_ADDRESS_NAME] as String;
+                double latitude = Convert.ToDouble(appSettings[id + KEY_DUMMY_ADDRESS_LATITUDE] as String);
+                double longtitude = Convert.ToDouble(appSettings[id + KEY_DUMMY_ADDRESS_LONGTITUDE] as String);
+                return new Address(addressName, latitude, longtitude);
             }
 
             return null;
@@ -367,7 +365,7 @@ namespace GryphonSecurity_v2_2.DataSource
 
         }
 
-        public List<NFC> getNFCs()
+        public async Task<List<NFC>> getNFCs()
         {
             List<NFC> nfcs = new List<NFC>();
             int length = currentNumberOfNFCs();
@@ -377,14 +375,14 @@ namespace GryphonSecurity_v2_2.DataSource
                 for (int i = 0; i < length; i++)
                 {
                     id = i + 1;
-                    NFC nfc = getNFC(id);
+                    NFC nfc = await getNFC(id);
                     nfcs.Add(nfc);
                 }
             }
             return nfcs;
         }
 
-        public NFC getNFC(long id)
+        public async Task<NFC> getNFC(long id)
         {
             if (appSettings.Contains(id + KEY_DUMMY_NFC_TAGADDRESS))
             {
@@ -392,7 +390,7 @@ namespace GryphonSecurity_v2_2.DataSource
                 Boolean rangeCheck = Convert.ToBoolean(appSettings[id + KEY_DUMMY_NFC_RANGECHECK] as String);
                 String tagAddress = appSettings[id + KEY_DUMMY_NFC_TAGADDRESS] as String;
                 DateTime time = DateTime.Parse(appSettings[id + KEY_DUMMY_NFC_TIME] as String, CultureInfo.InvariantCulture);
-                User user = getUser(userId);
+                User user = await getUser(userId);
                 return new NFC(rangeCheck, tagAddress, time, user);
             }
             else

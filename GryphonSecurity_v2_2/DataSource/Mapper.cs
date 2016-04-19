@@ -57,8 +57,6 @@ namespace GryphonSecurity_v2_2.DataSource
 
                 resultWebservice.EnsureSuccessStatusCode();
                 Boolean result = Convert.ToBoolean(JsonConvert.DeserializeObject<String>(await resultWebservice.Content.ReadAsStringAsync()));
-                
-              // Boolean result = await Boolean.Parse resultWebservice.Content.ReadAsStringAsync());
                 return result;
             }
             
@@ -75,16 +73,22 @@ namespace GryphonSecurity_v2_2.DataSource
 
                 resultWebservice.EnsureSuccessStatusCode();
                 Boolean result = Convert.ToBoolean(JsonConvert.DeserializeObject<String>(await resultWebservice.Content.ReadAsStringAsync()));
-
-                // Boolean result = await Boolean.Parse resultWebservice.Content.ReadAsStringAsync());
                 return result;
             }
         }
 
 
-        public List<String> getAddress(String id)
+        public async Task<Address> getAddress(String id)
         {
-            return null;
+            using (HttpClient client = new HttpClient())
+            {
+                String json = JsonConvert.SerializeObject(id);
+                var resultWebservice = await client.PostAsync("http://kragsberger.dk/GryphonSecurityRestFullWebservice/webServices/getAddress.php/", new StringContent(json, Encoding.UTF8, "application/json"));
+                //var resultWebservice = await client.GetAsync("http://kragsberger.dk/rest/" + name);
+                resultWebservice.EnsureSuccessStatusCode();
+                Address result = JsonConvert.DeserializeObject<Address>(await resultWebservice.Content.ReadAsStringAsync());
+                return result;
+            }
         }
 
         public Boolean createNFC(NFC nfc)
