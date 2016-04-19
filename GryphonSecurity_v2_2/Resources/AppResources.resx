@@ -126,8 +126,26 @@
   <data name="ApplicationTitle" xml:space="preserve">
     <value>Gryphon Security</value>
   </data>
+  <data name="CreateCustomerButton" xml:space="preserve">
+    <value>Create customer</value>
+  </data>
+  <data name="CreateCustomerError" xml:space="preserve">
+    <value>Customer not created</value>
+  </data>
+  <data name="CreateCustomerFill" xml:space="preserve">
+    <value>All boxes need to be filled</value>
+  </data>
+  <data name="CreateCustomerLocalSuccess" xml:space="preserve">
+    <value>Customer saved on phone</value>
+  </data>
+  <data name="CreateCustomerSuccess" xml:space="preserve">
+    <value>Customer created</value>
+  </data>
   <data name="LayoutTitleAlarmReport" xml:space="preserve">
     <value>Alarm Report</value>
+  </data>
+  <data name="LayoutTitleCreateCustomer" xml:space="preserve">
+    <value>Create customer</value>
   </data>
   <data name="LayoutTitleLogin" xml:space="preserve">
     <value>Login</value>
@@ -143,6 +161,9 @@
   </data>
   <data name="PendingAlarmReports" xml:space="preserve">
     <value>Pending alarmreports: </value>
+  </data>
+  <data name="PendingCustomers" xml:space="preserve">
+    <value>Pending customers:</value>
   </data>
   <data name="PendingNFC" xml:space="preserve">
     <value>Pending NFC: </value>

@@ -68,6 +68,7 @@ namespace GryphonSecurity_v2_2.Domain
 
         public async Task<Boolean> createAlarmReport(AlarmReport alarmReport)
         {
+            //TODO fix så der bliver fortalt om der bliver gemt til localstorage eller i dbs
             if (checkNetworkConnection())
             {
                 Debug.WriteLine("DB");
@@ -423,6 +424,20 @@ namespace GryphonSecurity_v2_2.Domain
             return alarmReportCheck;
         }
 
+        public async Task<Boolean> sendPendingCustomers()
+        {
+            Boolean customerCheck = false;
+            List<Customer> customers = dBFacade.getLocalStorageCustomers();
+            customerCheck = await dBFacade.createCustomers(customers);
+
+            if (customerCheck)
+            {
+                return dBFacade.removeLocalStorageCustomers();
+            }
+
+            return customerCheck;
+        }
+
         public async Task<User> getUser(long id)
         {
             return await dBFacade.getUser(id);
@@ -431,6 +446,16 @@ namespace GryphonSecurity_v2_2.Domain
         public async Task<Customer> getCustomer(long id)
         {
             return await dBFacade.getCustomer(id);
+        }
+
+        public async Task<Boolean> createCustomer(Customer customer)
+        {
+            return await dBFacade.createCustomer(customer);
+        }
+
+        public Boolean createLocalStorageCustomer(Customer customer)
+        {
+            return dBFacade.createLocalStorageCustomer(customer);
         }
     }
 }

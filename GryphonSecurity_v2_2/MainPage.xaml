@@ -72,11 +72,24 @@
                 </ScrollViewer>
             </phone:PivotItem>
 
+            <phone:PivotItem x:Name="createCustomer" Header="{Binding Path=LocalizedResources.LayoutTitleCreateCustomer, Source={StaticResource LocalizedStrings}}">
+                <StackPanel Margin="0,0,0,17">
+                    <toolkit:PhoneTextBox x:Name="textBoxCreateCustomerName" Hint="{Binding Path=LocalizedResources.ReportCustomerName, Source={StaticResource LocalizedStrings}}" Height="72" Margin="14,0,14,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top"/>
+                    <toolkit:PhoneTextBox x:Name="textBoxCreateCustomerNumber" InputScope="Number" Hint="{Binding Path=LocalizedResources.ReportCustomerNumber, Source={StaticResource LocalizedStrings}}" Height="72" Margin="14,0,14,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top"/>
+                    <toolkit:PhoneTextBox x:Name="textBoxCreateCustomerStreetAndHouseNumber" Hint="{Binding Path=LocalizedResources.ReportStreetAndHouseNumber, Source={StaticResource LocalizedStrings}}" Height="72" Margin="14,0,14,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top"/>
+                    <toolkit:PhoneTextBox x:Name="textBoxCreateCustomerZipCode" InputScope="Number" Hint="{Binding Path=LocalizedResources.ReportZipCode, Source={StaticResource LocalizedStrings}}" Height="72" Margin="14,0,14,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top"/>
+                    <toolkit:PhoneTextBox x:Name="textBoxCreateCustomerCity" Hint="{Binding Path=LocalizedResources.ReportCity, Source={StaticResource LocalizedStrings}}" Height="72" Margin="14,0,14,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top"/>
+                    <toolkit:PhoneTextBox x:Name="textBoxCreateCustomerPhonenumber" InputScope="Number" Hint="{Binding Path=LocalizedResources.ReportPhonenumber, Source={StaticResource LocalizedStrings}}" Height="72" Margin="14,0,14,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top"/>
+                    <Button x:Name="createCustomerButton" Content="{Binding Path=LocalizedResources.CreateCustomerButton, Source={StaticResource LocalizedStrings}}" Height="72" Margin="14,0,14,0" Grid.Row="1" VerticalAlignment="Top" Click="createCustomerButton_Click"/>
+                </StackPanel>
+            </phone:PivotItem>
+
             <phone:PivotItem x:Name="pending" Header="Pending">
                 <ScrollViewer>
                     <StackPanel Margin="0,0,0,17">
                         <TextBlock x:Name="textBlockPendingNFCScans" HorizontalAlignment="left"  TextWrapping="Wrap" Margin="28,0,28,0" Grid.Row="1" Text="{Binding Path=LocalizedResources.PendingNFC, Source={StaticResource LocalizedStrings}}" VerticalAlignment="Top"/>
                         <TextBlock x:Name="textBlockPendingAlarmReports" HorizontalAlignment="left"  TextWrapping="Wrap" Margin="28,0,28,0" Grid.Row="1" Text="{Binding Path=LocalizedResources.PendingAlarmReports, Source={StaticResource LocalizedStrings}}" VerticalAlignment="Top"/>
+                        <TextBlock x:Name="textBlockPendingCustomers" HorizontalAlignment="left"  TextWrapping="Wrap" Margin="28,0,28,0" Grid.Row="1" Text="{Binding Path=LocalizedResources.PendingCustomers, Source={StaticResource LocalizedStrings}}" VerticalAlignment="Top"/>
                         <Button x:Name="sendPendingButton" Content="{Binding Path=LocalizedResources.PendingSendPendingButton, Source={StaticResource LocalizedStrings}}" Grid.Row="1" Margin="14,0,14,0" VerticalAlignment="Top" Click="sendPendingButton_Click"/>
                         <StackPanel x:Name="tempAlarmReportScroll" Margin="28,0,28,0"></StackPanel>
                     </StackPanel>

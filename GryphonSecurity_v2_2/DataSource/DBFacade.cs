@@ -9,8 +9,8 @@ namespace GryphonSecurity_v2_2.DataSource
 {
     public class DBFacade
     {
-        //DummyDB connection = new DummyDB();
-        Mapper connection = new Mapper();
+        DummyDB connection = new DummyDB();
+        //Mapper connection = new Mapper();
         LocalStorage localStorage = new LocalStorage();
 
         public Boolean createUser(User user)
@@ -116,6 +116,32 @@ namespace GryphonSecurity_v2_2.DataSource
         public Boolean removeLocalStorageTempSelectedAlarmReport(long id)
         {
             return localStorage.removeTempAlarmReport(id);
+        }
+
+        public async Task<Boolean> createCustomer(Customer customer)
+        {
+            
+            return await connection.createCustomer(customer);
+        }
+
+        public Boolean createLocalStorageCustomer(Customer customer)
+        {
+            return localStorage.createCustomer(customer);
+        }
+
+        public List<Customer> getLocalStorageCustomers()
+        {
+            return localStorage.getCustomers();
+        }
+
+        public Boolean removeLocalStorageCustomers()
+        {
+            return localStorage.removeCustomers();
+        }
+
+        public async Task<Boolean> createCustomers(List<Customer> customers)
+        {
+            return await connection.createCustomers(customers);
         }
 
     }

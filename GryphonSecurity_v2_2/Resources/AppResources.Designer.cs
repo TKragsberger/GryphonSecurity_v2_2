@@ -88,11 +88,65 @@ namespace GryphonSecurity_v2_2.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Create customer.
+        /// </summary>
+        public static string CreateCustomerButton {
+            get {
+                return ResourceManager.GetString("CreateCustomerButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Customer not created.
+        /// </summary>
+        public static string CreateCustomerError {
+            get {
+                return ResourceManager.GetString("CreateCustomerError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to All boxes need to be filled.
+        /// </summary>
+        public static string CreateCustomerFill {
+            get {
+                return ResourceManager.GetString("CreateCustomerFill", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Customer saved on phone.
+        /// </summary>
+        public static string CreateCustomerLocalSuccess {
+            get {
+                return ResourceManager.GetString("CreateCustomerLocalSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Customer created.
+        /// </summary>
+        public static string CreateCustomerSuccess {
+            get {
+                return ResourceManager.GetString("CreateCustomerSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Alarm Report.
         /// </summary>
         public static string LayoutTitleAlarmReport {
             get {
                 return ResourceManager.GetString("LayoutTitleAlarmReport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create customer.
+        /// </summary>
+        public static string LayoutTitleCreateCustomer {
+            get {
+                return ResourceManager.GetString("LayoutTitleCreateCustomer", resourceCulture);
             }
         }
         
@@ -138,6 +192,15 @@ namespace GryphonSecurity_v2_2.Resources {
         public static string PendingAlarmReports {
             get {
                 return ResourceManager.GetString("PendingAlarmReports", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pending customers:.
+        /// </summary>
+        public static string PendingCustomers {
+            get {
+                return ResourceManager.GetString("PendingCustomers", resourceCulture);
             }
         }
         

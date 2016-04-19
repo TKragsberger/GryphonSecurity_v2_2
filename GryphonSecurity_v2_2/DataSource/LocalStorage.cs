@@ -22,11 +22,13 @@ namespace GryphonSecurity_v2_2.DataSource
         private String KEY_ID_NFC = "ID_NFC";
         private String KEY_ID_ALARMREPORT = "ID_ALARMREPORT";
         private String KEY_ID_TEMP_ALARMREPORT = "ID_TEMP_ALARMREPORT";
+        private String KEY_ID_CUSTOMER = "ID_CUSTOMER";
 
 
         private String KEY_CURRENTNUMBER_OF_ALARMREPORTS = "CURRENTNUMBER_OF_ALARMREPORTS";
         private String KEY_CURRENTNUMBER_OF_NFCS = "CURRENTNUMBER_OF_NFCS";
         private String KEY_CURRENTNUMBER_OF_TEMP_ALARMREPORTS = "CURRENTNUMBER_OF_TEMP_ALARMREPORTS";
+        private String KEY_CURRENTNUMBER_OF_CUSTOMERS = "CURRENTNUMBER_OF_CUSTOMERS";
 
         private String KEY_REPORT_CUSTOMERNAME = "REPORT_CUSTOMERNAME";
         private String KEY_REPORT_CUSTOMERNUMBER = "REPORT_CUSTOMERNUMBER";
@@ -89,6 +91,13 @@ namespace GryphonSecurity_v2_2.DataSource
         private String KEY_NFC_TAGADDRESS = "NFC_TAGADDRESS";
         private String KEY_NFC_PRESENTLATITUDE = "NFC_PRESENTLATITUDE";
         private String KEY_NFC_PRESENTLONGITUDE = "NFC_PRESENTLONGITUDE";
+
+        private String KEY_CUSTOMER_NAME = "CUSTOMER_NAME";
+        private String KEY_CUSTOMER_NUMBER = "CUSTOMER_NUMBER";
+        private String KEY_CUSTOMER_STREET_AND_HOUSE_NUMBER = "CUSTOMER_STREET_AND_HOUSE_NUMBER";
+        private String KEY_CUSTOMER_ZIP_CODE = "CUSTOMER_ZIP_CODE";
+        private String KEY_CUSTOMER_CITY = "CUSTOMER_CITY";
+        private String KEY_CUSTOMER_PHONENUMBER = "CUSTOMER_PHONENUMBER";
 
         public Boolean createUser(User user)
         {
@@ -260,6 +269,43 @@ namespace GryphonSecurity_v2_2.DataSource
             {
                 return;
             }
+        }
+
+        private long getCurrentCustomerId()
+        {
+            if (!appSettings.Contains(KEY_ID_CUSTOMER))
+            {
+                appSettings.Add(KEY_ID_CUSTOMER, "0");
+                appSettings.Save();
+            }
+            return Convert.ToInt64(appSettings[KEY_ID_CUSTOMER] as String);
+        }
+
+        private long getNextCustomerId()
+        {
+            long nextId = getCurrentCustomerId() + 1;
+            appSettings.Remove(KEY_ID_CUSTOMER);
+            appSettings.Add(KEY_ID_CUSTOMER, nextId + "");
+            appSettings.Save();
+            return nextId;
+        }
+
+        public int currentNumberOfCustomers()
+        {
+            if (!appSettings.Contains(KEY_CURRENTNUMBER_OF_CUSTOMERS))
+            {
+                appSettings.Add(KEY_CURRENTNUMBER_OF_CUSTOMERS, "0");
+                appSettings.Save();
+            }
+            return Convert.ToInt32(appSettings[KEY_CURRENTNUMBER_OF_CUSTOMERS] as String);
+        }
+
+        public void addNumberOfCustomers()
+        {
+            int next = currentNumberOfCustomers() + 1;
+            appSettings.Remove(KEY_CURRENTNUMBER_OF_CUSTOMERS);
+            appSettings.Add(KEY_CURRENTNUMBER_OF_CUSTOMERS, next + "");
+            appSettings.Save();
         }
 
         public Boolean createAlarmReport(AlarmReport alarmReport)
@@ -638,6 +684,75 @@ namespace GryphonSecurity_v2_2.DataSource
                 }
             }
             return true;
+        }
+
+        public Boolean createCustomer(Customer customer)
+        {
+            long customerId = getNextCustomerId();
+            try
+            {
+                appSettings.Add(customerId + KEY_CUSTOMER_NAME, customer.CustomerName);
+                appSettings.Add(customerId + KEY_CUSTOMER_NUMBER, customer.CustomerNumber + "");
+                appSettings.Add(customerId + KEY_CUSTOMER_STREET_AND_HOUSE_NUMBER, customer.StreetHouseNumber);
+                appSettings.Add(customerId + KEY_CUSTOMER_ZIP_CODE, customer.ZipCode + "");
+                appSettings.Add(customerId + KEY_CUSTOMER_CITY, customer.City);
+                appSettings.Add(customerId + KEY_CUSTOMER_PHONENUMBER, customer.Phonenumber);
+
+                appSettings.Save();
+                addNumberOfNFCs();
+                return true;
+            }
+            catch (IsolatedStorageException)
+            {
+                Debug.WriteLine("Addresses did not get saved in dummyDB");
+                return false;
+            }
+        }
+
+        public List<Customer> getCustomers()
+        {
+            List<Customer> customers = new List<Customer>();
+            int length = currentNumberOfNFCs();
+            if (length > 0)
+            {
+                for (int i = 0; i < length; i++)
+                {
+                    id = i + 1;
+                    String customerName = appSettings[id + KEY_CUSTOMER_NAME] as String;
+                    long customerNumber = Convert.ToInt64(appSettings[id + KEY_CUSTOMER_NUMBER] as String);
+                    String streetAndHouseNumber = appSettings[id + KEY_CUSTOMER_STREET_AND_HOUSE_NUMBER] as String;
+                    int zipCode = Convert.ToInt32(appSettings[id + KEY_CUSTOMER_ZIP_CODE] as String);
+                    String city = appSettings[id + KEY_CUSTOMER_CITY] as String;
+                    long phonenumber = Convert.ToInt64(appSettings[id + KEY_CUSTOMER_PHONENUMBER] as String);
+
+                    customers.Add(new Customer(customerName, customerNumber, streetAndHouseNumber, zipCode, city, phonenumber));
+                }
+            }
+            return customers;
+        }
+
+        public Boolean removeCustomers()
+        {
+            int length = currentNumberOfCustomers();
+            Boolean itemsRemoved = false;
+            if (length > 0)
+            {
+                for (int i = 0; i < length; i++)
+                {
+                    id = i + 1;
+                    appSettings.Remove(id + KEY_CUSTOMER_NAME);
+                    appSettings.Remove(id + KEY_CUSTOMER_NUMBER);
+                    appSettings.Remove(id + KEY_CUSTOMER_STREET_AND_HOUSE_NUMBER);
+                    appSettings.Remove(id + KEY_CUSTOMER_ZIP_CODE);
+                    appSettings.Remove(id + KEY_CUSTOMER_CITY);
+                    appSettings.Remove(id + KEY_CUSTOMER_PHONENUMBER);
+                }
+                itemsRemoved = true;
+                appSettings.Remove(KEY_ID_CUSTOMER);
+                appSettings.Remove(KEY_CURRENTNUMBER_OF_CUSTOMERS);
+                appSettings.Save();
+            }
+            return itemsRemoved;
         }
     }
 }

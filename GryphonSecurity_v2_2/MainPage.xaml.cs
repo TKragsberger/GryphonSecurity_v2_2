@@ -371,12 +371,17 @@ namespace GryphonSecurity_v2_2
             {
                 if (await controller.sendPendingNFCs())
                 {
-                    textBlockPendingNFCScans.Text = "Pending NFCs: " + 0;
+                    textBlockPendingNFCScans.Text = AppResources.PendingNFC + " " + 0;
                 }
 
                 if (await controller.sendPendingAlarmReports())
                 {
-                    textBlockPendingAlarmReports.Text = "Pending Alarm Reports: " + 0;
+                    textBlockPendingAlarmReports.Text = AppResources.PendingAlarmReports + " " + 0;
+                }
+
+                if (await controller.sendPendingCustomers())
+                {
+                    textBlockPendingCustomers.Text = AppResources.PendingCustomers + " " + 0;
                 }
             }
         }
@@ -452,6 +457,95 @@ namespace GryphonSecurity_v2_2
             {
                 MessageBox.Show(AppResources.ReportCustomerNotFound);
             }
+        }
+
+        private async void createCustomerButton_Click(object sender, RoutedEventArgs e)
+        {
+
+            Boolean check = await checkCreateCustomer();
+            if (!check)
+            {
+                MessageBox.Show(AppResources.CreateCustomerFill);
+            } 
+        }
+
+        public async Task<Boolean> checkCreateCustomer()
+        {
+            Boolean check = true;
+            Boolean isConnected = controller.checkNetworkConnection();
+            if (textBoxCreateCustomerName.Text.Equals(""))
+            {
+                check = false;
+            }
+            String customerNameTB = textBoxCreateCustomerName.Text;
+            long customerNumberTB = 0;
+            if (!textBoxCreateCustomerNumber.Text.Equals(""))
+            {
+                customerNumberTB = Convert.ToInt64(textBoxCreateCustomerNumber.Text);
+            }
+            else
+            {
+                check = false;
+            }
+            if (textBoxCreateCustomerStreetAndHouseNumber.Text.Equals(""))
+            {
+                check = false;
+            }
+            String streetAndHouseNumberTB = textBoxCreateCustomerStreetAndHouseNumber.Text;
+            int zipCodeTB = 0;
+            if (!textBoxCreateCustomerZipCode.Text.Equals(""))
+            {
+                zipCodeTB = Convert.ToInt32(textBoxCreateCustomerZipCode.Text);
+            }
+            else
+            {
+                check = false;
+            }
+            if (textBoxCreateCustomerCity.Text.Equals(""))
+            {
+                check = false;
+            }
+            String cityTB = textBoxCreateCustomerCity.Text;
+            long phonenumberTB = 0;
+            if (!textBoxCreateCustomerPhonenumber.Text.Equals(""))
+            {
+                phonenumberTB = Convert.ToInt64(textBoxCreateCustomerPhonenumber.Text);
+            }
+            if (check)
+            {
+                Customer customer = new Customer(customerNameTB, customerNumberTB, streetAndHouseNumberTB, zipCodeTB, cityTB, phonenumberTB);
+                if (isConnected) { 
+                    if (await controller.createCustomer(customer))
+                    {
+                        MessageBox.Show(AppResources.CreateCustomerSuccess);
+                    }
+                    else
+                    {
+                        MessageBox.Show(AppResources.CreateCustomerError);
+                    }
+                } else
+                {
+                    if(controller.createLocalStorageCustomer(customer))
+                    {
+                        MessageBox.Show(AppResources.CreateCustomerLocalSuccess);
+                    } else
+                    {
+                        MessageBox.Show(AppResources.CreateCustomerError);
+                    }
+                }
+            }
+
+            return check;
+        }
+
+        public void emptyCreateCustomer()
+        {
+            textBoxCreateCustomerName.Text = "";
+            textBoxCreateCustomerNumber.Text = "";
+            textBoxCreateCustomerStreetAndHouseNumber.Text = "";
+            textBoxCreateCustomerZipCode.Text = "";
+            textBoxCreateCustomerCity.Text = "";
+            textBoxCreateCustomerPhonenumber.Text = "";
         }
     }
 }

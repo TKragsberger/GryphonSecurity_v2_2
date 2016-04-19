@@ -20,9 +20,11 @@ namespace GryphonSecurity_v2_2.DataSource
 
         private String KEY_DUMMY_ID_NFC = "DUMMY_ID_NFC";
         private String KEY_DUMMY_ID_ALARMREPORT = "DUMMY_ID_ALARMREPORT";
+        private String KEY_DUMMY_ID_CUSTOMER = "DUMMY_ID_CUSTOMER";
 
         private String KEY_DUMMY_CURRENTNUMBER_OF_ALARMREPORTS = "DUMMY_CURRENTNUMBER_OF_ALARMREPORTS";
         private String KEY_DUMMY_CURRENTNUMBER_OF_NFCS = "DUMMY_CURRENTNUMBER_OF_NFCS";
+        private String KEY_DUMMY_CURRENTNUMBER_OF_CUSTOMERS = "DUMMY_CURRENTNUMBER_OF_CUSTOMERS";
 
         private String KEY_DUMMY_REPORT_CUSTOMERNAME = "DUMMY_REPORT_CUSTOMERNAME";
         private String KEY_DUMMY_REPORT_CUSTOMERNUMBER = "DUMMY_REPORT_CUSTOMERNUMBER";
@@ -316,7 +318,7 @@ namespace GryphonSecurity_v2_2.DataSource
             return null;
         }
 
-        public Address getAddress(String id)
+        public async Task<Address> getAddress(String id)
         {
             if (appSettings.Contains(id + KEY_DUMMY_ADDRESS_NAME))
             {
@@ -491,6 +493,101 @@ namespace GryphonSecurity_v2_2.DataSource
             int next = currentNumberOfAlarmReports() + 1;
             appSettings.Add(KEY_DUMMY_CURRENTNUMBER_OF_ALARMREPORTS, next + "");
             appSettings.Save();
+        }
+
+        private long getCurrentCustomerId()
+        {
+            if (!appSettings.Contains(KEY_DUMMY_ID_CUSTOMER))
+            {
+                appSettings.Add(KEY_DUMMY_ID_CUSTOMER, "3");
+                appSettings.Save();
+            }
+            return Convert.ToInt64(appSettings[KEY_DUMMY_ID_CUSTOMER] as String);
+        }
+
+        private long getNextCustomerId()
+        {
+            try
+            {
+                long test = getCurrentCustomerId();
+                long nextId = test + 1;
+                appSettings.Remove(KEY_DUMMY_ID_CUSTOMER);
+                appSettings.Add(KEY_DUMMY_ID_CUSTOMER, nextId + "");
+                appSettings.Save();
+
+                return nextId;
+            }
+            catch (IsolatedStorageException)
+            {
+                Debug.WriteLine("error");
+                return 1111111111111111111;
+            }
+
+        }
+
+        public int currentNumberOfCustomers()
+        {
+            if (!appSettings.Contains(KEY_DUMMY_CURRENTNUMBER_OF_CUSTOMERS))
+            {
+                appSettings.Add(KEY_DUMMY_CURRENTNUMBER_OF_CUSTOMERS, "0");
+                appSettings.Save();
+            }
+            return Convert.ToInt32(appSettings[KEY_DUMMY_CURRENTNUMBER_OF_CUSTOMERS] as String);
+        }
+
+        public void addNumberOfCustomers()
+        {
+            try
+            {
+                int next = currentNumberOfNFCs() + 1;
+                if (appSettings.Contains(KEY_DUMMY_CURRENTNUMBER_OF_CUSTOMERS))
+                {
+                    appSettings.Remove(KEY_DUMMY_CURRENTNUMBER_OF_CUSTOMERS);
+                }
+                appSettings.Add(KEY_DUMMY_CURRENTNUMBER_OF_CUSTOMERS, next + "");
+                appSettings.Save();
+            }
+            catch (IsolatedStorageException)
+            {
+                return;
+            }
+        }
+
+        public async Task<Boolean> createCustomer(Customer customer)
+        {
+            long id = getNextNfcId();
+            try
+            {
+                appSettings.Add(id + KEY_DUMMY_CUSTOMER_NAME, customer.CustomerName);
+                appSettings.Add(id + KEY_DUMMY_CUSTOMER_NUMBER, customer.CustomerNumber + "");
+                appSettings.Add(id + KEY_DUMMY_CUSTOMER_STREET_AND_HOUSE_NUMBER, customer.StreetHouseNumber);
+                appSettings.Add(id + KEY_DUMMY_CUSTOMER_ZIP_CODE, customer.ZipCode + "");
+                appSettings.Add(id + KEY_DUMMY_CUSTOMER_CITY, customer.City);
+                appSettings.Add(id + KEY_DUMMY_CUSTOMER_PHONENUMBER, customer.Phonenumber + "");
+
+                appSettings.Save();
+                return true;
+            }
+            catch (IsolatedStorageException)
+            {
+                Debug.WriteLine("Addresses did not get saved in dummyDB");
+                return false;
+            }
+
+        }
+
+        public async Task<Boolean> createCustomers(List<Customer> customers)
+        {
+            Boolean check = false;
+            foreach (Customer customer in customers)
+            {
+                check = await createCustomer(customer);
+                if (!check)
+                {
+                    return check;
+                }
+            }
+            return check;
         }
 
     }
