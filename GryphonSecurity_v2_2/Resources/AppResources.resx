@@ -204,6 +204,9 @@
   <data name="ReportCoverMade" xml:space="preserve">
     <value>Cover made</value>
   </data>
+  <data name="ReportCoverMadeBy" xml:space="preserve">
+    <value>Cover made by</value>
+  </data>
   <data name="ReportCustomerName" xml:space="preserve">
     <value>Customer name</value>
   </data>

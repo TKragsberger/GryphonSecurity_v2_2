@@ -44,7 +44,9 @@ namespace GryphonSecurity_v2_2.DataSource
         private String KEY_DUMMY_REPORT_UNKNOWNREASON = "DUMMY_REPORT_UNKNOWNREASON";
         private String KEY_DUMMY_REPORT_OTHER = "DUMMY_REPORT_OTHER";
         private String KEY_DUMMY_REPORT_CANCELDURINGEMERGENCY = "DUMMY_REPORT_CANCELDURINGEMERGENCY";
+        private String KEY_DUMMY_REPORT_CANCELDURINGEMERGENCYTIME = "DUMMY_REPORT_CANCELDURINGEMERGENCYTIME";
         private String KEY_DUMMY_REPORT_COVERMADE = "DUMMY_REPORT_COVERMADE";
+        private String KEY_DUMMY_REPORT_COVERMADEBY = "DUMMY_REPORT_COVERMADEBY";
         private String KEY_DUMMY_REPORT_REMARK = "DUMMY_REPORT_REMARK";
         private String KEY_DUMMY_REPORT_NAME = "DUMMY_REPORT_NAME";
         private String KEY_DUMMY_REPORT_INSTALLER = "DUMMY_REPORT_INSTALLER";
@@ -153,8 +155,10 @@ namespace GryphonSecurity_v2_2.DataSource
                 appSettings.Add(id + KEY_DUMMY_REPORT_UNKNOWNREASON, alarmReport.UnknownReason);
                 appSettings.Add(id + KEY_DUMMY_REPORT_OTHER, alarmReport.Other);
                 appSettings.Add(id + KEY_DUMMY_REPORT_CANCELDURINGEMERGENCY, alarmReport.CancelDuringEmergency);
+                appSettings.Add(id + KEY_DUMMY_REPORT_CANCELDURINGEMERGENCYTIME, alarmReport.CancelDuringEmergencyTime);
                 appSettings.Add(id + KEY_DUMMY_REPORT_COVERMADE, alarmReport.CoverMade);
-                appSettings.Add(id + KEY_DUMMY_REPORT_REMARK, alarmReport.CoverMade);
+                appSettings.Add(id + KEY_DUMMY_REPORT_COVERMADEBY, alarmReport.CoverMadeBy);
+                appSettings.Add(id + KEY_DUMMY_REPORT_REMARK, alarmReport.Remark);
                 appSettings.Add(id + KEY_DUMMY_REPORT_NAME, alarmReport.Name);
                 appSettings.Add(id + KEY_DUMMY_REPORT_INSTALLER, alarmReport.Installer);
                 appSettings.Add(id + KEY_DUMMY_REPORT_CONTROLCENTER, alarmReport.ControlCenter);
@@ -215,7 +219,9 @@ namespace GryphonSecurity_v2_2.DataSource
                 Boolean unknownReason = Convert.ToBoolean(appSettings[id + KEY_DUMMY_REPORT_UNKNOWNREASON] as String);
                 Boolean other = Convert.ToBoolean(appSettings[id + KEY_DUMMY_REPORT_OTHER] as String);
                 Boolean cancelDuringEmergency = Convert.ToBoolean(appSettings[id + KEY_DUMMY_REPORT_CANCELDURINGEMERGENCY] as String);
+                DateTime cancelDuringEmergencyTime = DateTime.Parse(appSettings[id + KEY_DUMMY_REPORT_CANCELDURINGEMERGENCYTIME] as String);
                 Boolean coverMade = Convert.ToBoolean(appSettings[id + KEY_DUMMY_REPORT_COVERMADE] as String);
+                String coverMadeBy = appSettings[id + KEY_DUMMY_REPORT_COVERMADEBY] as String;
                 String remark = appSettings[id + KEY_DUMMY_REPORT_REMARK] as String;
                 String name = appSettings[id + KEY_DUMMY_REPORT_NAME] as String;
                 String installer = appSettings[id + KEY_DUMMY_REPORT_INSTALLER] as String;
@@ -227,8 +233,9 @@ namespace GryphonSecurity_v2_2.DataSource
                 DateTime done = DateTime.Parse(appSettings[id + KEY_DUMMY_REPORT_DONE] as String, CultureInfo.InvariantCulture);
                 User user = await getUser(Convert.ToInt64(appSettings[id + KEY_DUMMY_REPORT_USER_ID] as String));
                 return new AlarmReport(customerName, customerNumber, streetAndHouseNumber, zipCode, city, phonenumber, date, time, zone, burglaryVandalism,
-                                        windowDoorClosed, apprehendedPerson, staffError, nothingToReport, technicalError, unknownReason, other, cancelDuringEmergency, coverMade,
-                                        remark, name, installer, controlCenter, guardRadioedDate, guardRadioedFrom, guardRadioedTo, arrivedAt, done, user);
+                                        windowDoorClosed, apprehendedPerson, staffError, nothingToReport, technicalError, unknownReason, other, cancelDuringEmergency, 
+                                        cancelDuringEmergencyTime, coverMade, coverMadeBy, remark, name, installer, controlCenter, guardRadioedDate, guardRadioedFrom, 
+                                        guardRadioedTo, arrivedAt, done, user);
             }
             else
             {

@@ -48,7 +48,9 @@ namespace GryphonSecurity_v2_2.DataSource
         private String KEY_REPORT_UNKNOWNREASON = "REPORT_UNKNOWNREASON";
         private String KEY_REPORT_OTHER = "REPORT_OTHER";
         private String KEY_REPORT_CANCELDURINGEMERGENCY = "REPORT_CANCELDURINGEMERGENCY";
+        private String KEY_REPORT_CANCELDURINGEMERGENCYTIME = "REPORT_CANCELDURINGEMERGENCYTIME";
         private String KEY_REPORT_COVERMADE = "REPORT_COVERMADE";
+        private String KEY_REPORT_COVERMADEBY = "REPORT_COVERMADEBY";
         private String KEY_REPORT_REMARK = "REPORT_REMARK";
         private String KEY_REPORT_NAME = "REPORT_NAME";
         private String KEY_REPORT_INSTALLER = "REPORT_INSTALLER";
@@ -77,7 +79,9 @@ namespace GryphonSecurity_v2_2.DataSource
         private String KEY_TEMP_REPORT_UNKNOWNREASON = "TEMP_REPORT_UNKNOWNREASON";
         private String KEY_TEMP_REPORT_OTHER = "TEMP_REPORT_OTHER";
         private String KEY_TEMP_REPORT_CANCELDURINGEMERGENCY = "TEMP_REPORT_CANCELDURINGEMERGENCY";
+        private String KEY_TEMP_REPORT_CANCELDURINGEMERGENCYTIME = "TEMP_REPORT_CANCELDURINGEMERGENCYTIME";
         private String KEY_TEMP_REPORT_COVERMADE = "TEMP_REPORT_COVERMADE";
+        private String KEY_TEMP_REPORT_COVERMADEBY = "TEMP_REPORT_COVERMADEBY";
         private String KEY_TEMP_REPORT_REMARK = "TEMP_REPORT_REMARK";
         private String KEY_TEMP_REPORT_NAME = "TEMP_REPORT_NAME";
         private String KEY_TEMP_REPORT_INSTALLER = "TEMP_REPORT_INSTALLER";
@@ -331,7 +335,9 @@ namespace GryphonSecurity_v2_2.DataSource
                 appSettings.Add(id + KEY_REPORT_UNKNOWNREASON, alarmReport.UnknownReason + "");
                 appSettings.Add(id + KEY_REPORT_OTHER, alarmReport.Other + "");
                 appSettings.Add(id + KEY_REPORT_CANCELDURINGEMERGENCY, alarmReport.CancelDuringEmergency + "");
+                appSettings.Add(id + KEY_REPORT_CANCELDURINGEMERGENCYTIME, alarmReport.CancelDuringEmergencyTime + "");
                 appSettings.Add(id + KEY_REPORT_COVERMADE, alarmReport.CoverMade + "");
+                appSettings.Add(id + KEY_REPORT_COVERMADEBY, alarmReport.CoverMadeBy + "");
                 appSettings.Add(id + KEY_REPORT_REMARK, alarmReport.Remark + "");
                 appSettings.Add(id + KEY_REPORT_NAME, alarmReport.Name + "");
                 appSettings.Add(id + KEY_REPORT_INSTALLER, alarmReport.Installer + "");
@@ -379,7 +385,9 @@ namespace GryphonSecurity_v2_2.DataSource
                     Boolean unknownReason = Convert.ToBoolean(appSettings[id + KEY_REPORT_UNKNOWNREASON] as String);
                     Boolean other = Convert.ToBoolean(appSettings[id + KEY_REPORT_OTHER] as String);
                     Boolean cancelDuringEmergency = Convert.ToBoolean(appSettings[id + KEY_REPORT_CANCELDURINGEMERGENCY] as String);
+                    DateTime cancelDuringEmergencyTime = DateTime.Parse(appSettings[id + KEY_REPORT_CANCELDURINGEMERGENCYTIME] as String);
                     Boolean coverMade = Convert.ToBoolean(appSettings[id + KEY_REPORT_COVERMADE] as String);
+                    String coverMadeBy = appSettings[id + KEY_REPORT_COVERMADEBY] as String;
                     String remark = appSettings[id + KEY_REPORT_REMARK] as String;
                     String name = appSettings[id + KEY_REPORT_NAME] as String;
                     String installer = appSettings[id + KEY_REPORT_INSTALLER] as String;
@@ -390,8 +398,9 @@ namespace GryphonSecurity_v2_2.DataSource
                     DateTime arrivedAt = Convert.ToDateTime(appSettings[id + KEY_REPORT_ARRIVEDAT] as String);
                     DateTime done = Convert.ToDateTime(appSettings[id + KEY_REPORT_DONE] as String);
                     alarmReports.Add(new AlarmReport(customerName, customerNumber, streetAndHouseNumber, zipCode, city, phonenumber, date, time, zone, burglaryVandalism,
-                                            windowDoorClosed, apprehendedPerson, staffError, nothingToReport, technicalError, unknownReason, other, cancelDuringEmergency, coverMade,
-                                            remark, name, installer, controlCenter, guardRadioedDate, guardRadioedFrom, guardRadioedTo, arrivedAt, done, getUser()));
+                                            windowDoorClosed, apprehendedPerson, staffError, nothingToReport, technicalError, unknownReason, other, cancelDuringEmergency, 
+                                            cancelDuringEmergencyTime, coverMade, coverMadeBy, remark, name, installer, controlCenter, guardRadioedDate, guardRadioedFrom, 
+                                            guardRadioedTo, arrivedAt, done, getUser()));
                 }
             }
 
@@ -426,7 +435,9 @@ namespace GryphonSecurity_v2_2.DataSource
                     appSettings.Remove(id + KEY_REPORT_UNKNOWNREASON);
                     appSettings.Remove(id + KEY_REPORT_OTHER);
                     appSettings.Remove(id + KEY_REPORT_CANCELDURINGEMERGENCY);
+                    appSettings.Remove(id + KEY_REPORT_CANCELDURINGEMERGENCYTIME);
                     appSettings.Remove(id + KEY_REPORT_COVERMADE);
+                    appSettings.Remove(id + KEY_REPORT_COVERMADEBY);
                     appSettings.Remove(id + KEY_REPORT_REMARK);
                     appSettings.Remove(id + KEY_REPORT_NAME);
                     appSettings.Remove(id + KEY_REPORT_INSTALLER);
@@ -531,7 +542,9 @@ namespace GryphonSecurity_v2_2.DataSource
                 appSettings.Add(id + KEY_TEMP_REPORT_UNKNOWNREASON, alarmReport.UnknownReason + "");
                 appSettings.Add(id + KEY_TEMP_REPORT_OTHER, alarmReport.Other + "");
                 appSettings.Add(id + KEY_TEMP_REPORT_CANCELDURINGEMERGENCY, alarmReport.CancelDuringEmergency + "");
+                appSettings.Add(id + KEY_TEMP_REPORT_CANCELDURINGEMERGENCYTIME, alarmReport.CancelDuringEmergencyTime + "");
                 appSettings.Add(id + KEY_TEMP_REPORT_COVERMADE, alarmReport.CoverMade + "");
+                appSettings.Add(id + KEY_TEMP_REPORT_COVERMADEBY, alarmReport.CoverMadeBy + "");
                 appSettings.Add(id + KEY_TEMP_REPORT_REMARK, alarmReport.Remark + "");
                 appSettings.Add(id + KEY_TEMP_REPORT_NAME, alarmReport.Name + "");
                 appSettings.Add(id + KEY_TEMP_REPORT_INSTALLER, alarmReport.Installer + "");
@@ -600,7 +613,9 @@ namespace GryphonSecurity_v2_2.DataSource
                         Boolean unknownReason = Convert.ToBoolean(appSettings[id + KEY_TEMP_REPORT_UNKNOWNREASON] as String);
                         Boolean other = Convert.ToBoolean(appSettings[id + KEY_TEMP_REPORT_OTHER] as String);
                         Boolean cancelDuringEmergency = Convert.ToBoolean(appSettings[id + KEY_TEMP_REPORT_CANCELDURINGEMERGENCY] as String);
+                        DateTime cancelDuringEmergencyTime = DateTime.Parse(appSettings[id + KEY_TEMP_REPORT_CANCELDURINGEMERGENCYTIME] as String);
                         Boolean coverMade = Convert.ToBoolean(appSettings[id + KEY_TEMP_REPORT_COVERMADE] as String);
+                        String coverMadeBy = appSettings[id + KEY_TEMP_REPORT_COVERMADEBY] as String;
                         String remark = appSettings[id + KEY_TEMP_REPORT_REMARK] as String;
                         String name = appSettings[id + KEY_TEMP_REPORT_NAME] as String;
                         String installer = appSettings[id + KEY_TEMP_REPORT_INSTALLER] as String;
@@ -611,8 +626,9 @@ namespace GryphonSecurity_v2_2.DataSource
                         DateTime arrivedAt = Convert.ToDateTime(appSettings[id + KEY_TEMP_REPORT_ARRIVEDAT] as String);
                         DateTime done = Convert.ToDateTime(appSettings[id + KEY_TEMP_REPORT_DONE] as String);
                         AlarmReport alarmReport = new AlarmReport(customerName, customerNumber, streetAndHouseNumber, zipCode, city, phonenumber, date, time, zone, burglaryVandalism,
-                                                windowDoorClosed, apprehendedPerson, staffError, nothingToReport, technicalError, unknownReason, other, cancelDuringEmergency, coverMade,
-                                                remark, name, installer, controlCenter, guardRadioedDate, guardRadioedFrom, guardRadioedTo, arrivedAt, done, getUser());
+                                                windowDoorClosed, apprehendedPerson, staffError, nothingToReport, technicalError, unknownReason, other, cancelDuringEmergency, 
+                                                cancelDuringEmergencyTime, coverMade, coverMadeBy, remark, name, installer, controlCenter, guardRadioedDate, guardRadioedFrom, 
+                                                guardRadioedTo, arrivedAt, done, getUser());
                         return alarmReport;
                     }
                 }
@@ -654,7 +670,9 @@ namespace GryphonSecurity_v2_2.DataSource
                     appSettings.Remove(currentId + KEY_TEMP_REPORT_UNKNOWNREASON);
                     appSettings.Remove(currentId + KEY_TEMP_REPORT_OTHER);
                     appSettings.Remove(currentId + KEY_TEMP_REPORT_CANCELDURINGEMERGENCY);
+                    appSettings.Remove(currentId + KEY_TEMP_REPORT_CANCELDURINGEMERGENCYTIME);
                     appSettings.Remove(currentId + KEY_TEMP_REPORT_COVERMADE);
+                    appSettings.Remove(currentId + KEY_TEMP_REPORT_COVERMADEBY);
                     appSettings.Remove(currentId + KEY_TEMP_REPORT_REMARK);
                     appSettings.Remove(currentId + KEY_TEMP_REPORT_NAME);
                     appSettings.Remove(currentId + KEY_TEMP_REPORT_INSTALLER);

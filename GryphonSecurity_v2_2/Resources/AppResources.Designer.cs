@@ -322,6 +322,15 @@ namespace GryphonSecurity_v2_2.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cover made by.
+        /// </summary>
+        public static string ReportCoverMadeBy {
+            get {
+                return ResourceManager.GetString("ReportCoverMadeBy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Customer name.
         /// </summary>
         public static string ReportCustomerName {
