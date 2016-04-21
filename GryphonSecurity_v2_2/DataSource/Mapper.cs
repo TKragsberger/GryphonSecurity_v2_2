@@ -119,13 +119,30 @@ namespace GryphonSecurity_v2_2.DataSource
 
         public async Task<Boolean> createCustomer(Customer customer)
         {
+            using (HttpClient client = new HttpClient())
+            {
+                String json = JsonConvert.SerializeObject(customer);
+                var resultWebservice = await client.PostAsync("http://kragsberger.dk/GryphonSecurityRestFullWebservice/webServices/createCustomer.php/", new StringContent(json, Encoding.UTF8, "application/json"));
+                //var resultWebservice = await client.GetAsync("http://kragsberger.dk/rest/" + name);
+                resultWebservice.EnsureSuccessStatusCode();
+                Boolean result = Convert.ToBoolean(JsonConvert.DeserializeObject<String>(await resultWebservice.Content.ReadAsStringAsync()));
+                return result;
+            }
 
-            return true;
         }
 
         public async Task<Boolean> createCustomers(List<Customer> customers)
         {
-            return true;
+            using (HttpClient client = new HttpClient())
+            {
+                String json = JsonConvert.SerializeObject(customers);
+                var resultWebservice = await client.PostAsync("http://kragsberger.dk/GryphonSecurityRestFullWebservice/webServices/createCustomers.php/", new StringContent(json, Encoding.UTF8, "application/json"));
+                //var resultWebservice = await client.GetAsync("http://kragsberger.dk/rest/" + name);
+                resultWebservice.EnsureSuccessStatusCode();
+                Boolean result = Convert.ToBoolean(JsonConvert.DeserializeObject<String>(await resultWebservice.Content.ReadAsStringAsync()));
+                return result;
+            }
+
         }
 
 
