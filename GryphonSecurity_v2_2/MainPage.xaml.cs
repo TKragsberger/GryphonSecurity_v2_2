@@ -274,8 +274,10 @@ namespace GryphonSecurity_v2_2
                     device.StopSubscribingForMessage(deviceId);
                     int nfcs = controller.getLocalStorageNFCs();
                     int alarmReports = controller.getLocalStorageAlarmReports();
-                    textBlockPendingNFCScans.Text = "Pending NFCs: " + nfcs;
-                    textBlockPendingAlarmReports.Text = "Pending Alarm Reports: " + alarmReports;
+                    int customers = controller.getLocalStorageCustomers();
+                    textBlockPendingNFCScans.Text = AppResources.PendingNFC + " " + nfcs;
+                    textBlockPendingAlarmReports.Text = AppResources.PendingAlarmReports + " " + alarmReports;
+                    textBlockPendingCustomers.Text = AppResources.PendingCustomers + " " + customers;
                     tempAlarmReportScroll.Children.Clear();
                     List<AlarmReport> tempAlarmReports = controller.getLocalStorageTempAlarmReports();
                     for (int i = 0; i < tempAlarmReports.Count; i++){

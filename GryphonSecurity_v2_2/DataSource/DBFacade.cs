@@ -113,6 +113,11 @@ namespace GryphonSecurity_v2_2.DataSource
             return localStorage.currentNumberOfAlarmReports();
         }
 
+        public int getLocalStorageNumberOfCustomers()
+        {
+            return localStorage.currentNumberOfCustomers();
+        }
+
         public Boolean removeLocalStorageTempSelectedAlarmReport(long id)
         {
             return localStorage.removeTempAlarmReport(id);
