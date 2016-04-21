@@ -204,6 +204,9 @@
   <data name="ReportCoverMade" xml:space="preserve">
     <value>Afdækning foretaget</value>
   </data>
+  <data name="ReportCoverMadeBy" xml:space="preserve">
+    <value>Afdækning foretaget af</value>
+  </data>
   <data name="ReportCustomerName" xml:space="preserve">
     <value>Kundenavn</value>
   </data>

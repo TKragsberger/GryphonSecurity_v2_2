@@ -88,7 +88,28 @@ namespace GryphonSecurity_v2_2
             Boolean unknownReasonCB = (Boolean)checkBoxUnknownReason.IsChecked;
             Boolean otherCB = (Boolean)checkBoxOther.IsChecked;
             Boolean cancelDuringEmergencyCB = (Boolean)checkBoxCancelsDuringEmergency.IsChecked;
+            Debug.WriteLine("hello " + cancelDuringEmergencyCB);
+            DateTime cancelDuringEmergencyTimeTP = DateTime.Now;
+            Debug.WriteLine("world");
+            if (cancelDuringEmergencyCB)
+            {
+                if (timeBoxCanceledDuringEmergencyTime.Value.Equals(null))
+                {
+                    check = false;
+                } else
+                {
+                    cancelDuringEmergencyTimeTP = (DateTime)timeBoxCanceledDuringEmergencyTime.Value;
+                }
+            }
             Boolean coverMadeCB = (Boolean)checkBoxCoverMade.IsChecked;
+            String coverMadeByTB = textBoxCoverMadeBy.Text;
+            if (coverMadeCB)
+            {
+                if (coverMadeByTB.Equals(""))
+                {
+                    check = false;
+                }
+            }
 
             String remarkTB = textBoxRemark.Text;
             if (textBoxName.Text.Equals(""))
@@ -114,8 +135,8 @@ namespace GryphonSecurity_v2_2
             if (check)
             {
                 if (await controller.createAlarmReport(new AlarmReport(customerNameTB, customerNumberTB, streetAndHouseNumberTB, zipCodeTB, cityTB, phonenumberTB, dateTB, timeTB, zoneTB, burglaryVandalismCB,
-                                            windowDoorClosedCB, apprehendedPersonCB, staffErrorCB, nothingToReportCB, technicalErrorCB, unknownReasonCB, otherCB, cancelDuringEmergencyCB, coverMadeCB,
-                                            remarkTB, nameTB, installerTB, controlCenterTB, guardRadioedDateTB, guardRadioedFromTB, guardRadioedToTB, arrivedAtTB, doneTB, controller.getUser())))
+                                            windowDoorClosedCB, apprehendedPersonCB, staffErrorCB, nothingToReportCB, technicalErrorCB, unknownReasonCB, otherCB, cancelDuringEmergencyCB, cancelDuringEmergencyTimeTP, 
+                                            coverMadeCB, coverMadeByTB, remarkTB, nameTB, installerTB, controlCenterTB, guardRadioedDateTB, guardRadioedFromTB, guardRadioedToTB, arrivedAtTB, doneTB, controller.getUser())))
                 {
                     emptyAlarmReport();
                     MessageBox.Show(AppResources.ReportAlarmReportSuccess);
@@ -159,7 +180,7 @@ namespace GryphonSecurity_v2_2
 
         private async void sendReport_Click(object sender, RoutedEventArgs e)
         {
-            Boolean check =await checkAlarmReport();
+            Boolean check = await checkAlarmReport();
             if (!check)
             {
                 MessageBox.Show(AppResources.ReportFillSpaces);
@@ -274,8 +295,10 @@ namespace GryphonSecurity_v2_2
                     device.StopSubscribingForMessage(deviceId);
                     int nfcs = controller.getLocalStorageNFCs();
                     int alarmReports = controller.getLocalStorageAlarmReports();
-                    textBlockPendingNFCScans.Text = "Pending NFCs: " + nfcs;
-                    textBlockPendingAlarmReports.Text = "Pending Alarm Reports: " + alarmReports;
+                    int customers = controller.getLocalStorageCustomers();
+                    textBlockPendingNFCScans.Text = AppResources.PendingNFC + " " + nfcs;
+                    textBlockPendingAlarmReports.Text = AppResources.PendingAlarmReports + " " + alarmReports;
+                    textBlockPendingCustomers.Text = AppResources.PendingCustomers + " " + customers;
                     tempAlarmReportScroll.Children.Clear();
                     List<AlarmReport> tempAlarmReports = controller.getLocalStorageTempAlarmReports();
                     for (int i = 0; i < tempAlarmReports.Count; i++){
@@ -350,9 +373,22 @@ namespace GryphonSecurity_v2_2
             if (alarmReport.Other)
             checkBoxOther.IsChecked = true;
             if (alarmReport.CancelDuringEmergency)
-            checkBoxCancelsDuringEmergency.IsChecked =true;
+            {
+                checkBoxCancelsDuringEmergency.IsChecked =true;
+                timeBoxCanceledDuringEmergencyTime.Value = alarmReport.CancelDuringEmergencyTime;
+            }
+            else
+            {
+                timeBoxCanceledDuringEmergencyTime.Value = null;
+            }
             if (alarmReport.CoverMade)
-            checkBoxCoverMade.IsChecked=true;
+            {
+                checkBoxCoverMade.IsChecked=true;
+                textBoxCoverMadeBy.Text = alarmReport.CoverMadeBy;
+            } else
+            {
+                textBoxCoverMadeBy.Text = alarmReport.CoverMadeBy;
+            }
             textBoxRemark.Text = alarmReport.Remark;
             textBoxName.Text = alarmReport.Name;
             textBoxInstaller.Text = alarmReport.Installer;
@@ -416,7 +452,13 @@ namespace GryphonSecurity_v2_2
             Boolean unknownReasonCB = (Boolean)checkBoxUnknownReason.IsChecked;
             Boolean otherCB = (Boolean)checkBoxOther.IsChecked;
             Boolean cancelDuringEmergencyCB = (Boolean)checkBoxCancelsDuringEmergency.IsChecked;
+            DateTime cancelDuringEmergencyTP = DateTime.Now;
+            if (cancelDuringEmergencyCB)
+            {
+                cancelDuringEmergencyTP = (DateTime) timeBoxCanceledDuringEmergencyTime.Value;
+            }
             Boolean coverMadeCB = (Boolean)checkBoxCoverMade.IsChecked;
+            String coverMadeByTB = textBoxCoverMadeBy.Text;
             String remarkTB = textBoxRemark.Text;
             String nameTB = textBoxName.Text;
             String installerTB = textBoxInstaller.Text;
@@ -428,9 +470,9 @@ namespace GryphonSecurity_v2_2
             DateTime doneTB = (DateTime)textBoxDone.Value;
             if (controller.createTempAlarmReport(new AlarmReport(customerNameTB, customerNumberTB, streetAndHouseNumberTB, zipCodeTB, cityTB, 
                                         phonenumberTB, dateTB, timeTB, zoneTB, burglaryVandalismCB, windowDoorClosedCB, apprehendedPersonCB, 
-                                        staffErrorCB, nothingToReportCB, technicalErrorCB, unknownReasonCB, otherCB, cancelDuringEmergencyCB, 
-                                        coverMadeCB, remarkTB, nameTB, installerTB, controlCenterTB, guardRadioedDateTB, guardRadioedFromTB, 
-                                        guardRadioedToTB, arrivedAtTB, doneTB, controller.getUser())))
+                                        staffErrorCB, nothingToReportCB, technicalErrorCB, unknownReasonCB, otherCB, cancelDuringEmergencyCB,
+                                        cancelDuringEmergencyTP, coverMadeCB, coverMadeByTB, remarkTB, nameTB, installerTB, controlCenterTB, 
+                                        guardRadioedDateTB, guardRadioedFromTB, guardRadioedToTB, arrivedAtTB, doneTB, controller.getUser())))
             {
                 MessageBox.Show(AppResources.ReportAlarmReportLocalStorageSuccess);
                 emptyAlarmReport();
@@ -546,6 +588,31 @@ namespace GryphonSecurity_v2_2
             textBoxCreateCustomerZipCode.Text = "";
             textBoxCreateCustomerCity.Text = "";
             textBoxCreateCustomerPhonenumber.Text = "";
+        }
+
+        private void checkBoxCancelsDuringEmergency_Click(object sender, RoutedEventArgs e)
+        {
+            Boolean check = (Boolean) checkBoxCancelsDuringEmergency.IsChecked;
+            if (check)
+            {
+                timeBoxCanceledDuringEmergencyTime.Value = null;
+                timeBoxCanceledDuringEmergencyTime.Visibility = Visibility.Visible;
+            } else
+            {
+                timeBoxCanceledDuringEmergencyTime.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        private void checkBoxCoverMade_Click(object sender, RoutedEventArgs e)
+        {
+            Boolean check = (Boolean)checkBoxCoverMade.IsChecked;
+            if (check)
+            {
+                textBoxCoverMadeBy.Visibility = Visibility.Visible;
+            } else
+            {
+                textBoxCoverMadeBy.Visibility = Visibility.Collapsed;
+            }
         }
     }
 }

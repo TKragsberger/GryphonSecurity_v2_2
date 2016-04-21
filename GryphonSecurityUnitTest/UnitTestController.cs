@@ -168,6 +168,7 @@ namespace GryphonSecurityTest
             //random time needed for alarm report object.
             DateTime dateTest = new DateTime(1337, 1, 1);
             DateTime timeTest = new DateTime(1337, 1, 1);
+            DateTime cancelDuringEmergencyTime = new DateTime(1337, 1, 1);
             DateTime guardRadioedDateTest = new DateTime(1337, 1, 1);
             DateTime guardRadioedFromTest = new DateTime(1337, 1, 1);
             DateTime guardRadioedToTest = new DateTime(1337, 1, 1);
@@ -175,7 +176,7 @@ namespace GryphonSecurityTest
             DateTime doneTest = new DateTime(1337, 1, 1);
             //ends here.
             alarmReportTest = new AlarmReport(name, 1234567123, "streetAndHouseNumberTest", 1234, "cityTest", 12345678, dateTest,
-                timeTest, "zoneTest", false, false, false, false, false, false, false, false, false, false, "remarkTest",
+                timeTest, "zoneTest", false, false, false, false, false, false, false, false, false, cancelDuringEmergencyTime, false, "", "remarkTest",
                 "nameTest", "installerTest", "controlCenterTest", guardRadioedDateTest, guardRadioedFromTest, guardRadioedToTest,
                 arrivedAtTest, doneTest, userTest);
         }

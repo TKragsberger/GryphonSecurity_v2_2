@@ -26,7 +26,9 @@ namespace GryphonSecurity_v2_2.Domain.Entity
         Boolean unknownReason;
         Boolean other;
         Boolean cancelDuringEmergency;
+        DateTime cancelDuringEmergencyTime;
         Boolean coverMade;
+        String coverMadeBy;
         String remark;
         String name;
         String installer;
@@ -40,8 +42,8 @@ namespace GryphonSecurity_v2_2.Domain.Entity
 
         public AlarmReport(string customerName, long customerNumber, String streetAndHouseNumber, int zipCode, String city, long phonenumber, DateTime date, DateTime time, String zone,
                 Boolean burglaryVandalism, Boolean windowDoorClosed, Boolean apprehendedPerson, Boolean staffError, Boolean nothingToReport, Boolean technicalError, Boolean unknownReason,
-                Boolean other, Boolean cancelDuringEmergency, Boolean coverMade, String remark, String name, String installer, String controlCenter, DateTime guardRadioedDate,
-                DateTime guardRadioedFrom, DateTime guardRadioedTo, DateTime arrivedAt, DateTime done, User user)
+                Boolean other, Boolean cancelDuringEmergency, DateTime cancelDuringEmergencyTime, Boolean coverMade, String coverMadeBy, String remark, String name, String installer, 
+                String controlCenter, DateTime guardRadioedDate, DateTime guardRadioedFrom, DateTime guardRadioedTo, DateTime arrivedAt, DateTime done, User user)
         {
             this.customerName = customerName;
             this.customerNumber = customerNumber;
@@ -61,7 +63,9 @@ namespace GryphonSecurity_v2_2.Domain.Entity
             this.unknownReason = unknownReason;
             this.other = other;
             this.cancelDuringEmergency = cancelDuringEmergency;
+            this.cancelDuringEmergencyTime = cancelDuringEmergencyTime;
             this.coverMade = coverMade;
+            this.coverMadeBy = coverMadeBy;
             this.remark = remark;
             this.name = name;
             this.installer = installer;
@@ -183,10 +187,22 @@ namespace GryphonSecurity_v2_2.Domain.Entity
             set { cancelDuringEmergency = value; }
         }
 
+        public DateTime CancelDuringEmergencyTime
+        {
+            get { return cancelDuringEmergencyTime; }
+            set { cancelDuringEmergencyTime = value; }
+        }
+
         public Boolean CoverMade
         {
             get { return coverMade; }
             set { coverMade = value; }
+        }
+
+        public String CoverMadeBy
+        {
+            get { return coverMadeBy; }
+            set { coverMadeBy = value; }
         }
 
         public String Remark

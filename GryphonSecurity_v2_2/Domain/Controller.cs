@@ -390,6 +390,11 @@ namespace GryphonSecurity_v2_2.Domain
             return dBFacade.getLocalStorageNumberOfAlarmReports();
         }
 
+        public int getLocalStorageCustomers()
+        {
+            return dBFacade.getLocalStorageNumberOfCustomers();
+        }
+
         public async Task<Boolean> sendPendingNFCs()
         {
             List<List<String>> tags = dBFacade.getLocalStorageNFCs();
