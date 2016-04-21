@@ -9,8 +9,8 @@ namespace GryphonSecurity_v2_2.DataSource
 {
     public class DBFacade
     {
-        DummyDB connection = new DummyDB();
-        //Mapper connection = new Mapper();
+        //DummyDB connection = new DummyDB();
+        Mapper connection = new Mapper();
         LocalStorage localStorage = new LocalStorage();
 
         public Boolean createUser(User user)
