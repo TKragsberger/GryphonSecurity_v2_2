@@ -20,7 +20,7 @@ namespace GryphonSecurity_v2_2.DataSource
 
         public async Task<User> getUser(long id)
         {
-            return await connection.getUser(id);
+            return await connection.getEmployee(id);
         }
 
         public User getLocalStorageUser()
