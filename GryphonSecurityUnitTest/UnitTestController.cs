@@ -166,19 +166,27 @@ namespace GryphonSecurityTest
         private void setupAlarmReport(String name)
         {
             //random time needed for alarm report object.
-            DateTime dateTest = new DateTime(1337, 1, 1);
-            DateTime timeTest = new DateTime(1337, 1, 1);
+            DateTime date = new DateTime(1337, 1, 1);
+            String dateTest = date.ToString("yyyy:MM:dd");
+            DateTime time = new DateTime(1337, 1, 1);
+            String timeTest = time.ToString("H:mm:ss");
             DateTime cancelDuringEmergencyTime = new DateTime(1337, 1, 1);
-            DateTime guardRadioedDateTest = new DateTime(1337, 1, 1);
-            DateTime guardRadioedFromTest = new DateTime(1337, 1, 1);
-            DateTime guardRadioedToTest = new DateTime(1337, 1, 1);
-            DateTime arrivedAtTest = new DateTime(1337, 1, 1);
-            DateTime doneTest = new DateTime(1337, 1, 1);
+            String cancelDuringEmergencyTimeTest = cancelDuringEmergencyTime.ToString("H:mm:ss");
+            DateTime guardRadioedDate = new DateTime(1337, 1, 1);
+            String guardRadioedDateTest = guardRadioedDate.ToString("yyyy:MM:dd");
+            DateTime guardRadioedFrom = new DateTime(1337, 1, 1);
+            String guardRadioedFromTest = guardRadioedFrom.ToString("H:mm:ss");
+            DateTime guardRadioedTo = new DateTime(1337, 1, 1);
+            String guardRadioedToTest = guardRadioedTo.ToString("H:mm:ss");
+            DateTime arrivedAt = new DateTime(1337, 1, 1);
+            String arrivedAtTest = arrivedAt.ToString("H:mm:ss");
+            DateTime done = new DateTime(1337, 1, 1);
+            String doneTest = done.ToString("H:mm:ss");
             //ends here.
             alarmReportTest = new AlarmReport(name, 1234567123, "streetAndHouseNumberTest", 1234, "cityTest", 12345678, dateTest,
-                timeTest, "zoneTest", false, false, false, false, false, false, false, false, false, cancelDuringEmergencyTime, false, "", "remarkTest",
+                timeTest, "zoneTest", false, false, false, false, false, false, false, false, 000, false, cancelDuringEmergencyTimeTest, false, "", "remarkTest",
                 "nameTest", "installerTest", "controlCenterTest", guardRadioedDateTest, guardRadioedFromTest, guardRadioedToTest,
-                arrivedAtTest, doneTest, userTest);
+                arrivedAtTest, doneTest, userTest.Id);
         }
 
 

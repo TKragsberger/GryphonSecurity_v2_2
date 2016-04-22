@@ -75,8 +75,11 @@ namespace GryphonSecurity_v2_2
             {
                 phonenumberTB = Convert.ToInt64(textBoxPhonenumber.Text);
             }
-            DateTime dateTB = (DateTime)textBoxDate.Value;
-            DateTime timeTB = (DateTime)textBoxTime.Value;
+            DateTime date = (DateTime)textBoxDate.Value;
+            String dateTB = date.ToString("yyyy-MM-dd");
+            DateTime time = (DateTime)textBoxTime.Value;
+            String timeTB = time.ToString("H:mm:ss");
+            Debug.WriteLine("TIME "+timeTB);
             String zoneTB = textBoxZone.Text;
 
             Boolean burglaryVandalismCB = (Boolean)checkBoxBurglaryVandalism.IsChecked;
@@ -87,9 +90,10 @@ namespace GryphonSecurity_v2_2
             Boolean technicalErrorCB = (Boolean)checkBoxTechnicalError.IsChecked;
             Boolean unknownReasonCB = (Boolean)checkBoxUnknownReason.IsChecked;
             Boolean otherCB = (Boolean)checkBoxOther.IsChecked;
+            int reasonCodeId = 000;
             Boolean cancelDuringEmergencyCB = (Boolean)checkBoxCancelsDuringEmergency.IsChecked;
             Debug.WriteLine("hello " + cancelDuringEmergencyCB);
-            DateTime cancelDuringEmergencyTimeTP = DateTime.Now;
+            String cancelDuringEmergencyTimeTP = null;
             Debug.WriteLine("world");
             if (cancelDuringEmergencyCB)
             {
@@ -98,7 +102,8 @@ namespace GryphonSecurity_v2_2
                     check = false;
                 } else
                 {
-                    cancelDuringEmergencyTimeTP = (DateTime)timeBoxCanceledDuringEmergencyTime.Value;
+                    DateTime cancelDuringEmergencyTime = (DateTime)timeBoxCanceledDuringEmergencyTime.Value;
+                    cancelDuringEmergencyTimeTP = cancelDuringEmergencyTime.ToString("H:mm:ss");
                 }
             }
             Boolean coverMadeCB = (Boolean)checkBoxCoverMade.IsChecked;
@@ -127,16 +132,21 @@ namespace GryphonSecurity_v2_2
                 check = false;
             }
             String controlCenterTB = textBoxControlCenter.Text;
-            DateTime guardRadioedDateTB = (DateTime)textBoxGuardRadioedDate.Value;
-            DateTime guardRadioedFromTB = (DateTime)textBoxGuardRadioedFrom.Value;
-            DateTime guardRadioedToTB = (DateTime)textBoxGuardRadioedTo.Value;
-            DateTime arrivedAtTB = (DateTime)textBoxArrivedAt.Value;
-            DateTime doneTB = (DateTime)textBoxDone.Value;
+            DateTime guardRadioedDate = (DateTime)textBoxGuardRadioedDate.Value;
+            String guardRadioedDateTB = guardRadioedDate.ToString("yyyy-MM-dd");
+            DateTime guardRadioedFrom = (DateTime)textBoxGuardRadioedFrom.Value;
+            String guardRadioedFromTB = guardRadioedFrom.ToString("H:mm:ss");
+            DateTime guardRadioedTo = (DateTime)textBoxGuardRadioedTo.Value;
+            String guardRadioedToTB = guardRadioedTo.ToString("H:mm:ss");
+            DateTime arrivedAt = (DateTime)textBoxArrivedAt.Value;
+            String arrivedAtTB = arrivedAt.ToString("H:mm:ss");
+            DateTime done = (DateTime)textBoxDone.Value;
+            String doneTB = done.ToString("H:mm:ss");
             if (check)
             {
                 if (await controller.createAlarmReport(new AlarmReport(customerNameTB, customerNumberTB, streetAndHouseNumberTB, zipCodeTB, cityTB, phonenumberTB, dateTB, timeTB, zoneTB, burglaryVandalismCB,
-                                            windowDoorClosedCB, apprehendedPersonCB, staffErrorCB, nothingToReportCB, technicalErrorCB, unknownReasonCB, otherCB, cancelDuringEmergencyCB, cancelDuringEmergencyTimeTP, 
-                                            coverMadeCB, coverMadeByTB, remarkTB, nameTB, installerTB, controlCenterTB, guardRadioedDateTB, guardRadioedFromTB, guardRadioedToTB, arrivedAtTB, doneTB, controller.getUser())))
+                                            windowDoorClosedCB, apprehendedPersonCB, staffErrorCB, nothingToReportCB, technicalErrorCB, unknownReasonCB, otherCB, reasonCodeId, cancelDuringEmergencyCB, cancelDuringEmergencyTimeTP, 
+                                            coverMadeCB, coverMadeByTB, remarkTB, nameTB, installerTB, controlCenterTB, guardRadioedDateTB, guardRadioedFromTB, guardRadioedToTB, arrivedAtTB, doneTB, controller.getUser().Id)))
                 {
                     emptyAlarmReport();
                     MessageBox.Show(AppResources.ReportAlarmReportSuccess);
@@ -353,8 +363,8 @@ namespace GryphonSecurity_v2_2
                 textBoxPhonenumber.Text = "";
             else
                 textBoxPhonenumber.Text =""+ alarmReport.Phonenumber;
-            textBoxDate.Value = alarmReport.Date;
-            textBoxTime.Value = alarmReport.Time;
+            textBoxDate.Value = Convert.ToDateTime(alarmReport.Date);
+            textBoxTime.Value = Convert.ToDateTime(alarmReport.Time);
             textBoxZone.Text = alarmReport.Zone +"";
             if (alarmReport.BurglaryVandalism)
                 checkBoxBurglaryVandalism.IsChecked = true;
@@ -375,7 +385,7 @@ namespace GryphonSecurity_v2_2
             if (alarmReport.CancelDuringEmergency)
             {
                 checkBoxCancelsDuringEmergency.IsChecked =true;
-                timeBoxCanceledDuringEmergencyTime.Value = alarmReport.CancelDuringEmergencyTime;
+                timeBoxCanceledDuringEmergencyTime.Value = Convert.ToDateTime(alarmReport.CancelDuringEmergencyTime);
             }
             else
             {
@@ -393,11 +403,11 @@ namespace GryphonSecurity_v2_2
             textBoxName.Text = alarmReport.Name;
             textBoxInstaller.Text = alarmReport.Installer;
             textBoxControlCenter.Text = alarmReport.ControlCenter;
-            textBoxGuardRadioedDate.Value = alarmReport.GuardRadioedDate;
-            textBoxGuardRadioedFrom.Value = alarmReport.GuardRadioedFrom;
-            textBoxGuardRadioedTo.Value = alarmReport.GuardRadioedTo;
-            textBoxArrivedAt.Value = alarmReport.ArrivedAt;
-            textBoxDone.Value = alarmReport.Done;
+            textBoxGuardRadioedDate.Value = Convert.ToDateTime(alarmReport.GuardRadioedDate);
+            textBoxGuardRadioedFrom.Value = Convert.ToDateTime(alarmReport.GuardRadioedFrom);
+            textBoxGuardRadioedTo.Value = Convert.ToDateTime(alarmReport.GuardRadioedTo);
+            textBoxArrivedAt.Value = Convert.ToDateTime(alarmReport.ArrivedAt);
+            textBoxDone.Value = Convert.ToDateTime(alarmReport.Done);
         }
 
         private async void sendPendingButton_Click(object sender, RoutedEventArgs e)
@@ -440,8 +450,10 @@ namespace GryphonSecurity_v2_2
             check = textBoxPhonenumber.Text;
             if (!check.Equals(""))
                 phonenumberTB = Convert.ToInt64(textBoxPhonenumber.Text);
-            DateTime dateTB = (DateTime)textBoxDate.Value;
-            DateTime timeTB = (DateTime)textBoxTime.Value;
+            DateTime date = (DateTime)textBoxDate.Value;
+            String dateTB = date.ToString("yyyy-MM-dd");
+            DateTime time = (DateTime)textBoxTime.Value;
+            String timeTB = time.ToString("H:mm:ss");
             String zoneTB = textBoxZone.Text;
             Boolean burglaryVandalismCB = (Boolean)checkBoxBurglaryVandalism.IsChecked;
             Boolean windowDoorClosedCB = (Boolean)checkBoxWindowDoorClosed.IsChecked;
@@ -451,28 +463,35 @@ namespace GryphonSecurity_v2_2
             Boolean technicalErrorCB = (Boolean)checkBoxTechnicalError.IsChecked;
             Boolean unknownReasonCB = (Boolean)checkBoxUnknownReason.IsChecked;
             Boolean otherCB = (Boolean)checkBoxOther.IsChecked;
+            int reasonCodeId = 000;
             Boolean cancelDuringEmergencyCB = (Boolean)checkBoxCancelsDuringEmergency.IsChecked;
-            DateTime cancelDuringEmergencyTP = DateTime.Now;
+            String cancelDuringEmergencyTimeTP = null;
             if (cancelDuringEmergencyCB)
             {
-                cancelDuringEmergencyTP = (DateTime) timeBoxCanceledDuringEmergencyTime.Value;
-            }
+                DateTime cancelDuringEmergencyTime = (DateTime)timeBoxCanceledDuringEmergencyTime.Value;
+                cancelDuringEmergencyTimeTP = cancelDuringEmergencyTime.ToString("h:mm tt");
+            } 
             Boolean coverMadeCB = (Boolean)checkBoxCoverMade.IsChecked;
             String coverMadeByTB = textBoxCoverMadeBy.Text;
             String remarkTB = textBoxRemark.Text;
             String nameTB = textBoxName.Text;
             String installerTB = textBoxInstaller.Text;
             String controlCenterTB = textBoxControlCenter.Text;
-            DateTime guardRadioedDateTB = (DateTime)textBoxGuardRadioedDate.Value;
-            DateTime guardRadioedFromTB = (DateTime)textBoxGuardRadioedFrom.Value;
-            DateTime guardRadioedToTB = (DateTime)textBoxGuardRadioedTo.Value;
-            DateTime arrivedAtTB = (DateTime)textBoxArrivedAt.Value;
-            DateTime doneTB = (DateTime)textBoxDone.Value;
+            DateTime guardRadioedDate = (DateTime)textBoxGuardRadioedDate.Value;
+            String guardRadioedDateTB = guardRadioedDate.ToString("yyyy-MM-dd");
+            DateTime guardRadioedFrom = (DateTime)textBoxGuardRadioedFrom.Value;
+            String guardRadioedFromTB = guardRadioedFrom.ToString("H:mm:ss");
+            DateTime guardRadioedTo = (DateTime)textBoxGuardRadioedTo.Value;
+            String guardRadioedToTB = guardRadioedTo.ToString("H:mm:ss");
+            DateTime arrivedAt = (DateTime)textBoxArrivedAt.Value;
+            String arrivedAtTB = arrivedAt.ToString("H:mm:ss");
+            DateTime done = (DateTime)textBoxDone.Value;
+            String doneTB = done.ToString("H:mm:ss");
             if (controller.createTempAlarmReport(new AlarmReport(customerNameTB, customerNumberTB, streetAndHouseNumberTB, zipCodeTB, cityTB, 
                                         phonenumberTB, dateTB, timeTB, zoneTB, burglaryVandalismCB, windowDoorClosedCB, apprehendedPersonCB, 
-                                        staffErrorCB, nothingToReportCB, technicalErrorCB, unknownReasonCB, otherCB, cancelDuringEmergencyCB,
-                                        cancelDuringEmergencyTP, coverMadeCB, coverMadeByTB, remarkTB, nameTB, installerTB, controlCenterTB, 
-                                        guardRadioedDateTB, guardRadioedFromTB, guardRadioedToTB, arrivedAtTB, doneTB, controller.getUser())))
+                                        staffErrorCB, nothingToReportCB, technicalErrorCB, unknownReasonCB, otherCB, reasonCodeId, cancelDuringEmergencyCB,
+                                        cancelDuringEmergencyTimeTP, coverMadeCB, coverMadeByTB, remarkTB, nameTB, installerTB, controlCenterTB, 
+                                        guardRadioedDateTB, guardRadioedFromTB, guardRadioedToTB, arrivedAtTB, doneTB, controller.getUser().Id)))
             {
                 MessageBox.Show(AppResources.ReportAlarmReportLocalStorageSuccess);
                 emptyAlarmReport();

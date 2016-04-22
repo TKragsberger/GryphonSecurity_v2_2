@@ -43,6 +43,7 @@ namespace GryphonSecurity_v2_2.DataSource
         private String KEY_DUMMY_REPORT_TECHNICALERROR = "DUMMY_REPORT_TECHNICALERROR";
         private String KEY_DUMMY_REPORT_UNKNOWNREASON = "DUMMY_REPORT_UNKNOWNREASON";
         private String KEY_DUMMY_REPORT_OTHER = "DUMMY_REPORT_OTHER";
+        private String KEY_DUMMY_REPORT_REASONCODEID = "DUMMY_REPORT_REASONCODEID";
         private String KEY_DUMMY_REPORT_CANCELDURINGEMERGENCY = "DUMMY_REPORT_CANCELDURINGEMERGENCY";
         private String KEY_DUMMY_REPORT_CANCELDURINGEMERGENCYTIME = "DUMMY_REPORT_CANCELDURINGEMERGENCYTIME";
         private String KEY_DUMMY_REPORT_COVERMADE = "DUMMY_REPORT_COVERMADE";
@@ -56,11 +57,11 @@ namespace GryphonSecurity_v2_2.DataSource
         private String KEY_DUMMY_REPORT_GUARDRADIOEDTO = "DUMMY_REPORT_GUARDRADIOEDTO";
         private String KEY_DUMMY_REPORT_ARRIVEDAT = "DUMMY_REPORT_ARRIVEDAT";
         private String KEY_DUMMY_REPORT_DONE = "DUMMY_REPORT_DONE";
-        private String KEY_DUMMY_REPORT_USER_ID = "DUMMY_REPORT_USER_ID";
+        private String KEY_DUMMY_REPORT_EMPLOYEE_ID = "DUMMY_REPORT_USER_ID";
 
-        private String KEY_DUMMY_NFC_USER_ID = "DUMMY_USER_ID";
+        private String KEY_DUMMY_NFC_EMPLOYEE_ID = "DUMMY_USER_ID";
         private String KEY_DUMMY_NFC_RANGECHECK = "DUMMY_RANGECHECK";
-        private String KEY_DUMMY_NFC_TAGADDRESS = "DUMMY_TAGADDRESS";
+        private String KEY_DUMMY_NFC_ADDRESSID = "DUMMY_TAGADDRESS";
         private String KEY_DUMMY_NFC_TIME = "DUMMY_TIME";
 
         private String KEY_DUMMY_ADDRESS_NAME = "DUMMY_ADDRESS_NAME";
@@ -102,7 +103,7 @@ namespace GryphonSecurity_v2_2.DataSource
             }
         }
 
-        public async Task<User> getUser(long id)
+        public async Task<User> getEmployee(long id)
         {
             if (appSettings.Contains(id + KEY_DUMMY_FIRSTNAME))
             {
@@ -154,6 +155,7 @@ namespace GryphonSecurity_v2_2.DataSource
                 appSettings.Add(id + KEY_DUMMY_REPORT_TECHNICALERROR, alarmReport.TechnicalError);
                 appSettings.Add(id + KEY_DUMMY_REPORT_UNKNOWNREASON, alarmReport.UnknownReason);
                 appSettings.Add(id + KEY_DUMMY_REPORT_OTHER, alarmReport.Other);
+                appSettings.Add(id + KEY_DUMMY_REPORT_REASONCODEID, alarmReport.ReasonCodeId);
                 appSettings.Add(id + KEY_DUMMY_REPORT_CANCELDURINGEMERGENCY, alarmReport.CancelDuringEmergency);
                 appSettings.Add(id + KEY_DUMMY_REPORT_CANCELDURINGEMERGENCYTIME, alarmReport.CancelDuringEmergencyTime);
                 appSettings.Add(id + KEY_DUMMY_REPORT_COVERMADE, alarmReport.CoverMade);
@@ -167,7 +169,7 @@ namespace GryphonSecurity_v2_2.DataSource
                 appSettings.Add(id + KEY_DUMMY_REPORT_GUARDRADIOEDTO, alarmReport.GuardRadioedTo);
                 appSettings.Add(id + KEY_DUMMY_REPORT_ARRIVEDAT, alarmReport.ArrivedAt);
                 appSettings.Add(id + KEY_DUMMY_REPORT_DONE, alarmReport.Done);
-                appSettings.Add(id + KEY_DUMMY_REPORT_USER_ID, alarmReport.User.Id);
+                appSettings.Add(id + KEY_DUMMY_REPORT_EMPLOYEE_ID, alarmReport.EmployeeId);
                 appSettings.Save();
                 dummyDBStatus = true;
             }
@@ -207,8 +209,8 @@ namespace GryphonSecurity_v2_2.DataSource
                 int zipCode = Convert.ToInt32(appSettings[id + KEY_DUMMY_REPORT_ZIPCODE] as String);
                 String city = appSettings[id + KEY_DUMMY_REPORT_CITY] as String;
                 long phonenumber = Convert.ToInt64(appSettings[id + KEY_DUMMY_REPORT_PHONENUMBER] as String);
-                DateTime date = DateTime.Parse(appSettings[id + KEY_DUMMY_REPORT_DATE] as String, CultureInfo.InvariantCulture);
-                DateTime time = DateTime.Parse(appSettings[id + KEY_DUMMY_REPORT_TIME] as String, CultureInfo.InvariantCulture);
+                String date = appSettings[id + KEY_DUMMY_REPORT_DATE] as String;
+                String time = appSettings[id + KEY_DUMMY_REPORT_TIME] as String;
                 String zone = appSettings[id + KEY_DUMMY_REPORT_ZONE] as String;
                 Boolean burglaryVandalism = Convert.ToBoolean(appSettings[id + KEY_DUMMY_REPORT_BURGLARYVANDALISM] as String);
                 Boolean windowDoorClosed = Convert.ToBoolean(appSettings[id + KEY_DUMMY_REPORT_WINDOWDOORCLOSED] as String);
@@ -218,24 +220,25 @@ namespace GryphonSecurity_v2_2.DataSource
                 Boolean technicalError = Convert.ToBoolean(appSettings[id + KEY_DUMMY_REPORT_TECHNICALERROR] as String);
                 Boolean unknownReason = Convert.ToBoolean(appSettings[id + KEY_DUMMY_REPORT_UNKNOWNREASON] as String);
                 Boolean other = Convert.ToBoolean(appSettings[id + KEY_DUMMY_REPORT_OTHER] as String);
+                int reasonCodeId = Convert.ToInt32(appSettings[id + KEY_DUMMY_REPORT_REASONCODEID] as String);
                 Boolean cancelDuringEmergency = Convert.ToBoolean(appSettings[id + KEY_DUMMY_REPORT_CANCELDURINGEMERGENCY] as String);
-                DateTime cancelDuringEmergencyTime = DateTime.Parse(appSettings[id + KEY_DUMMY_REPORT_CANCELDURINGEMERGENCYTIME] as String);
+                String cancelDuringEmergencyTime = appSettings[id + KEY_DUMMY_REPORT_CANCELDURINGEMERGENCYTIME] as String;
                 Boolean coverMade = Convert.ToBoolean(appSettings[id + KEY_DUMMY_REPORT_COVERMADE] as String);
                 String coverMadeBy = appSettings[id + KEY_DUMMY_REPORT_COVERMADEBY] as String;
                 String remark = appSettings[id + KEY_DUMMY_REPORT_REMARK] as String;
                 String name = appSettings[id + KEY_DUMMY_REPORT_NAME] as String;
                 String installer = appSettings[id + KEY_DUMMY_REPORT_INSTALLER] as String;
                 String controlCenter = appSettings[id + KEY_DUMMY_REPORT_CONTROLCENTER] as String;
-                DateTime guardRadioedDate = DateTime.Parse(appSettings[id + KEY_DUMMY_REPORT_GUARDRADIOEDDATE] as String, CultureInfo.InvariantCulture);
-                DateTime guardRadioedFrom = DateTime.Parse(appSettings[id + KEY_DUMMY_REPORT_GUARDRADIOEDFROM] as String, CultureInfo.InvariantCulture);
-                DateTime guardRadioedTo = DateTime.Parse(appSettings[id + KEY_DUMMY_REPORT_GUARDRADIOEDTO] as String, CultureInfo.InvariantCulture);
-                DateTime arrivedAt = DateTime.Parse(appSettings[id + KEY_DUMMY_REPORT_ARRIVEDAT] as String, CultureInfo.InvariantCulture);
-                DateTime done = DateTime.Parse(appSettings[id + KEY_DUMMY_REPORT_DONE] as String, CultureInfo.InvariantCulture);
-                User user = await getUser(Convert.ToInt64(appSettings[id + KEY_DUMMY_REPORT_USER_ID] as String));
+                String guardRadioedDate = appSettings[id + KEY_DUMMY_REPORT_GUARDRADIOEDDATE] as String;
+                String guardRadioedFrom = appSettings[id + KEY_DUMMY_REPORT_GUARDRADIOEDFROM] as String;
+                String guardRadioedTo = appSettings[id + KEY_DUMMY_REPORT_GUARDRADIOEDTO] as String;
+                String arrivedAt = appSettings[id + KEY_DUMMY_REPORT_ARRIVEDAT] as String;
+                String done = appSettings[id + KEY_DUMMY_REPORT_DONE] as String;
+                User user = await getEmployee(Convert.ToInt64(appSettings[id + KEY_DUMMY_REPORT_EMPLOYEE_ID] as String));
                 return new AlarmReport(customerName, customerNumber, streetAndHouseNumber, zipCode, city, phonenumber, date, time, zone, burglaryVandalism,
-                                        windowDoorClosed, apprehendedPerson, staffError, nothingToReport, technicalError, unknownReason, other, cancelDuringEmergency, 
+                                        windowDoorClosed, apprehendedPerson, staffError, nothingToReport, technicalError, unknownReason, other, reasonCodeId, cancelDuringEmergency, 
                                         cancelDuringEmergencyTime, coverMade, coverMadeBy, remark, name, installer, controlCenter, guardRadioedDate, guardRadioedFrom, 
-                                        guardRadioedTo, arrivedAt, done, user);
+                                        guardRadioedTo, arrivedAt, done, user.Id);
             }
             else
             {
@@ -332,7 +335,7 @@ namespace GryphonSecurity_v2_2.DataSource
                 String addressName = appSettings[id + KEY_DUMMY_ADDRESS_NAME] as String;
                 double latitude = Convert.ToDouble(appSettings[id + KEY_DUMMY_ADDRESS_LATITUDE] as String);
                 double longtitude = Convert.ToDouble(appSettings[id + KEY_DUMMY_ADDRESS_LONGTITUDE] as String);
-                return new Address(addressName, latitude, longtitude);
+                return new Address(id, addressName, latitude, longtitude);
             }
 
             return null;
@@ -358,9 +361,9 @@ namespace GryphonSecurity_v2_2.DataSource
 
             try
             {
-                appSettings.Add(id + KEY_DUMMY_NFC_USER_ID, nfc.User.Id);
+                appSettings.Add(id + KEY_DUMMY_NFC_EMPLOYEE_ID, nfc.EmployeeId);
                 appSettings.Add(id + KEY_DUMMY_NFC_RANGECHECK, nfc.RangeCheck);
-                appSettings.Add(id + KEY_DUMMY_NFC_TAGADDRESS, nfc.TagAddress);
+                appSettings.Add(id + KEY_DUMMY_NFC_ADDRESSID, nfc.AddressId);
                 appSettings.Add(id + KEY_DUMMY_NFC_TIME, nfc.Time);
 
                 appSettings.Save();
@@ -393,14 +396,13 @@ namespace GryphonSecurity_v2_2.DataSource
 
         public async Task<NFC> getNFC(long id)
         {
-            if (appSettings.Contains(id + KEY_DUMMY_NFC_TAGADDRESS))
+            if (appSettings.Contains(id + KEY_DUMMY_NFC_ADDRESSID))
             {
-                long userId = Convert.ToInt64(appSettings[id + KEY_DUMMY_NFC_USER_ID] as String);
+                long employeeId = Convert.ToInt64(appSettings[id + KEY_DUMMY_NFC_EMPLOYEE_ID] as String);
                 Boolean rangeCheck = Convert.ToBoolean(appSettings[id + KEY_DUMMY_NFC_RANGECHECK] as String);
-                String tagAddress = appSettings[id + KEY_DUMMY_NFC_TAGADDRESS] as String;
+                String addressId = appSettings[id + KEY_DUMMY_NFC_ADDRESSID] as String;
                 DateTime time = DateTime.Parse(appSettings[id + KEY_DUMMY_NFC_TIME] as String, CultureInfo.InvariantCulture);
-                User user = await getUser(userId);
-                return new NFC(rangeCheck, tagAddress, time, user);
+                return new NFC(rangeCheck, addressId, time, employeeId);
             }
             else
             {

@@ -8,6 +8,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace GryphonSecurity_v2_2.DataSource
 {
     public class Mapper
@@ -25,7 +26,7 @@ namespace GryphonSecurity_v2_2.DataSource
                 //var resultWebservice = await client.GetAsync("http://kragsberger.dk/rest/" + name);
 
                 resultWebservice.EnsureSuccessStatusCode();
-
+                Debug.WriteLine("getEmployee");
                 User user = JsonConvert.DeserializeObject<User>(await resultWebservice.Content.ReadAsStringAsync());
                 return user;
             }
@@ -50,7 +51,6 @@ namespace GryphonSecurity_v2_2.DataSource
         {
             using (HttpClient client = new HttpClient())
             {
-
                 String json = JsonConvert.SerializeObject(alarmReport);
                 var resultWebservice = await client.PostAsync("http://kragsberger.dk/GryphonSecurityRestFullWebservice/webServices/createAlarmReport.php/", new StringContent(json, Encoding.UTF8, "application/json"));
                 //var resultWebservice = await client.GetAsync("http://kragsberger.dk/rest/" + name);
@@ -83,23 +83,29 @@ namespace GryphonSecurity_v2_2.DataSource
             using (HttpClient client = new HttpClient())
             {
                 String json = JsonConvert.SerializeObject(id);
+                Debug.WriteLine("MAPPER 1");
                 var resultWebservice = await client.PostAsync("http://kragsberger.dk/GryphonSecurityRestFullWebservice/webServices/getAddress.php/", new StringContent(json, Encoding.UTF8, "application/json"));
                 //var resultWebservice = await client.GetAsync("http://kragsberger.dk/rest/" + name);
+                Debug.WriteLine("MAPPER 2");
                 resultWebservice.EnsureSuccessStatusCode();
+                Debug.WriteLine("MAPPER 3");
                 Address result = JsonConvert.DeserializeObject<Address>(await resultWebservice.Content.ReadAsStringAsync());
+                Debug.WriteLine("MAPPER 4");
                 return result;
             }
         }
 
         public async Task<Boolean> createNFC(NFC nfc)
         {
+            Debug.WriteLine("NFC "+ nfc.Time);
             using (HttpClient client = new HttpClient())
             {
                 String json = JsonConvert.SerializeObject(nfc);
-                var resultWebservice = await client.PostAsync("http://kragsberger.dk/GryphonSecurityRestFullWebservice/webServices/getAddress.php/", new StringContent(json, Encoding.UTF8, "application/json"));
+                var resultWebservice = await client.PostAsync("http://kragsberger.dk/GryphonSecurityRestFullWebservice/webServices/createNFC.php/", new StringContent(json, Encoding.UTF8, "application/json"));
                 //var resultWebservice = await client.GetAsync("http://kragsberger.dk/rest/" + name);
                 resultWebservice.EnsureSuccessStatusCode();
                 Boolean result = Convert.ToBoolean(JsonConvert.DeserializeObject<String>(await resultWebservice.Content.ReadAsStringAsync()));
+                Debug.WriteLine("Result from createNFC " + result);
                 return result;
             }
         }
@@ -109,10 +115,11 @@ namespace GryphonSecurity_v2_2.DataSource
             using (HttpClient client = new HttpClient())
             {
                 String json = JsonConvert.SerializeObject(nfcs);
-                var resultWebservice = await client.PostAsync("http://kragsberger.dk/GryphonSecurityRestFullWebservice/webServices/getAddress.php/", new StringContent(json, Encoding.UTF8, "application/json"));
+                var resultWebservice = await client.PostAsync("http://kragsberger.dk/GryphonSecurityRestFullWebservice/webServices/createNFCs.php/", new StringContent(json, Encoding.UTF8, "application/json"));
                 //var resultWebservice = await client.GetAsync("http://kragsberger.dk/rest/" + name);
                 resultWebservice.EnsureSuccessStatusCode();
                 Boolean result = Convert.ToBoolean(JsonConvert.DeserializeObject<String>(await resultWebservice.Content.ReadAsStringAsync()));
+                Debug.WriteLine("Result from createNFCs "+result);
                 return result;
             }
         }

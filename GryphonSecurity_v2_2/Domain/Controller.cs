@@ -128,8 +128,10 @@ namespace GryphonSecurity_v2_2.Domain
         {
             String identifier = getUriIdentifier(payload[0]);
             String uri = Encoding.UTF8.GetString(payload, 1, payload.Length - 1);
-            String fullUri = identifier + uri;
-            return fullUri;
+            String[] split = new String[] { "hash=" };
+            String[] parts = uri.Split(split, StringSplitOptions.None);
+            String id = parts[1];
+            return id;
         }
 
         private String getText(byte[] payload)
@@ -342,7 +344,7 @@ namespace GryphonSecurity_v2_2.Domain
                 {
                     rangeCheck = true;
                 }
-                check = await dBFacade.createNFC(new NFC(rangeCheck, tagAddress, DateTime.Now, dBFacade.getLocalStorageUser()));
+                check = await dBFacade.createNFC(new NFC(rangeCheck, tagAddress, DateTime.Now, dBFacade.getLocalStorageUser().Id));
                    
             }
             else

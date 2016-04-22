@@ -47,6 +47,7 @@ namespace GryphonSecurity_v2_2.DataSource
         private String KEY_REPORT_TECHNICALERROR = "REPORT_TECHNICALERROR";
         private String KEY_REPORT_UNKNOWNREASON = "REPORT_UNKNOWNREASON";
         private String KEY_REPORT_OTHER = "REPORT_OTHER";
+        private String KEY_REPORT_REASONCODEID = "REPORT_REASONCODEID";
         private String KEY_REPORT_CANCELDURINGEMERGENCY = "REPORT_CANCELDURINGEMERGENCY";
         private String KEY_REPORT_CANCELDURINGEMERGENCYTIME = "REPORT_CANCELDURINGEMERGENCYTIME";
         private String KEY_REPORT_COVERMADE = "REPORT_COVERMADE";
@@ -78,6 +79,7 @@ namespace GryphonSecurity_v2_2.DataSource
         private String KEY_TEMP_REPORT_TECHNICALERROR = "TEMP_REPORT_TECHNICALERROR";
         private String KEY_TEMP_REPORT_UNKNOWNREASON = "TEMP_REPORT_UNKNOWNREASON";
         private String KEY_TEMP_REPORT_OTHER = "TEMP_REPORT_OTHER";
+        private String KEY_TEMP_REPORT_REASONCODEID = "TEMP_REPORT_REASONCODEID";
         private String KEY_TEMP_REPORT_CANCELDURINGEMERGENCY = "TEMP_REPORT_CANCELDURINGEMERGENCY";
         private String KEY_TEMP_REPORT_CANCELDURINGEMERGENCYTIME = "TEMP_REPORT_CANCELDURINGEMERGENCYTIME";
         private String KEY_TEMP_REPORT_COVERMADE = "TEMP_REPORT_COVERMADE";
@@ -92,7 +94,7 @@ namespace GryphonSecurity_v2_2.DataSource
         private String KEY_TEMP_REPORT_ARRIVEDAT = "TEMP_REPORT_ARRIVEDAT";
         private String KEY_TEMP_REPORT_DONE = "TEMP_REPORT_DONE";
 
-        private String KEY_NFC_TAGADDRESS = "NFC_TAGADDRESS";
+        private String KEY_NFC_ADDRESSID = "NFC_ADDRESSID";
         private String KEY_NFC_PRESENTLATITUDE = "NFC_PRESENTLATITUDE";
         private String KEY_NFC_PRESENTLONGITUDE = "NFC_PRESENTLONGITUDE";
 
@@ -334,6 +336,7 @@ namespace GryphonSecurity_v2_2.DataSource
                 appSettings.Add(id + KEY_REPORT_TECHNICALERROR, alarmReport.TechnicalError + "");
                 appSettings.Add(id + KEY_REPORT_UNKNOWNREASON, alarmReport.UnknownReason + "");
                 appSettings.Add(id + KEY_REPORT_OTHER, alarmReport.Other + "");
+                appSettings.Add(id + KEY_REPORT_REASONCODEID, alarmReport.ReasonCodeId + "");
                 appSettings.Add(id + KEY_REPORT_CANCELDURINGEMERGENCY, alarmReport.CancelDuringEmergency + "");
                 appSettings.Add(id + KEY_REPORT_CANCELDURINGEMERGENCYTIME, alarmReport.CancelDuringEmergencyTime + "");
                 appSettings.Add(id + KEY_REPORT_COVERMADE, alarmReport.CoverMade + "");
@@ -373,8 +376,8 @@ namespace GryphonSecurity_v2_2.DataSource
                     int zipCode = Convert.ToInt32(appSettings[id + KEY_REPORT_ZIPCODE] as String);
                     String city = appSettings[id + KEY_REPORT_CITY] as String;
                     long phonenumber = Convert.ToInt64(appSettings[id + KEY_REPORT_PHONENUMBER] as String);
-                    DateTime date = Convert.ToDateTime(appSettings[id + KEY_REPORT_DATE] as String);
-                    DateTime time = Convert.ToDateTime(appSettings[id + KEY_REPORT_TIME] as String);
+                    String date = appSettings[id + KEY_REPORT_DATE] as String;
+                    String time = appSettings[id + KEY_REPORT_TIME] as String;
                     String zone = appSettings[id + KEY_REPORT_ZONE] as String;
                     Boolean burglaryVandalism = Convert.ToBoolean(appSettings[id + KEY_REPORT_BURGLARYVANDALISM] as String);
                     Boolean windowDoorClosed = Convert.ToBoolean(appSettings[id + KEY_REPORT_WINDOWDOORCLOSED] as String);
@@ -384,23 +387,24 @@ namespace GryphonSecurity_v2_2.DataSource
                     Boolean technicalError = Convert.ToBoolean(appSettings[id + KEY_REPORT_TECHNICALERROR] as String);
                     Boolean unknownReason = Convert.ToBoolean(appSettings[id + KEY_REPORT_UNKNOWNREASON] as String);
                     Boolean other = Convert.ToBoolean(appSettings[id + KEY_REPORT_OTHER] as String);
+                    int reasonCodeId = Convert.ToInt32(appSettings[id + KEY_REPORT_REASONCODEID] as String);
                     Boolean cancelDuringEmergency = Convert.ToBoolean(appSettings[id + KEY_REPORT_CANCELDURINGEMERGENCY] as String);
-                    DateTime cancelDuringEmergencyTime = DateTime.Parse(appSettings[id + KEY_REPORT_CANCELDURINGEMERGENCYTIME] as String);
+                    String cancelDuringEmergencyTime = appSettings[id + KEY_REPORT_CANCELDURINGEMERGENCYTIME] as String;
                     Boolean coverMade = Convert.ToBoolean(appSettings[id + KEY_REPORT_COVERMADE] as String);
                     String coverMadeBy = appSettings[id + KEY_REPORT_COVERMADEBY] as String;
                     String remark = appSettings[id + KEY_REPORT_REMARK] as String;
                     String name = appSettings[id + KEY_REPORT_NAME] as String;
                     String installer = appSettings[id + KEY_REPORT_INSTALLER] as String;
                     String controlCenter = appSettings[id + KEY_REPORT_CONTROLCENTER] as String;
-                    DateTime guardRadioedDate = Convert.ToDateTime(appSettings[id + KEY_REPORT_GUARDRADIOEDDATE] as String);
-                    DateTime guardRadioedFrom = Convert.ToDateTime(appSettings[id + KEY_REPORT_GUARDRADIOEDFROM] as String);
-                    DateTime guardRadioedTo = Convert.ToDateTime(appSettings[id + KEY_REPORT_GUARDRADIOEDTO] as String);
-                    DateTime arrivedAt = Convert.ToDateTime(appSettings[id + KEY_REPORT_ARRIVEDAT] as String);
-                    DateTime done = Convert.ToDateTime(appSettings[id + KEY_REPORT_DONE] as String);
+                    String guardRadioedDate = appSettings[id + KEY_REPORT_GUARDRADIOEDDATE] as String;
+                    String guardRadioedFrom = appSettings[id + KEY_REPORT_GUARDRADIOEDFROM] as String;
+                    String guardRadioedTo = appSettings[id + KEY_REPORT_GUARDRADIOEDTO] as String;
+                    String arrivedAt = appSettings[id + KEY_REPORT_ARRIVEDAT] as String;
+                    String done = appSettings[id + KEY_REPORT_DONE] as String;
                     alarmReports.Add(new AlarmReport(customerName, customerNumber, streetAndHouseNumber, zipCode, city, phonenumber, date, time, zone, burglaryVandalism,
-                                            windowDoorClosed, apprehendedPerson, staffError, nothingToReport, technicalError, unknownReason, other, cancelDuringEmergency, 
+                                            windowDoorClosed, apprehendedPerson, staffError, nothingToReport, technicalError, unknownReason, other, reasonCodeId, cancelDuringEmergency, 
                                             cancelDuringEmergencyTime, coverMade, coverMadeBy, remark, name, installer, controlCenter, guardRadioedDate, guardRadioedFrom, 
-                                            guardRadioedTo, arrivedAt, done, getUser()));
+                                            guardRadioedTo, arrivedAt, done, getUser().Id));
                 }
             }
 
@@ -434,6 +438,7 @@ namespace GryphonSecurity_v2_2.DataSource
                     appSettings.Remove(id + KEY_REPORT_TECHNICALERROR);
                     appSettings.Remove(id + KEY_REPORT_UNKNOWNREASON);
                     appSettings.Remove(id + KEY_REPORT_OTHER);
+                    appSettings.Remove(id + KEY_REPORT_REASONCODEID);
                     appSettings.Remove(id + KEY_REPORT_CANCELDURINGEMERGENCY);
                     appSettings.Remove(id + KEY_REPORT_CANCELDURINGEMERGENCYTIME);
                     appSettings.Remove(id + KEY_REPORT_COVERMADE);
@@ -456,14 +461,14 @@ namespace GryphonSecurity_v2_2.DataSource
             return itemsRemoved;
         }
 
-        public Boolean createNFC(double presentLatitude, double presentLongitude, String tagAddress)
+        public Boolean createNFC(double presentLatitude, double presentLongitude, String addressId)
         {
             long NFCId = getNextNfcId();
             try
             {
                 appSettings.Add(NFCId + KEY_NFC_PRESENTLATITUDE, presentLatitude + "");
                 appSettings.Add(NFCId + KEY_NFC_PRESENTLONGITUDE, presentLongitude + "");
-                appSettings.Add(NFCId + KEY_NFC_TAGADDRESS, tagAddress);
+                appSettings.Add(NFCId + KEY_NFC_ADDRESSID, addressId);
 
                 appSettings.Save();
                 addNumberOfNFCs();
@@ -488,7 +493,7 @@ namespace GryphonSecurity_v2_2.DataSource
                     id = i + 1;
                     String presentLatitude = appSettings[id + KEY_NFC_PRESENTLATITUDE] as String;
                     String presentLongitude = appSettings[id + KEY_NFC_PRESENTLONGITUDE] as String;
-                    String tagAddress = appSettings[id + KEY_NFC_TAGADDRESS] as String;
+                    String tagAddress = appSettings[id + KEY_NFC_ADDRESSID] as String;
                     items.Add(presentLatitude);
                     items.Add(presentLongitude);
                     items.Add(tagAddress);
@@ -509,7 +514,7 @@ namespace GryphonSecurity_v2_2.DataSource
                     id = i + 1;
                     appSettings.Remove(id + KEY_NFC_PRESENTLATITUDE);
                     appSettings.Remove(id + KEY_NFC_PRESENTLONGITUDE);
-                    appSettings.Remove(id + KEY_NFC_TAGADDRESS);
+                    appSettings.Remove(id + KEY_NFC_ADDRESSID);
                 }
                 itemsRemoved = true;
                 appSettings.Remove(KEY_ID_NFC);
@@ -541,6 +546,7 @@ namespace GryphonSecurity_v2_2.DataSource
                 appSettings.Add(id + KEY_TEMP_REPORT_TECHNICALERROR, alarmReport.TechnicalError + "");
                 appSettings.Add(id + KEY_TEMP_REPORT_UNKNOWNREASON, alarmReport.UnknownReason + "");
                 appSettings.Add(id + KEY_TEMP_REPORT_OTHER, alarmReport.Other + "");
+                appSettings.Add(id + KEY_TEMP_REPORT_REASONCODEID, alarmReport.ReasonCodeId + "");
                 appSettings.Add(id + KEY_TEMP_REPORT_CANCELDURINGEMERGENCY, alarmReport.CancelDuringEmergency + "");
                 appSettings.Add(id + KEY_TEMP_REPORT_CANCELDURINGEMERGENCYTIME, alarmReport.CancelDuringEmergencyTime + "");
                 appSettings.Add(id + KEY_TEMP_REPORT_COVERMADE, alarmReport.CoverMade + "");
@@ -601,8 +607,8 @@ namespace GryphonSecurity_v2_2.DataSource
                         int zipCode = Convert.ToInt32(appSettings[id + KEY_TEMP_REPORT_ZIPCODE] as String);
                         String city = appSettings[id + KEY_TEMP_REPORT_CITY] as String;
                         long phonenumber = Convert.ToInt64(appSettings[id + KEY_TEMP_REPORT_PHONENUMBER] as String);
-                        DateTime date = Convert.ToDateTime(appSettings[id + KEY_TEMP_REPORT_DATE] as String);
-                        DateTime time = Convert.ToDateTime(appSettings[id + KEY_TEMP_REPORT_TIME] as String);
+                        String date = appSettings[id + KEY_TEMP_REPORT_DATE] as String;
+                        String time = appSettings[id + KEY_TEMP_REPORT_TIME] as String;
                         String zone = appSettings[id + KEY_TEMP_REPORT_ZONE] as String;
                         Boolean burglaryVandalism = Convert.ToBoolean(appSettings[id + KEY_TEMP_REPORT_BURGLARYVANDALISM] as String);
                         Boolean windowDoorClosed = Convert.ToBoolean(appSettings[id + KEY_TEMP_REPORT_WINDOWDOORCLOSED] as String);
@@ -612,23 +618,24 @@ namespace GryphonSecurity_v2_2.DataSource
                         Boolean technicalError = Convert.ToBoolean(appSettings[id + KEY_TEMP_REPORT_TECHNICALERROR] as String);
                         Boolean unknownReason = Convert.ToBoolean(appSettings[id + KEY_TEMP_REPORT_UNKNOWNREASON] as String);
                         Boolean other = Convert.ToBoolean(appSettings[id + KEY_TEMP_REPORT_OTHER] as String);
+                        int reasonCodeId = Convert.ToInt32(appSettings[id + KEY_TEMP_REPORT_REASONCODEID] as String);
                         Boolean cancelDuringEmergency = Convert.ToBoolean(appSettings[id + KEY_TEMP_REPORT_CANCELDURINGEMERGENCY] as String);
-                        DateTime cancelDuringEmergencyTime = DateTime.Parse(appSettings[id + KEY_TEMP_REPORT_CANCELDURINGEMERGENCYTIME] as String);
+                        String cancelDuringEmergencyTime = appSettings[id + KEY_TEMP_REPORT_CANCELDURINGEMERGENCYTIME] as String;
                         Boolean coverMade = Convert.ToBoolean(appSettings[id + KEY_TEMP_REPORT_COVERMADE] as String);
                         String coverMadeBy = appSettings[id + KEY_TEMP_REPORT_COVERMADEBY] as String;
                         String remark = appSettings[id + KEY_TEMP_REPORT_REMARK] as String;
                         String name = appSettings[id + KEY_TEMP_REPORT_NAME] as String;
                         String installer = appSettings[id + KEY_TEMP_REPORT_INSTALLER] as String;
                         String controlCenter = appSettings[id + KEY_TEMP_REPORT_CONTROLCENTER] as String;
-                        DateTime guardRadioedDate = Convert.ToDateTime(appSettings[id + KEY_TEMP_REPORT_GUARDRADIOEDDATE] as String);
-                        DateTime guardRadioedFrom = Convert.ToDateTime(appSettings[id + KEY_TEMP_REPORT_GUARDRADIOEDFROM] as String);
-                        DateTime guardRadioedTo = Convert.ToDateTime(appSettings[id + KEY_TEMP_REPORT_GUARDRADIOEDTO] as String);
-                        DateTime arrivedAt = Convert.ToDateTime(appSettings[id + KEY_TEMP_REPORT_ARRIVEDAT] as String);
-                        DateTime done = Convert.ToDateTime(appSettings[id + KEY_TEMP_REPORT_DONE] as String);
+                        String guardRadioedDate = appSettings[id + KEY_TEMP_REPORT_GUARDRADIOEDDATE] as String;
+                        String guardRadioedFrom = appSettings[id + KEY_TEMP_REPORT_GUARDRADIOEDFROM] as String;
+                        String guardRadioedTo = appSettings[id + KEY_TEMP_REPORT_GUARDRADIOEDTO] as String;
+                        String arrivedAt = appSettings[id + KEY_TEMP_REPORT_ARRIVEDAT] as String;
+                        String done = appSettings[id + KEY_TEMP_REPORT_DONE] as String;
                         AlarmReport alarmReport = new AlarmReport(customerName, customerNumber, streetAndHouseNumber, zipCode, city, phonenumber, date, time, zone, burglaryVandalism,
-                                                windowDoorClosed, apprehendedPerson, staffError, nothingToReport, technicalError, unknownReason, other, cancelDuringEmergency, 
+                                                windowDoorClosed, apprehendedPerson, staffError, nothingToReport, technicalError, unknownReason, other, reasonCodeId, cancelDuringEmergency, 
                                                 cancelDuringEmergencyTime, coverMade, coverMadeBy, remark, name, installer, controlCenter, guardRadioedDate, guardRadioedFrom, 
-                                                guardRadioedTo, arrivedAt, done, getUser());
+                                                guardRadioedTo, arrivedAt, done, getUser().Id);
                         return alarmReport;
                     }
                 }
@@ -669,6 +676,7 @@ namespace GryphonSecurity_v2_2.DataSource
                     appSettings.Remove(currentId + KEY_TEMP_REPORT_TECHNICALERROR);
                     appSettings.Remove(currentId + KEY_TEMP_REPORT_UNKNOWNREASON);
                     appSettings.Remove(currentId + KEY_TEMP_REPORT_OTHER);
+                    appSettings.Remove(currentId + KEY_TEMP_REPORT_REASONCODEID);
                     appSettings.Remove(currentId + KEY_TEMP_REPORT_CANCELDURINGEMERGENCY);
                     appSettings.Remove(currentId + KEY_TEMP_REPORT_CANCELDURINGEMERGENCYTIME);
                     appSettings.Remove(currentId + KEY_TEMP_REPORT_COVERMADE);
