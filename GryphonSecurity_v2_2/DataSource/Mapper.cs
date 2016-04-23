@@ -40,9 +40,9 @@ namespace GryphonSecurity_v2_2.DataSource
                 String json = JsonConvert.SerializeObject(id);
                 var resultWebservice = await client.PostAsync("http://kragsberger.dk/GryphonSecurityRestFullWebservice/webServices/getCustomer.php/", new StringContent(json, Encoding.UTF8, "application/json"));
                 //var resultWebservice = await client.GetAsync("http://kragsberger.dk/rest/" + name);
-
                 resultWebservice.EnsureSuccessStatusCode();
                 Customer customer = JsonConvert.DeserializeObject<Customer>(await resultWebservice.Content.ReadAsStringAsync());
+                Debug.WriteLine("GetCustomer");
                 return customer;
             }
         }
@@ -51,6 +51,7 @@ namespace GryphonSecurity_v2_2.DataSource
         {
             using (HttpClient client = new HttpClient())
             {
+                Debug.WriteLine("createAlarmRapport");
                 String json = JsonConvert.SerializeObject(alarmReport);
                 var resultWebservice = await client.PostAsync("http://kragsberger.dk/GryphonSecurityRestFullWebservice/webServices/createAlarmReport.php/", new StringContent(json, Encoding.UTF8, "application/json"));
                 //var resultWebservice = await client.GetAsync("http://kragsberger.dk/rest/" + name);
@@ -133,6 +134,7 @@ namespace GryphonSecurity_v2_2.DataSource
                 //var resultWebservice = await client.GetAsync("http://kragsberger.dk/rest/" + name);
                 resultWebservice.EnsureSuccessStatusCode();
                 Boolean result = Convert.ToBoolean(JsonConvert.DeserializeObject<String>(await resultWebservice.Content.ReadAsStringAsync()));
+                Debug.WriteLine("createCustomer + result " + result);
                 return result;
             }
 
@@ -147,6 +149,7 @@ namespace GryphonSecurity_v2_2.DataSource
                 //var resultWebservice = await client.GetAsync("http://kragsberger.dk/rest/" + name);
                 resultWebservice.EnsureSuccessStatusCode();
                 Boolean result = Convert.ToBoolean(JsonConvert.DeserializeObject<String>(await resultWebservice.Content.ReadAsStringAsync()));
+                Debug.WriteLine("createCustomers + result " + result);
                 return result;
             }
 

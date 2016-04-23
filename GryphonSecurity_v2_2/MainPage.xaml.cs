@@ -22,6 +22,7 @@ namespace GryphonSecurity_v2_2
         private Windows.Networking.Proximity.ProximityDevice device;
         private long deviceId;
         private Boolean isConnected = false;
+        private Boolean isAlarmReportEmpty = true;
 
         // Constructor
         public MainPage()
@@ -34,9 +35,103 @@ namespace GryphonSecurity_v2_2
             BuildLocalizedApplicationBar();
         }
 
+        public Boolean checkIfAlarmReportIsEmpty()
+        {
+            Boolean check = false;
+            if (!textBoxCustomerName.Text.Equals(""))
+            {
+                return false;
+            }
+            if (!textBoxCustomerNumber.Text.Equals(""))
+            {
+                return false;
+            }
+            if (!textBoxStreetAndHouseNumber.Text.Equals(""))
+            {
+                return false;
+            }
+            if (!textBoxZipCode.Text.Equals(""))
+            {
+                return false;
+            }
+            if (!textBoxCity.Text.Equals(""))
+            {
+                return false;
+            }
+
+            if (!textBoxPhonenumber.Text.Equals(""))
+            {
+                return false;
+            }
+            if (!textBoxZone.Text.Equals(""))
+            {
+                return false;
+            }
+
+            if ((Boolean)checkBoxBurglaryVandalism.IsChecked)
+            {
+                return false;
+            }
+            if ((Boolean)checkBoxWindowDoorClosed.IsChecked)
+            {
+                return false;
+            }
+            if ((Boolean)checkBoxApprehendedPerson.IsChecked)
+            {
+                return false;
+            }
+            if ((Boolean)checkBoxStaffError.IsChecked)
+            {
+                return false;
+            }
+            if ((Boolean)checkBoxNothingToReport.IsChecked)
+            {
+                return false;
+            }
+            if ((Boolean)checkBoxTechnicalError.IsChecked)
+            {
+                return false;
+            }
+            if ((Boolean)checkBoxUnknownReason.IsChecked)
+            {
+                return false;
+            }
+            if ((Boolean)checkBoxOther.IsChecked)
+            {
+                return false;
+            }
+            if ((Boolean)checkBoxCancelsDuringEmergency.IsChecked)
+            {
+                return false;
+            }
+            if ((Boolean)checkBoxCoverMade.IsChecked)
+            {
+                return false;
+            }
+            if (!textBoxCoverMadeBy.Text.Equals(""))
+            {
+                return false;
+            }
+            if (!textBoxRemark.Text.Equals(""))
+            {
+                return false;
+            }
+            if (!textBoxInstaller.Text.Equals(""))
+            {
+                return false;
+            }
+            if (!textBoxControlCenter.Text.Equals(""))
+            {
+                return false;
+            }
+            return true;
+        }
+
+
         public async Task<Boolean> checkAlarmReport()
         {
             Boolean check = true;
+            Boolean isConnected = controller.checkNetworkConnection();
             if (textBoxCustomerName.Text.Equals(""))
             {
                 check = false;
@@ -79,7 +174,6 @@ namespace GryphonSecurity_v2_2
             String dateTB = date.ToString("yyyy-MM-dd");
             DateTime time = (DateTime)textBoxTime.Value;
             String timeTB = time.ToString("H:mm:ss");
-            Debug.WriteLine("TIME "+timeTB);
             String zoneTB = textBoxZone.Text;
 
             Boolean burglaryVandalismCB = (Boolean)checkBoxBurglaryVandalism.IsChecked;
@@ -92,9 +186,7 @@ namespace GryphonSecurity_v2_2
             Boolean otherCB = (Boolean)checkBoxOther.IsChecked;
             int reasonCodeId = 000;
             Boolean cancelDuringEmergencyCB = (Boolean)checkBoxCancelsDuringEmergency.IsChecked;
-            Debug.WriteLine("hello " + cancelDuringEmergencyCB);
             String cancelDuringEmergencyTimeTP = null;
-            Debug.WriteLine("world");
             if (cancelDuringEmergencyCB)
             {
                 if (timeBoxCanceledDuringEmergencyTime.Value.Equals(null))
@@ -144,17 +236,49 @@ namespace GryphonSecurity_v2_2
             String doneTB = done.ToString("H:mm:ss");
             if (check)
             {
-                if (await controller.createAlarmReport(new AlarmReport(customerNameTB, customerNumberTB, streetAndHouseNumberTB, zipCodeTB, cityTB, phonenumberTB, dateTB, timeTB, zoneTB, burglaryVandalismCB,
-                                            windowDoorClosedCB, apprehendedPersonCB, staffErrorCB, nothingToReportCB, technicalErrorCB, unknownReasonCB, otherCB, reasonCodeId, cancelDuringEmergencyCB, cancelDuringEmergencyTimeTP, 
-                                            coverMadeCB, coverMadeByTB, remarkTB, nameTB, installerTB, controlCenterTB, guardRadioedDateTB, guardRadioedFromTB, guardRadioedToTB, arrivedAtTB, doneTB, controller.getUser().Id)))
+                AlarmReport alarmReport = new AlarmReport(customerNameTB, customerNumberTB, streetAndHouseNumberTB, zipCodeTB, cityTB, phonenumberTB, dateTB, timeTB, zoneTB, burglaryVandalismCB,
+                                            windowDoorClosedCB, apprehendedPersonCB, staffErrorCB, nothingToReportCB, technicalErrorCB, unknownReasonCB, otherCB, reasonCodeId, cancelDuringEmergencyCB, cancelDuringEmergencyTimeTP,
+                                            coverMadeCB, coverMadeByTB, remarkTB, nameTB, installerTB, controlCenterTB, guardRadioedDateTB, guardRadioedFromTB, guardRadioedToTB, arrivedAtTB, doneTB, controller.getUser().Id);
+                if (isConnected)
                 {
-                    emptyAlarmReport();
-                    MessageBox.Show(AppResources.ReportAlarmReportSuccess);
+                    if (await controller.createAlarmReport(alarmReport))
+                    {
+                        emptyAlarmReport();
+                        isAlarmReportEmpty = true;
+                        MessageBox.Show(AppResources.ReportAlarmReportSuccess);
+                    }
+                    else
+                    {
+                        isAlarmReportEmpty = false;
+                        if (controller.createLocalStorageAlarmReport(alarmReport))
+                        {
+                            emptyAlarmReport();
+                            isAlarmReportEmpty = true;
+                            MessageBox.Show(AppResources.ErrorInBackend + "\r\n" + AppResources.ReportAlarmReportLocalStorageSuccess);
+                        }
+                        else
+                        {
+                            isAlarmReportEmpty = false;
+                            MessageBox.Show(AppResources.ReportAlarmReportLocalStorageFailed);
+                        }
+                    }
                 }
                 else
                 {
-                    MessageBox.Show(AppResources.ReportAlarmReportFailed);
+                    if (controller.createLocalStorageAlarmReport(alarmReport))
+                    {
+                        emptyAlarmReport();
+                        isAlarmReportEmpty = true;
+                        MessageBox.Show(AppResources.ReportAlarmReportLocalStorageSuccess);
+                    }
+                    else
+                    {
+                        isAlarmReportEmpty = false;
+                        MessageBox.Show(AppResources.ReportAlarmReportLocalStorageFailed);
+                    }
                 }
+
+                
             }
             else
             {
@@ -241,6 +365,7 @@ namespace GryphonSecurity_v2_2
 
         private async void gps(String tagAddress, Boolean isConnected)
         {
+            Debug.WriteLine("isConnected " + isConnected);
             String address = await controller.onLocationScan(tagAddress, isConnected);
             long number;
             if(!Int64.TryParse(address, out number))
@@ -281,7 +406,7 @@ namespace GryphonSecurity_v2_2
             textBoxDone.Value = DateTime.Now;
         }
 
-        private async void Pivot_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void Pivot_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             try
             {
@@ -296,11 +421,11 @@ namespace GryphonSecurity_v2_2
                         textBoxName.Text = user.Firstname + " " + user.Lastname;
                     }
                     device.StopSubscribingForMessage(deviceId);
-                    if (! await checkAlarmReport())
+                    if (checkIfAlarmReportIsEmpty())
                     {
                         updateAlarmReportDateTime();
                     }
-                } else if(pivot.SelectedIndex == 2)
+                } else if(pivot.SelectedIndex == 3)
                 {
                     device.StopSubscribingForMessage(deviceId);
                     int nfcs = controller.getLocalStorageNFCs();
@@ -469,7 +594,7 @@ namespace GryphonSecurity_v2_2
             if (cancelDuringEmergencyCB)
             {
                 DateTime cancelDuringEmergencyTime = (DateTime)timeBoxCanceledDuringEmergencyTime.Value;
-                cancelDuringEmergencyTimeTP = cancelDuringEmergencyTime.ToString("h:mm tt");
+                cancelDuringEmergencyTimeTP = cancelDuringEmergencyTime.ToString("h:mm:ss");
             } 
             Boolean coverMadeCB = (Boolean)checkBoxCoverMade.IsChecked;
             String coverMadeByTB = textBoxCoverMadeBy.Text;
@@ -495,9 +620,11 @@ namespace GryphonSecurity_v2_2
             {
                 MessageBox.Show(AppResources.ReportAlarmReportLocalStorageSuccess);
                 emptyAlarmReport();
+                isAlarmReportEmpty = true;
             }
             else
             {
+                isAlarmReportEmpty = false;
                 MessageBox.Show(AppResources.ReportAlarmReportLocalStorageFailed);
             }
 
@@ -505,18 +632,24 @@ namespace GryphonSecurity_v2_2
 
         private async void searchForCustomerButton_Click(object sender, RoutedEventArgs e)
         {
-            long customerNumber = Convert.ToInt64(textBoxCustomerNumber.Text);
-            Customer customer = await controller.getCustomer(customerNumber);
-            if (!object.ReferenceEquals(customer, null))
-            {
-                textBoxCustomerName.Text = customer.CustomerName;
-                textBoxStreetAndHouseNumber.Text = customer.StreetHouseNumber;
-                textBoxZipCode.Text = customer.ZipCode + "";
-                textBoxCity.Text = customer.City;
-                textBoxPhonenumber.Text = customer.Phonenumber + "";
+            if (controller.checkNetworkConnection())
+            { 
+                long customerNumber = Convert.ToInt64(textBoxCustomerNumber.Text);
+                Customer customer = await controller.getCustomer(customerNumber);
+                if (!object.ReferenceEquals(customer, null))
+                {
+                    textBoxCustomerName.Text = customer.CustomerName;
+                    textBoxStreetAndHouseNumber.Text = customer.StreetAndHouseNumber;
+                    textBoxZipCode.Text = customer.ZipCode + "";
+                    textBoxCity.Text = customer.City;
+                    textBoxPhonenumber.Text = customer.Phonenumber + "";
+                } else
+                {
+                    MessageBox.Show(AppResources.ReportCustomerNotFound);
+                }
             } else
             {
-                MessageBox.Show(AppResources.ReportCustomerNotFound);
+                MessageBox.Show(AppResources.NoNetWorkConnection);
             }
         }
 
@@ -578,16 +711,26 @@ namespace GryphonSecurity_v2_2
                 if (isConnected) { 
                     if (await controller.createCustomer(customer))
                     {
+                        emptyCreateCustomer();
                         MessageBox.Show(AppResources.CreateCustomerSuccess);
                     }
                     else
                     {
-                        MessageBox.Show(AppResources.CreateCustomerError);
+                        if (controller.createLocalStorageCustomer(customer))
+                        {
+                            emptyCreateCustomer();
+                            MessageBox.Show(AppResources.NoNetWorkConnection + "\r\n" + AppResources.CreateCustomerLocalSuccess);
+                        }
+                        else
+                        {
+                            MessageBox.Show(AppResources.CreateCustomerError);
+                        }
                     }
                 } else
                 {
                     if(controller.createLocalStorageCustomer(customer))
                     {
+                        emptyCreateCustomer();
                         MessageBox.Show(AppResources.CreateCustomerLocalSuccess);
                     } else
                     {

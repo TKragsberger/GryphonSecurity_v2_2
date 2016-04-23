@@ -77,10 +77,16 @@ namespace GryphonSecurity_v2_2.Domain
             else
             {
                 Debug.WriteLine("TEMP");
-                return dBFacade.createLocalStorageAlarmReport(alarmReport);
+                return false;
             }
 
         }
+
+        public Boolean createLocalStorageAlarmReport(AlarmReport alarmReport)
+        {
+            return dBFacade.createLocalStorageAlarmReport(alarmReport);
+        }
+
         public Boolean createTempAlarmReport(AlarmReport alarmReport)
         {
             return dBFacade.createTempLocalStorageAlarmReport(alarmReport);
@@ -345,6 +351,10 @@ namespace GryphonSecurity_v2_2.Domain
                     rangeCheck = true;
                 }
                 check = await dBFacade.createNFC(new NFC(rangeCheck, tagAddress, DateTime.Now, dBFacade.getLocalStorageUser().Id));
+                if (!check)
+                {
+                    dBFacade.createLocalStorageNFCs(presentCoordinate.Latitude, presentCoordinate.Longitude, tagAddress);
+                }
                    
             }
             else
@@ -355,6 +365,22 @@ namespace GryphonSecurity_v2_2.Domain
 
 
         }
+
+        public NFC checkNFC(GeoCoordinate presentCoordinate, GeoCoordinate targetCoordinates, String tagAddress)
+        {
+            double distance = targetCoordinates.GetDistanceTo(presentCoordinate);
+            Boolean rangeCheck = false;
+            if (distance > 500)
+            {
+                rangeCheck = false;
+            }
+            else
+            {
+                rangeCheck = true;
+            }
+            return new NFC(rangeCheck, tagAddress, DateTime.Now, dBFacade.getLocalStorageUser().Id);
+        }
+
         public void createLocalStorageNFCsTest(double latitude,double longitude, String tagAdress)
         {
             dBFacade.createLocalStorageNFCs(latitude, longitude, tagAdress);
@@ -362,11 +388,10 @@ namespace GryphonSecurity_v2_2.Domain
 
         public bool checkNetworkConnection()
         {
-            NetworkInterfaceType ni = NetworkInterface.NetworkInterfaceType;
             bool IsConnected = false;
-            if ((ni == NetworkInterfaceType.Wireless80211) || (ni == NetworkInterfaceType.MobileBroadbandCdma) || (ni == NetworkInterfaceType.MobileBroadbandGsm))
+            if (NetworkInterface.GetIsNetworkAvailable())
                 IsConnected = true;
-            else if (ni == NetworkInterfaceType.None)
+            else 
                 IsConnected = false;
             return IsConnected;
         }
@@ -400,6 +425,7 @@ namespace GryphonSecurity_v2_2.Domain
         public async Task<Boolean> sendPendingNFCs()
         {
             List<List<String>> tags = dBFacade.getLocalStorageNFCs();
+            List<NFC> nfcs = new List<NFC>();
             check = false;
             foreach (List<String> tag in tags)
             {
@@ -410,8 +436,10 @@ namespace GryphonSecurity_v2_2.Domain
                 double targetLongtitude = address.Longtitude;
                 presentCoordinate = new GeoCoordinate(presentLatitude, presentLongitude);
                 targetCoordinate = new GeoCoordinate(targetLatitude, targetLongtitude);
-                check = await getDistance(presentCoordinate, targetCoordinate, address.AddressName);
+                nfcs.Add(checkNFC(presentCoordinate, targetCoordinate, address.AddressName));
+                //check = await getDistance(presentCoordinate, targetCoordinate, address.AddressName);
             }
+            check = await dBFacade.createNFCs(nfcs);
             dBFacade.removeLocalStorageNFCs();
             return check;
         }

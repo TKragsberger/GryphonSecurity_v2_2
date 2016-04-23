@@ -141,6 +141,9 @@
   <data name="CreateCustomerSuccess" xml:space="preserve">
     <value>Customer created</value>
   </data>
+  <data name="ErrorInBackend" xml:space="preserve">
+    <value>Could not connect to database</value>
+  </data>
   <data name="LayoutTitleAlarmReport" xml:space="preserve">
     <value>Alarm Report</value>
   </data>
@@ -158,6 +161,9 @@
   </data>
   <data name="LayoutTitleScanNFC" xml:space="preserve">
     <value>Scan NFC</value>
+  </data>
+  <data name="NoNetWorkConnection" xml:space="preserve">
+    <value>Error no connection to the internet</value>
   </data>
   <data name="PendingAlarmReports" xml:space="preserve">
     <value>Pending alarmreports: </value>

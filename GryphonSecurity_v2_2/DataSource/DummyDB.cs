@@ -569,7 +569,7 @@ namespace GryphonSecurity_v2_2.DataSource
             {
                 appSettings.Add(id + KEY_DUMMY_CUSTOMER_NAME, customer.CustomerName);
                 appSettings.Add(id + KEY_DUMMY_CUSTOMER_NUMBER, customer.CustomerNumber + "");
-                appSettings.Add(id + KEY_DUMMY_CUSTOMER_STREET_AND_HOUSE_NUMBER, customer.StreetHouseNumber);
+                appSettings.Add(id + KEY_DUMMY_CUSTOMER_STREET_AND_HOUSE_NUMBER, customer.StreetAndHouseNumber);
                 appSettings.Add(id + KEY_DUMMY_CUSTOMER_ZIP_CODE, customer.ZipCode + "");
                 appSettings.Add(id + KEY_DUMMY_CUSTOMER_CITY, customer.City);
                 appSettings.Add(id + KEY_DUMMY_CUSTOMER_PHONENUMBER, customer.Phonenumber + "");

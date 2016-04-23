@@ -133,6 +133,15 @@ namespace GryphonSecurity_v2_2.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not connect to database.
+        /// </summary>
+        public static string ErrorInBackend {
+            get {
+                return ResourceManager.GetString("ErrorInBackend", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Alarm Report.
         /// </summary>
         public static string LayoutTitleAlarmReport {
@@ -183,6 +192,15 @@ namespace GryphonSecurity_v2_2.Resources {
         public static string LayoutTitleScanNFC {
             get {
                 return ResourceManager.GetString("LayoutTitleScanNFC", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error no connection to the internet.
+        /// </summary>
+        public static string NoNetWorkConnection {
+            get {
+                return ResourceManager.GetString("NoNetWorkConnection", resourceCulture);
             }
         }
         

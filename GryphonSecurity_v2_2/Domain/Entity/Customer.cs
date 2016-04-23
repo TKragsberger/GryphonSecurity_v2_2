@@ -10,16 +10,16 @@ namespace GryphonSecurity_v2_2.Domain.Entity
     {
         String customerName;
         long customerNumber;
-        String streetHouseNumber;
+        String streeAndHouseNumber;
         int zipCode;
         String city;
         long phonenumber;
 
-        public Customer(String customerName, long customerNumber, String streetHouseNumber, int zipCode, String city, long phonenumber)
+        public Customer(String customerName, long customerNumber, String streetAndHouseNumber, int zipCode, String city, long phonenumber)
         {
             this.customerName = customerName;
             this.customerNumber = customerNumber;
-            this.streetHouseNumber = streetHouseNumber;
+            this.streeAndHouseNumber = streetAndHouseNumber;
             this.zipCode = zipCode;
             this.city = city;
             this.phonenumber = phonenumber;
@@ -37,10 +37,10 @@ namespace GryphonSecurity_v2_2.Domain.Entity
             set { customerNumber = value; }
         }
 
-        public String StreetHouseNumber
+        public String StreetAndHouseNumber
         {
-            get { return streetHouseNumber; }
-            set { streetHouseNumber = value; }
+            get { return streeAndHouseNumber; }
+            set { streeAndHouseNumber = value; }
         }
 
         public int ZipCode

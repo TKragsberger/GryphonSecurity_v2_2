@@ -47,16 +47,22 @@ namespace GryphonSecurity_v2_2
 
         private async void SearchForUserButton_Click(object sender, RoutedEventArgs e)
         {
-            long id = Convert.ToInt64(textBoxUserId.Text);
-            user = await controller.getUser(id);
-            if (!object.ReferenceEquals(user, null))
+            if (controller.checkNetworkConnection())
             {
-                Firstname.Text = AppResources.UserFirstname + " " + user.Firstname;
-                Lastname.Text = AppResources.UserLastname + " " + user.Lastname;
-            }
-            else
+                long id = Convert.ToInt64(textBoxUserId.Text);
+                user = await controller.getUser(id);
+                if (!object.ReferenceEquals(user, null))
+                {
+                    Firstname.Text = AppResources.UserFirstname + " " + user.Firstname;
+                    Lastname.Text = AppResources.UserLastname + " " + user.Lastname;
+                }
+                else
+                {
+                    MessageBox.Show(AppResources.UserNotFound);
+                }
+            } else
             {
-                MessageBox.Show(AppResources.UserNotFound);
+                MessageBox.Show(AppResources.NoNetWorkConnection);
             }
 
         }

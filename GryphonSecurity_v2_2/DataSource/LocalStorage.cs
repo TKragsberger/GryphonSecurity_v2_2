@@ -316,6 +316,9 @@ namespace GryphonSecurity_v2_2.DataSource
 
         public Boolean createAlarmReport(AlarmReport alarmReport)
         {
+            Debug.WriteLine("----------------------");
+            Debug.WriteLine("createAlarmReport");
+            Debug.WriteLine("----------------------");
             long id = getNextAlarmReportId();
             try
             {
@@ -463,6 +466,9 @@ namespace GryphonSecurity_v2_2.DataSource
 
         public Boolean createNFC(double presentLatitude, double presentLongitude, String addressId)
         {
+            Debug.WriteLine("----------------------");
+            Debug.WriteLine("createNFC");
+            Debug.WriteLine("----------------------");
             long NFCId = getNextNfcId();
             try
             {
@@ -526,6 +532,9 @@ namespace GryphonSecurity_v2_2.DataSource
 
         public Boolean createTempAlarmReport(AlarmReport alarmReport)
         {
+            Debug.WriteLine("----------------------");
+            Debug.WriteLine("createTempAlarmReport");
+            Debug.WriteLine("----------------------");
             long id = getNextTempAlarmReportId();
             try
             {
@@ -714,18 +723,21 @@ namespace GryphonSecurity_v2_2.DataSource
 
         public Boolean createCustomer(Customer customer)
         {
+            Debug.WriteLine("----------------------");
+            Debug.WriteLine("createCreateCustomer");
+            Debug.WriteLine("----------------------");
             long customerId = getNextCustomerId();
             try
             {
                 appSettings.Add(customerId + KEY_CUSTOMER_NAME, customer.CustomerName);
                 appSettings.Add(customerId + KEY_CUSTOMER_NUMBER, customer.CustomerNumber + "");
-                appSettings.Add(customerId + KEY_CUSTOMER_STREET_AND_HOUSE_NUMBER, customer.StreetHouseNumber);
+                appSettings.Add(customerId + KEY_CUSTOMER_STREET_AND_HOUSE_NUMBER, customer.StreetAndHouseNumber);
                 appSettings.Add(customerId + KEY_CUSTOMER_ZIP_CODE, customer.ZipCode + "");
                 appSettings.Add(customerId + KEY_CUSTOMER_CITY, customer.City);
                 appSettings.Add(customerId + KEY_CUSTOMER_PHONENUMBER, customer.Phonenumber);
 
                 appSettings.Save();
-                addNumberOfNFCs();
+                addNumberOfCustomers();
                 return true;
             }
             catch (IsolatedStorageException)
@@ -738,7 +750,7 @@ namespace GryphonSecurity_v2_2.DataSource
         public List<Customer> getCustomers()
         {
             List<Customer> customers = new List<Customer>();
-            int length = currentNumberOfNFCs();
+            int length = currentNumberOfCustomers();
             if (length > 0)
             {
                 for (int i = 0; i < length; i++)
