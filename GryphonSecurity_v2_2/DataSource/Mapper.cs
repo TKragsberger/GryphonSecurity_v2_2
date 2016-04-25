@@ -99,7 +99,9 @@ namespace GryphonSecurity_v2_2.DataSource
                 var resultWebservice = await client.PostAsync("http://kragsberger.dk/GryphonSecurityRestFullWebservice/webServices/getAddress.php/", new StringContent(json, Encoding.UTF8, "application/json"));
                 //var resultWebservice = await client.GetAsync("http://kragsberger.dk/rest/" + name);
                 resultWebservice.EnsureSuccessStatusCode();
+                
                 Boolean result = Convert.ToBoolean(JsonConvert.DeserializeObject<String>(await resultWebservice.Content.ReadAsStringAsync()));
+         
                 return result;
             }
         }
@@ -125,7 +127,9 @@ namespace GryphonSecurity_v2_2.DataSource
                 var resultWebservice = await client.PostAsync("http://kragsberger.dk/GryphonSecurityRestFullWebservice/webServices/createCustomer.php/", new StringContent(json, Encoding.UTF8, "application/json"));
                 //var resultWebservice = await client.GetAsync("http://kragsberger.dk/rest/" + name);
                 resultWebservice.EnsureSuccessStatusCode();
+                Debug.WriteLine("her: " + resultWebservice);
                 Boolean result = Convert.ToBoolean(JsonConvert.DeserializeObject<String>(await resultWebservice.Content.ReadAsStringAsync()));
+                Debug.WriteLine("Result: " + result);
                 return result;
             }
 
