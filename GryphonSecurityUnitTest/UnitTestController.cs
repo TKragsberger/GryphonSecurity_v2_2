@@ -184,7 +184,7 @@ namespace GryphonSecurityTest
             String doneTest = done.ToString("H:mm:ss");
             //ends here.
             alarmReportTest = new AlarmReport(name, 1234567123, "streetAndHouseNumberTest", 1234, "cityTest", 12345678, dateTest,
-                timeTest, "zoneTest", false, false, false, false, false, false, false, false, 000, false, cancelDuringEmergencyTimeTest, false, "", "remarkTest",
+                timeTest, "zoneTest", false, false, false, false, false, false, false, false, "000", false, cancelDuringEmergencyTimeTest, false, "", "remarkTest",
                 "nameTest", "installerTest", "controlCenterTest", guardRadioedDateTest, guardRadioedFromTest, guardRadioedToTest,
                 arrivedAtTest, doneTest, userTest.Id);
         }

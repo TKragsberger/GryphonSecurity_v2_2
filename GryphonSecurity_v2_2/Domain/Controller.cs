@@ -285,8 +285,7 @@ namespace GryphonSecurity_v2_2.Domain
                 double latitude = geoposition.Coordinate.Point.Position.Latitude;
                 double longitude = geoposition.Coordinate.Point.Position.Longitude;
                 presentCoordinate = new GeoCoordinate(latitude, longitude);
-                address = await calcPosition(tagAddress, presentCoordinate, isConnected);
-               
+                address = await calcPosition(tagAddress, presentCoordinate, isConnected);      
             }
             catch (Exception ex)
             {
@@ -318,6 +317,10 @@ namespace GryphonSecurity_v2_2.Domain
                 if (!cts.IsCancellationRequested)
                 {
                     Address address = await dBFacade.getAddress(tagAddress);
+                    if (address == null)
+                    {
+                        return null;
+                    }
                     addressName = address.AddressName;
                     targetCoordinate = new GeoCoordinate(address.Latitude, address.Longtitude);
                     check = await getDistance(presentCoordinate, targetCoordinate, addressName);
@@ -439,8 +442,12 @@ namespace GryphonSecurity_v2_2.Domain
                 nfcs.Add(checkNFC(presentCoordinate, targetCoordinate, address.AddressName));
                 //check = await getDistance(presentCoordinate, targetCoordinate, address.AddressName);
             }
+            Debug.WriteLine("sendPending nfcs");
             check = await dBFacade.createNFCs(nfcs);
-            dBFacade.removeLocalStorageNFCs();
+            if (check)
+            {
+                return dBFacade.removeLocalStorageNFCs();
+            }
             return check;
         }
      
@@ -450,7 +457,7 @@ namespace GryphonSecurity_v2_2.Domain
             Boolean alarmReportCheck = false;
             List<AlarmReport> alarmReports = dBFacade.getLocalStorageAlarmReports();
             alarmReportCheck = await dBFacade.createAlarmReports(alarmReports);
-
+            Debug.WriteLine("sendtPendingAlarmReports");
             if (alarmReportCheck)
             {
                 return dBFacade.removeLocalStorageAlarmReports();
@@ -463,6 +470,13 @@ namespace GryphonSecurity_v2_2.Domain
         {
             Boolean customerCheck = false;
             List<Customer> customers = dBFacade.getLocalStorageCustomers();
+            for (int i = customers.Count-1; i >= 0; i--)
+            {
+                if(await dBFacade.getCustomer(customers[i].CustomerNumber) != null)
+                {
+                    customers.RemoveAt(i);
+                }
+            }
             customerCheck = await dBFacade.createCustomers(customers);
 
             if (customerCheck)

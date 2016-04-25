@@ -133,11 +133,29 @@ namespace GryphonSecurity_v2_2.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Customer id already exist in database.
+        /// </summary>
+        public static string ErrorCreateCustomerExist {
+            get {
+                return ResourceManager.GetString("ErrorCreateCustomerExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Could not connect to database.
         /// </summary>
         public static string ErrorInBackend {
             get {
                 return ResourceManager.GetString("ErrorInBackend", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to NFC id does not exist in database.
+        /// </summary>
+        public static string ErrorNFCTagAddress {
+            get {
+                return ResourceManager.GetString("ErrorNFCTagAddress", resourceCulture);
             }
         }
         
@@ -174,6 +192,15 @@ namespace GryphonSecurity_v2_2.Resources {
         public static string LayoutTitleNavigation {
             get {
                 return ResourceManager.GetString("LayoutTitleNavigation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pending.
+        /// </summary>
+        public static string LayoutTitlePending {
+            get {
+                return ResourceManager.GetString("LayoutTitlePending", resourceCulture);
             }
         }
         
@@ -718,7 +745,7 @@ namespace GryphonSecurity_v2_2.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error in registration.
+        ///   Looks up a localized string similar to Error in registration, user not found in database.
         /// </summary>
         public static string UserRegistrationError {
             get {

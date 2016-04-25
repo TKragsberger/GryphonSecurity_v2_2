@@ -25,7 +25,7 @@ namespace GryphonSecurity_v2_2.Domain.Entity
         Boolean technicalError;
         Boolean unknownReason;
         Boolean other;
-        int reasonCodeId;
+        String reasonCodeId;
         Boolean cancelDuringEmergency;
         String cancelDuringEmergencyTime;
         Boolean coverMade;
@@ -44,7 +44,7 @@ namespace GryphonSecurity_v2_2.Domain.Entity
 
         public AlarmReport(string customerName, long customerNumber, String streetAndHouseNumber, int zipCode, String city, long phonenumber, String date, String time, String zone,
                 Boolean burglaryVandalism, Boolean windowDoorClosed, Boolean apprehendedPerson, Boolean staffError, Boolean nothingToReport, Boolean technicalError, Boolean unknownReason,
-                Boolean other, int reasonCodeId, Boolean cancelDuringEmergency, String cancelDuringEmergencyTime, Boolean coverMade, String coverMadeBy, String remark, String name, 
+                Boolean other, String reasonCodeId, Boolean cancelDuringEmergency, String cancelDuringEmergencyTime, Boolean coverMade, String coverMadeBy, String remark, String name, 
                 String installer, String controlCenter, String guardRadioedDate, String guardRadioedFrom, String guardRadioedTo, String arrivedAt, String done, long employeeId)
         {
             this.customerName = customerName;
@@ -185,7 +185,7 @@ namespace GryphonSecurity_v2_2.Domain.Entity
             set { other = value; }
         }
 
-        public int ReasonCodeId
+        public String ReasonCodeId
         {
             get { return reasonCodeId; }
             set { reasonCodeId = value; }

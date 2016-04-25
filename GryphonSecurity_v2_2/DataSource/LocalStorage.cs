@@ -390,7 +390,7 @@ namespace GryphonSecurity_v2_2.DataSource
                     Boolean technicalError = Convert.ToBoolean(appSettings[id + KEY_REPORT_TECHNICALERROR] as String);
                     Boolean unknownReason = Convert.ToBoolean(appSettings[id + KEY_REPORT_UNKNOWNREASON] as String);
                     Boolean other = Convert.ToBoolean(appSettings[id + KEY_REPORT_OTHER] as String);
-                    int reasonCodeId = Convert.ToInt32(appSettings[id + KEY_REPORT_REASONCODEID] as String);
+                    String reasonCodeId = appSettings[id + KEY_REPORT_REASONCODEID] as String;
                     Boolean cancelDuringEmergency = Convert.ToBoolean(appSettings[id + KEY_REPORT_CANCELDURINGEMERGENCY] as String);
                     String cancelDuringEmergencyTime = appSettings[id + KEY_REPORT_CANCELDURINGEMERGENCYTIME] as String;
                     Boolean coverMade = Convert.ToBoolean(appSettings[id + KEY_REPORT_COVERMADE] as String);
@@ -627,7 +627,7 @@ namespace GryphonSecurity_v2_2.DataSource
                         Boolean technicalError = Convert.ToBoolean(appSettings[id + KEY_TEMP_REPORT_TECHNICALERROR] as String);
                         Boolean unknownReason = Convert.ToBoolean(appSettings[id + KEY_TEMP_REPORT_UNKNOWNREASON] as String);
                         Boolean other = Convert.ToBoolean(appSettings[id + KEY_TEMP_REPORT_OTHER] as String);
-                        int reasonCodeId = Convert.ToInt32(appSettings[id + KEY_TEMP_REPORT_REASONCODEID] as String);
+                        String reasonCodeId = appSettings[id + KEY_TEMP_REPORT_REASONCODEID] as String;
                         Boolean cancelDuringEmergency = Convert.ToBoolean(appSettings[id + KEY_TEMP_REPORT_CANCELDURINGEMERGENCY] as String);
                         String cancelDuringEmergencyTime = appSettings[id + KEY_TEMP_REPORT_CANCELDURINGEMERGENCYTIME] as String;
                         Boolean coverMade = Convert.ToBoolean(appSettings[id + KEY_TEMP_REPORT_COVERMADE] as String);

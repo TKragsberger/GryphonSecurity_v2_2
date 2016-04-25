@@ -86,7 +86,7 @@
                 </StackPanel>
             </phone:PivotItem>
 
-            <phone:PivotItem x:Name="pending" Header="Pending">
+            <phone:PivotItem x:Name="pending" Header="{Binding Path=LocalizedResources.LayoutTitlePending, Source={StaticResource LocalizedStrings}}">
                 <ScrollViewer>
                     <StackPanel Margin="0,0,0,17">
                         <TextBlock x:Name="textBlockPendingNFCScans" HorizontalAlignment="left"  TextWrapping="Wrap" Margin="28,0,28,0" Grid.Row="1" Text="{Binding Path=LocalizedResources.PendingNFC, Source={StaticResource LocalizedStrings}}" VerticalAlignment="Top"/>

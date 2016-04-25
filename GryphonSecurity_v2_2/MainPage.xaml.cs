@@ -184,7 +184,7 @@ namespace GryphonSecurity_v2_2
             Boolean technicalErrorCB = (Boolean)checkBoxTechnicalError.IsChecked;
             Boolean unknownReasonCB = (Boolean)checkBoxUnknownReason.IsChecked;
             Boolean otherCB = (Boolean)checkBoxOther.IsChecked;
-            int reasonCodeId = 000;
+            String reasonCodeId = "000";
             Boolean cancelDuringEmergencyCB = (Boolean)checkBoxCancelsDuringEmergency.IsChecked;
             String cancelDuringEmergencyTimeTP = null;
             if (cancelDuringEmergencyCB)
@@ -367,13 +367,19 @@ namespace GryphonSecurity_v2_2
         {
             Debug.WriteLine("isConnected " + isConnected);
             String address = await controller.onLocationScan(tagAddress, isConnected);
-            long number;
-            if(!Int64.TryParse(address, out number))
+            if(address == null)
             {
-                textBlockNFCScanInformation.Text = AppResources.ScanNFCTagAddress + ": " + address + "\r\n" + AppResources.ScanNFCScanTime + ": " + DateTime.Now;
+                textBlockNFCScanInformation.Text = AppResources.ErrorNFCTagAddress;
             } else
             {
-                textBlockNFCScanInformation.Text = AppResources.ScanNFCTagAddress + ": " + address + "\r\n" + AppResources.ScanNFCScanTime + ": " + DateTime.Now + "\r\n" + AppResources.ScanNFCTempStorage;
+                long number;
+                if(!Int64.TryParse(address, out number))
+                {
+                    textBlockNFCScanInformation.Text = AppResources.ScanNFCTagAddress + ": " + address + "\r\n" + AppResources.ScanNFCScanTime + ": " + DateTime.Now;
+                } else
+                {
+                    textBlockNFCScanInformation.Text = AppResources.ScanNFCTagAddress + ": " + address + "\r\n" + AppResources.ScanNFCScanTime + ": " + DateTime.Now + "\r\n" + AppResources.ScanNFCTempStorage;
+                }
             }
         }
 
@@ -588,7 +594,7 @@ namespace GryphonSecurity_v2_2
             Boolean technicalErrorCB = (Boolean)checkBoxTechnicalError.IsChecked;
             Boolean unknownReasonCB = (Boolean)checkBoxUnknownReason.IsChecked;
             Boolean otherCB = (Boolean)checkBoxOther.IsChecked;
-            int reasonCodeId = 000;
+            String reasonCodeId = "000";
             Boolean cancelDuringEmergencyCB = (Boolean)checkBoxCancelsDuringEmergency.IsChecked;
             String cancelDuringEmergencyTimeTP = null;
             if (cancelDuringEmergencyCB)
@@ -655,18 +661,29 @@ namespace GryphonSecurity_v2_2
 
         private async void createCustomerButton_Click(object sender, RoutedEventArgs e)
         {
-
-            Boolean check = await checkCreateCustomer();
-            if (!check)
+            Customer customer = null;
+            Boolean isConnected = controller.checkNetworkConnection();
+            if (isConnected)
             {
-                MessageBox.Show(AppResources.CreateCustomerFill);
-            } 
+                customer = await controller.getCustomer(Convert.ToInt64(textBoxCreateCustomerNumber.Text));
+            }
+
+            if(customer == null)
+            {
+                Boolean check = await checkCreateCustomer(isConnected);
+                if (!check)
+                {
+                    MessageBox.Show(AppResources.CreateCustomerFill);
+                }
+            } else
+            {
+                MessageBox.Show(AppResources.ErrorCreateCustomerExist);
+            }
         }
 
-        public async Task<Boolean> checkCreateCustomer()
+        public async Task<Boolean> checkCreateCustomer(Boolean isConnected)
         {
             Boolean check = true;
-            Boolean isConnected = controller.checkNetworkConnection();
             if (textBoxCreateCustomerName.Text.Equals(""))
             {
                 check = false;
