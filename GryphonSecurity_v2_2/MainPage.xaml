@@ -30,10 +30,10 @@
             <phone:PivotItem x:Name="alarmReport" Header="{Binding Path=LocalizedResources.LayoutTitleAlarmReport, Source={StaticResource LocalizedStrings}}" >
                 <ScrollViewer>
                     <StackPanel Margin="0,0,0,17">
-                        <TextBlock Margin="28,0,0,0" Text="{Binding Path=LocalizedResources.ReportCustomerNameTB, Source={StaticResource LocalizedStrings}}"/>
-                        <toolkit:PhoneTextBox x:Name="textBoxCustomerName" Hint="{Binding Path=LocalizedResources.ReportCustomerName, Source={StaticResource LocalizedStrings}}" Height="72" Margin="14,0,14,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top"/>
+                        <!--<TextBlock Margin="28,0,0,0" Text="{Binding Path=LocalizedResources.ReportCustomerNameTB, Source={StaticResource LocalizedStrings}}"/>-->
                         <toolkit:PhoneTextBox x:Name="textBoxCustomerNumber" InputScope="Number" Hint="{Binding Path=LocalizedResources.ReportCustomerNumber, Source={StaticResource LocalizedStrings}}" Height="72" Margin="14,0,14,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top"/>
                         <Button x:Name="searchForCustomerButton" Content="{Binding Path=LocalizedResources.ReportSearchForCustomer, Source={StaticResource LocalizedStrings}}" Height="72" Margin="14,0,14,0" Grid.Row="1" VerticalAlignment="Top" Click="searchForCustomerButton_Click"/>
+                        <toolkit:PhoneTextBox x:Name="textBoxCustomerName" Hint="{Binding Path=LocalizedResources.ReportCustomerName, Source={StaticResource LocalizedStrings}}" Height="72" Margin="14,0,14,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top"/>
                         <toolkit:PhoneTextBox x:Name="textBoxStreetAndHouseNumber" Hint="{Binding Path=LocalizedResources.ReportStreetAndHouseNumber, Source={StaticResource LocalizedStrings}}" Height="72" Margin="14,0,14,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top"/>
                         <toolkit:PhoneTextBox x:Name="textBoxZipCode" InputScope="Number" Hint="{Binding Path=LocalizedResources.ReportZipCode, Source={StaticResource LocalizedStrings}}" Height="72" Margin="14,0,14,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top"/>
                         <toolkit:PhoneTextBox x:Name="textBoxCity" Hint="{Binding Path=LocalizedResources.ReportCity, Source={StaticResource LocalizedStrings}}" Height="72" Margin="14,0,14,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top"/>
@@ -50,8 +50,10 @@
                         <CheckBox x:Name="checkBoxTechnicalError" Content="{Binding Path=LocalizedResources.ReportTechnicalError, Source={StaticResource LocalizedStrings}}" Margin="14,0,0,0"/>
                         <CheckBox x:Name="checkBoxUnknownReason" Content="{Binding Path=LocalizedResources.ReportUnknownReason, Source={StaticResource LocalizedStrings}}" Margin="14,0,0,0"/>
                         <CheckBox x:Name="checkBoxOther" Content="{Binding Path=LocalizedResources.ReportOther, Source={StaticResource LocalizedStrings}}" Margin="14,0,0,0"/>
-                        <CheckBox x:Name="checkBoxCancelsDuringEmergency" Content="{Binding Path=LocalizedResources.ReportCancelsDuringEmergency, Source={StaticResource LocalizedStrings}}" Margin="14,0,0,0"/>
-                        <CheckBox x:Name="checkBoxCoverMade" Content="{Binding Path=LocalizedResources.ReportCoverMade, Source={StaticResource LocalizedStrings}}" Margin="14,0,0,0"/>
+                        <CheckBox x:Name="checkBoxCancelsDuringEmergency" Content="{Binding Path=LocalizedResources.ReportCancelsDuringEmergency, Source={StaticResource LocalizedStrings}}" Margin="14,0,0,0" Click="checkBoxCancelsDuringEmergency_Click"/>
+                        <toolkit:TimePicker x:Name="timeBoxCanceledDuringEmergencyTime" Visibility="Collapsed" Height="72" Margin="14,0,14,0" Grid.Row="1" VerticalAlignment="Top" Background="#BDBDBD" Foreground="Black" BorderBrush="#BDBDBD"/>
+                        <CheckBox x:Name="checkBoxCoverMade" Content="{Binding Path=LocalizedResources.ReportCoverMade, Source={StaticResource LocalizedStrings}}" Margin="14,0,0,0" Click="checkBoxCoverMade_Click"/>
+                        <toolkit:PhoneTextBox x:Name="textBoxCoverMadeBy" Visibility="Collapsed" Hint="{Binding Path=LocalizedResources.ReportCoverMadeBy, Source={StaticResource LocalizedStrings}}" Height="72" Margin="14,0,14,0" Grid.Row="1" VerticalAlignment="Top" Background="#BDBDBD" Foreground="Black" BorderBrush="#BDBDBD"/>
                         <toolkit:PhoneTextBox x:Name="textBoxRemark" Hint="{Binding Path=LocalizedResources.ReportRemark, Source={StaticResource LocalizedStrings}}" Height="200" Margin="14,0,14,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top"/>
                         <toolkit:PhoneTextBox x:Name="textBoxName" Height="72" Margin="14,0,14,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top"/>
                         <toolkit:PhoneTextBox x:Name="textBoxInstaller" Hint="{Binding Path=LocalizedResources.ReportInstaller, Source={StaticResource LocalizedStrings}}" Height="72" Margin="14,0,14,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top"/>
@@ -74,8 +76,8 @@
 
             <phone:PivotItem x:Name="createCustomer" Header="{Binding Path=LocalizedResources.LayoutTitleCreateCustomer, Source={StaticResource LocalizedStrings}}">
                 <StackPanel Margin="0,0,0,17">
-                    <toolkit:PhoneTextBox x:Name="textBoxCreateCustomerName" Hint="{Binding Path=LocalizedResources.ReportCustomerName, Source={StaticResource LocalizedStrings}}" Height="72" Margin="14,0,14,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top"/>
                     <toolkit:PhoneTextBox x:Name="textBoxCreateCustomerNumber" InputScope="Number" Hint="{Binding Path=LocalizedResources.ReportCustomerNumber, Source={StaticResource LocalizedStrings}}" Height="72" Margin="14,0,14,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top"/>
+                    <toolkit:PhoneTextBox x:Name="textBoxCreateCustomerName" Hint="{Binding Path=LocalizedResources.ReportCustomerName, Source={StaticResource LocalizedStrings}}" Height="72" Margin="14,0,14,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top"/>
                     <toolkit:PhoneTextBox x:Name="textBoxCreateCustomerStreetAndHouseNumber" Hint="{Binding Path=LocalizedResources.ReportStreetAndHouseNumber, Source={StaticResource LocalizedStrings}}" Height="72" Margin="14,0,14,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top"/>
                     <toolkit:PhoneTextBox x:Name="textBoxCreateCustomerZipCode" InputScope="Number" Hint="{Binding Path=LocalizedResources.ReportZipCode, Source={StaticResource LocalizedStrings}}" Height="72" Margin="14,0,14,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top"/>
                     <toolkit:PhoneTextBox x:Name="textBoxCreateCustomerCity" Hint="{Binding Path=LocalizedResources.ReportCity, Source={StaticResource LocalizedStrings}}" Height="72" Margin="14,0,14,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top"/>

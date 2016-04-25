@@ -9,16 +9,16 @@ namespace GryphonSecurity_v2_2.Domain.Entity
     public class NFC
     {
         private Boolean rangeCheck;
-        private String tagAddress;
+        private String addressId;
         private DateTime time;
-        private User user;
+        private long employeeId;
 
-        public NFC(Boolean rangeCheck, String tagAddress, DateTime time, User user)
+        public NFC(Boolean rangeCheck, String addressId, DateTime time, long employeeId)
         {
             this.rangeCheck = rangeCheck;
-            this.tagAddress = tagAddress;
+            this.addressId = addressId;
             this.time = time;
-            this.user = user;
+            this.employeeId = employeeId;
         }
 
         public Boolean RangeCheck
@@ -34,16 +34,16 @@ namespace GryphonSecurity_v2_2.Domain.Entity
             }
         }
 
-        public string TagAddress
+        public string AddressId
         {
             get
             {
-                return tagAddress;
+                return addressId;
             }
 
             set
             {
-                tagAddress = value;
+                addressId = value;
             }
         }
 
@@ -60,16 +60,16 @@ namespace GryphonSecurity_v2_2.Domain.Entity
             }
         }
 
-        public User User
+        public long EmployeeId
         {
             get
             {
-                return user;
+                return employeeId;
             }
 
             set
             {
-                user = value;
+                employeeId = value;
             }
         }
     }

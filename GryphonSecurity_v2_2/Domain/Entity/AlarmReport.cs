@@ -14,8 +14,8 @@ namespace GryphonSecurity_v2_2.Domain.Entity
         int zipCode;
         String city;
         long phonenumber;
-        DateTime date;
-        DateTime time;
+        String date;
+        String time;
         String zone;
         Boolean burglaryVandalism;
         Boolean windowDoorClosed;
@@ -25,23 +25,27 @@ namespace GryphonSecurity_v2_2.Domain.Entity
         Boolean technicalError;
         Boolean unknownReason;
         Boolean other;
+        int reasonCodeId;
         Boolean cancelDuringEmergency;
+        String cancelDuringEmergencyTime;
         Boolean coverMade;
+        String coverMadeBy;
         String remark;
         String name;
         String installer;
         String controlCenter;
-        DateTime guardRadioedDate;
-        DateTime guardRadioedFrom;
-        DateTime guardRadioedTo;
-        DateTime arrivedAt;
-        DateTime done;
-        User user;
+        String guardRadioedDate;
+        String guardRadioedFrom;
+        String guardRadioedTo;
+        String arrivedAt;
+        String done;
+        long employeeId;
+        DateTime reportCreated;
 
-        public AlarmReport(string customerName, long customerNumber, String streetAndHouseNumber, int zipCode, String city, long phonenumber, DateTime date, DateTime time, String zone,
+        public AlarmReport(string customerName, long customerNumber, String streetAndHouseNumber, int zipCode, String city, long phonenumber, String date, String time, String zone,
                 Boolean burglaryVandalism, Boolean windowDoorClosed, Boolean apprehendedPerson, Boolean staffError, Boolean nothingToReport, Boolean technicalError, Boolean unknownReason,
-                Boolean other, Boolean cancelDuringEmergency, Boolean coverMade, String remark, String name, String installer, String controlCenter, DateTime guardRadioedDate,
-                DateTime guardRadioedFrom, DateTime guardRadioedTo, DateTime arrivedAt, DateTime done, User user)
+                Boolean other, int reasonCodeId, Boolean cancelDuringEmergency, String cancelDuringEmergencyTime, Boolean coverMade, String coverMadeBy, String remark, String name, 
+                String installer, String controlCenter, String guardRadioedDate, String guardRadioedFrom, String guardRadioedTo, String arrivedAt, String done, long employeeId)
         {
             this.customerName = customerName;
             this.customerNumber = customerNumber;
@@ -60,8 +64,11 @@ namespace GryphonSecurity_v2_2.Domain.Entity
             this.technicalError = technicalError;
             this.unknownReason = unknownReason;
             this.other = other;
+            this.reasonCodeId = reasonCodeId;
             this.cancelDuringEmergency = cancelDuringEmergency;
+            this.cancelDuringEmergencyTime = cancelDuringEmergencyTime;
             this.coverMade = coverMade;
+            this.coverMadeBy = coverMadeBy;
             this.remark = remark;
             this.name = name;
             this.installer = installer;
@@ -71,7 +78,8 @@ namespace GryphonSecurity_v2_2.Domain.Entity
             this.guardRadioedTo = guardRadioedTo;
             this.arrivedAt = arrivedAt;
             this.done = done;
-            this.user = user;
+            this.employeeId = employeeId;
+            this.reportCreated = DateTime.Now;
         }
 
 
@@ -111,13 +119,13 @@ namespace GryphonSecurity_v2_2.Domain.Entity
             set { phonenumber = value; }
         }
 
-        public DateTime Date
+        public String Date
         {
             get { return date; }
             set { date = value; }
         }
 
-        public DateTime Time
+        public String Time
         {
             get { return time; }
             set { time = value; }
@@ -177,16 +185,34 @@ namespace GryphonSecurity_v2_2.Domain.Entity
             set { other = value; }
         }
 
+        public int ReasonCodeId
+        {
+            get { return reasonCodeId; }
+            set { reasonCodeId = value; }
+        }
+
         public Boolean CancelDuringEmergency
         {
             get { return cancelDuringEmergency; }
             set { cancelDuringEmergency = value; }
         }
 
+        public String CancelDuringEmergencyTime
+        {
+            get { return cancelDuringEmergencyTime; }
+            set { cancelDuringEmergencyTime = value; }
+        }
+
         public Boolean CoverMade
         {
             get { return coverMade; }
             set { coverMade = value; }
+        }
+
+        public String CoverMadeBy
+        {
+            get { return coverMadeBy; }
+            set { coverMadeBy = value; }
         }
 
         public String Remark
@@ -213,40 +239,46 @@ namespace GryphonSecurity_v2_2.Domain.Entity
             set { controlCenter = value; }
         }
 
-        public DateTime GuardRadioedDate
+        public String GuardRadioedDate
         {
             get { return guardRadioedDate; }
             set { guardRadioedDate = value; }
         }
 
-        public DateTime GuardRadioedFrom
+        public String GuardRadioedFrom
         {
             get { return guardRadioedFrom; }
             set { guardRadioedFrom = value; }
         }
 
-        public DateTime GuardRadioedTo
+        public String GuardRadioedTo
         {
             get { return guardRadioedTo; }
             set { guardRadioedTo = value; }
         }
 
-        public DateTime ArrivedAt
+        public String ArrivedAt
         {
             get { return arrivedAt; }
             set { arrivedAt = value; }
         }
 
-        public DateTime Done
+        public String Done
         {
             get { return done; }
             set { done = value; }
         }
 
-        public User User
+        public long EmployeeId
         {
-            get { return user; }
-            set { user = value; }
+            get { return employeeId; }
+            set { employeeId = value; }
+        }
+
+        public DateTime ReportCreated
+        {
+            get { return reportCreated; }
+            set { reportCreated = value; }
         }
     }
 }
