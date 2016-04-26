@@ -691,6 +691,15 @@ namespace GryphonSecurity_v2_2.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Fill all spaces.
+        /// </summary>
+        public static string UserFillSpaces {
+            get {
+                return ResourceManager.GetString("UserFillSpaces", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Firstname.
         /// </summary>
         public static string UserFirstname {

@@ -31,6 +31,8 @@
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
             <StackPanel>
                 <toolkit:PhoneTextBox x:Name="textBoxUserId" InputScope="Number" HorizontalAlignment="Left" Height="72" Margin="0,0,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="456" Hint="{Binding Path=LocalizedResources.UserId, Source={StaticResource LocalizedStrings}}" />
+                <toolkit:PhoneTextBox x:Name="textBoxUserFirstname" HorizontalAlignment="Left" Height="72" Margin="0,0,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="456" Hint="{Binding Path=LocalizedResources.UserFirstname, Source={StaticResource LocalizedStrings}}" Visibility="Collapsed"/>
+                <toolkit:PhoneTextBox x:Name="textBoxUserLastname" HorizontalAlignment="Left" Height="72" Margin="0,0,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="456" Hint="{Binding Path=LocalizedResources.UserLastname, Source={StaticResource LocalizedStrings}}" Visibility="Collapsed"/>
                 <TextBlock x:Name="Firstname" HorizontalAlignment="Left" Margin="67,0,0,0" VerticalAlignment="Top" Width="320"/>
                 <TextBlock x:Name="Lastname" HorizontalAlignment="Left" Margin="67,0,0,0" VerticalAlignment="Top" Width="320" />
                 <TextBlock x:Name="Address" HorizontalAlignment="Left" Margin="67,0,0,0" VerticalAlignment="Top" Width="320"/>
