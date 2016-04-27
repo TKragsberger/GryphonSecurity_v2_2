@@ -17,16 +17,62 @@ namespace GryphonSecurity_v2_2
     {
         Controller controller = Controller.Instance;
         User user;
+        long userId;
+        String userFirstname;
+        String userLastname;
         public RegisterLayout()
         {
             InitializeComponent();
+            textBoxUserFirstname.Visibility = Visibility.Collapsed;
+            textBoxUserLastname.Visibility = Visibility.Collapsed;
         }
 
         private void RegistrerBrugerButton_Click(object sender, RoutedEventArgs e)
         {
+            if (!controller.checkNetworkConnection())
+            {
+                if (!checkUser())
+                {
+                    MessageBox.Show(AppResources.UserFillSpaces);
+                }
+                else
+                {
+                    userId = Convert.ToInt64(textBoxUserId.Text);
+                    userFirstname = textBoxUserFirstname.Text;
+                    userLastname = textBoxUserLastname.Text;
+                    createUserLocalStorage(userId, userFirstname, userLastname);
+                }
+            }
+            else
+            {
+                createUserLocalStorage(user.Id, user.Firstname, user.Lastname);
+            }
+
+        }
+
+        public Boolean checkUser()
+        {
+            Boolean check = true;
+            if (textBoxUserId.Equals(""))
+            {
+                check = false;
+            }
+            if (textBoxUserFirstname.Text.Equals(""))
+            {
+                check = false;
+            }
+            if (textBoxUserLastname.Text.Equals(""))
+            {
+                check = false;
+            }
+            return check;
+        }
+
+        public void createUserLocalStorage(long userId, String userFirstname, String userLastname)
+        {
             try
             {
-                User localUser = new User(user.Id, user.Firstname, user.Lastname);
+                User localUser = new User(userId, userFirstname, userLastname);
                 if (controller.createUser(localUser))
                 {
                     MessageBox.Show(AppResources.UserCreated);
@@ -42,7 +88,6 @@ namespace GryphonSecurity_v2_2
             {
                 MessageBox.Show(AppResources.UserRegistrationError);
             }
-
         }
 
         private async void SearchForUserButton_Click(object sender, RoutedEventArgs e)
@@ -60,9 +105,12 @@ namespace GryphonSecurity_v2_2
                 {
                     MessageBox.Show(AppResources.UserNotFound);
                 }
-            } else
+            }
+            else
             {
                 MessageBox.Show(AppResources.NoNetWorkConnection);
+                textBoxUserFirstname.Visibility = Visibility.Visible;
+                textBoxUserLastname.Visibility = Visibility.Visible;
             }
 
         }

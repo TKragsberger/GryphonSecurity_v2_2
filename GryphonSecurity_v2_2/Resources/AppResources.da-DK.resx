@@ -141,8 +141,14 @@
   <data name="CreateCustomerSuccess" xml:space="preserve">
     <value>Kunde oprettet</value>
   </data>
+  <data name="ErrorCreateCustomerExist" xml:space="preserve">
+    <value>Kunde id findes allerede i database</value>
+  </data>
   <data name="ErrorInBackend" xml:space="preserve">
     <value>Kunde ikke få forbindelse til databasen</value>
+  </data>
+  <data name="ErrorNFCTagAddress" xml:space="preserve">
+    <value>NFC id findes ikke i databasen</value>
   </data>
   <data name="LayoutTitleAlarmReport" xml:space="preserve">
     <value>Alarmrapport</value>
@@ -155,6 +161,9 @@
   </data>
   <data name="LayoutTitleNavigation" xml:space="preserve">
     <value>Navigation</value>
+  </data>
+  <data name="LayoutTitlePending" xml:space="preserve">
+    <value>Afventende</value>
   </data>
   <data name="LayoutTitleRegister" xml:space="preserve">
     <value>Registrer</value>
@@ -320,6 +329,9 @@
   <data name="UserCreated" xml:space="preserve">
     <value>Bruger Oprettet</value>
   </data>
+  <data name="UserFillSpaces" xml:space="preserve">
+    <value>Udfyld alle felter</value>
+  </data>
   <data name="UserFirstname" xml:space="preserve">
     <value>Fornavn</value>
   </data>
@@ -339,6 +351,6 @@
     <value>Registrere</value>
   </data>
   <data name="UserRegistrationError" xml:space="preserve">
-    <value>Fejl i registrering</value>
+    <value>Fejl i registrering, bruger findes ikke i databasen</value>
   </data>
 </root>

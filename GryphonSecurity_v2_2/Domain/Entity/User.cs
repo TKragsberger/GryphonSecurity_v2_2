@@ -22,36 +22,19 @@ namespace GryphonSecurity_v2_2.Domain.Entity
 
         public long Id
         {
-            get
-            {
-                return id;
-            }
+            get { return id; }
         }
 
         public string Firstname
         {
-            get
-            {
-                return firstname;
-            }
-
-            set
-            {
-                firstname = value;
-            }
+            get { return firstname; }
+            set { firstname = value; }
         }
 
         public string Lastname
         {
-            get
-            {
-                return lastname;
-            }
-
-            set
-            {
-                lastname = value;
-            }
+            get { return lastname; }
+            set { lastname = value; }
         }
 
         public String toString()

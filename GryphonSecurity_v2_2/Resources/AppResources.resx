@@ -141,8 +141,14 @@
   <data name="CreateCustomerSuccess" xml:space="preserve">
     <value>Customer created</value>
   </data>
+  <data name="ErrorCreateCustomerExist" xml:space="preserve">
+    <value>Customer id already exist in database</value>
+  </data>
   <data name="ErrorInBackend" xml:space="preserve">
     <value>Could not connect to database</value>
+  </data>
+  <data name="ErrorNFCTagAddress" xml:space="preserve">
+    <value>NFC id does not exist in database</value>
   </data>
   <data name="LayoutTitleAlarmReport" xml:space="preserve">
     <value>Alarm Report</value>
@@ -155,6 +161,9 @@
   </data>
   <data name="LayoutTitleNavigation" xml:space="preserve">
     <value>Navigation</value>
+  </data>
+  <data name="LayoutTitlePending" xml:space="preserve">
+    <value>Pending</value>
   </data>
   <data name="LayoutTitleRegister" xml:space="preserve">
     <value>Register</value>
@@ -320,6 +329,9 @@
   <data name="UserCreated" xml:space="preserve">
     <value>User created</value>
   </data>
+  <data name="UserFillSpaces" xml:space="preserve">
+    <value>Fill all spaces</value>
+  </data>
   <data name="UserFirstname" xml:space="preserve">
     <value>Firstname</value>
   </data>
@@ -339,6 +351,6 @@
     <value>Register</value>
   </data>
   <data name="UserRegistrationError" xml:space="preserve">
-    <value>Error in registration</value>
+    <value>Error in registration, user not found in database</value>
   </data>
 </root>
