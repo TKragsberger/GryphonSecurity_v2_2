@@ -12,7 +12,7 @@ namespace GryphonSecurityTest
     [TestClass]
     public class UnitTestController
     {
-
+        
         Controller control = Controller.Instance;
         User userTest = new User(1000, "firstnameTest", "lastnameTest");
         AlarmReport alarmReportTest;
@@ -45,14 +45,16 @@ namespace GryphonSecurityTest
             Assert.AreEqual(expectedResult, actualResult);
         }
         [TestMethod]
-        public async void TestMethodCreateAlarmReport()
+        public void TestMethodCreateAlarmReport()
         {
             //Setting up alarm report object.
             setupAlarmReport("Test");
             //This is the method we are testing. We will need internet connection for it to be able to save it, if this is false it will save it locally (this will be tested later).
-            Boolean actualResult = await control.createAlarmReport(alarmReportTest);
+            var task = control.createAlarmReport(alarmReportTest);
+            task.Wait();
+            var response = task.Result;
             //We expect it to be true, since we have internet connection.
-            Assert.AreEqual(true, actualResult);
+            Assert.AreEqual(true, response);
         }
         [TestMethod]
         public void TestMethodCreateTempAlarmReport()
@@ -96,34 +98,41 @@ namespace GryphonSecurityTest
         //    Assert.AreSame(expectedResult, actualResult);
         //}
         [TestMethod]
-        public async void testGetDistance()
+        public void testGetDistance()
         {
+            control.createUser(userTest);
             GeoCoordinate targetCoordinate = new GeoCoordinate(55.767944, 12.505161499999986);
             GeoCoordinate presentCoordinate = new GeoCoordinate(55.7705618401085, 12.5117938768867);
             Boolean expectedResult = true;
-            Boolean actualResult = await control.getDistance(presentCoordinate, targetCoordinate, "Lyngby st.");
-            Assert.AreEqual(expectedResult,actualResult);
+            var task = control.getDistance(presentCoordinate, targetCoordinate, "Lyngby st.");
+            task.Wait();
+            var actualResult = task.Result;
+            Debug.WriteLine("getDistence: " + actualResult);
+            Assert.AreEqual(expectedResult, actualResult);
 
-            
+
         }
-        
+
         [TestMethod]
-        public async Task TestMethodOnLocationScan()
+        public void TestMethodOnLocationScan()
         {
             //its supposed to save on database
             String expectedResult = "Lyngby st.";
-            String actuaclResult;
-            actuaclResult = await control.onLocationScan(expectedResult, true);
-            Assert.AreEqual(expectedResult, actuaclResult);
+            var task = control.onLocationScan(expectedResult, true);
+            task.Wait();
+            var actualResult = task.Result;
+            Assert.AreEqual(expectedResult, actualResult);
         }
         [TestMethod]
-        public async void TestMethodcalcPosition()
+        public void TestMethodcalcPosition()
         {
-            String expectedResult = "Lyngby st.";
+            String expectedResult = "Alarmpanel stuen gammel bygning";
             GeoCoordinate presentCoordinate = new GeoCoordinate(55.767944, 12.505161499999986);
-            String actualResult = await control.calcPosition(expectedResult, presentCoordinate, true);
+            var task = control.calcPosition("10c5bf4758f64559d4c2ca6adcd8fd08", presentCoordinate, true);
+            task.Wait();
+            var actualResult = task.Result;
+            Assert.AreEqual(expectedResult, actualResult);
 
-            Assert.AreSame(expectedResult, actualResult);
         }
 
         [TestMethod]
@@ -136,25 +145,44 @@ namespace GryphonSecurityTest
         [TestMethod]
         public void TestSendPendingNFCs()
         {
-            
+
             control.createUser(userTest);
-            control.createLocalStorageNFCsTest(55.767944, 12.505161499999986,"1");
-            control.createLocalStorageNFCsTest(55.6713363, 12.566796599999975, "2");
+            control.createLocalStorageNFCsTest(55.767944, 12.505161499999986, "10c5bf4758f64559d4c2ca6adcd8fd08");
+            control.createLocalStorageNFCsTest(55.6713363, 12.566796599999975, "10c5bf4758f64559d4c2ca6adcd8fd08");
             int expectedResult = 2;
             Assert.AreEqual(expectedResult, control.getLocalStorageNFCs());
-            control.sendPendingNFCs();
+            var task = control.sendPendingNFCs();
+            task.Wait();
             Assert.AreEqual(0, control.getLocalStorageNFCs());
+
         }
         [TestMethod]
-        public async void TestsendPendingAlarmReports()
+        public void TestsendPendingAlarmReports()
         {
             control.createUser(userTest);
             setupAlarmReport("test");
-            await control.createAlarmReport(alarmReportTest);
-            Assert.AreEqual(false, true);
+            control.createLocalStorageAlarmReport(alarmReportTest);
+            setupAlarmReport("test1");
+            control.createLocalStorageAlarmReport(alarmReportTest);
+            int expectedResult = 2;
+            Assert.AreEqual(expectedResult, control.getLocalStorageAlarmReports());
+            var task = control.sendPendingAlarmReports();
+            task.Wait();
+            Assert.AreEqual(0, control.getLocalStorageAlarmReports());
+
         }
 
-        
+        [TestMethod]
+        public async Task TestMethodOnLocationScanNoConnection()
+        {
+            //its supposed to save on local storage
+            String expectedResult = "10c5bf4758f64559d4c2ca6adcd8fd08";
+            String actualResult = await control.onLocationScan("10c5bf4758f64559d4c2ca6adcd8fd08", false);
+            Assert.AreEqual(expectedResult, actualResult);
+        }
+
+
+
         private void setupAlarmReport(String name)
         {
             //random time needed for alarm report object.

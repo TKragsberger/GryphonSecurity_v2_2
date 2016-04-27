@@ -183,7 +183,6 @@ namespace GryphonSecurity_v2_2
             Boolean check = alarmReportMustHave();
                 if (check)
                 {
-                    Boolean isConnected = controller.checkNetworkConnection();   
                     String customerNameTB = textBoxCustomerName.Text;
                     long customerNumberTB = Convert.ToInt64(textBoxCustomerNumber.Text);
                     String streetAndHouseNumberTB = textBoxStreetAndHouseNumber.Text;
@@ -249,8 +248,11 @@ namespace GryphonSecurity_v2_2
                     return check;
         }
 
-        public async Task<Boolean> sendAlarmReport(AlarmReport alarmReport)
-        {
+        public async Task<Boolean> sendAlarmReport(AlarmReport alarmReport) {
+
+            Boolean isConnected = controller.checkNetworkConnection();
+            Debug.WriteLine("connect: " + isConnected);
+
             if (isConnected)
             {
                 if (await controller.createAlarmReport(alarmReport))

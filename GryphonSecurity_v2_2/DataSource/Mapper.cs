@@ -75,8 +75,8 @@ namespace GryphonSecurity_v2_2.DataSource
                 String json = JsonConvert.SerializeObject(alarmReport);
                     var resultWebservice = await client.PostAsync("http://gryphon.dk/GryphonSecurityRestFullWebservice/webServices/createAlarmReport.php/", new StringContent(json, Encoding.UTF8, "application/json"));
                     //var resultWebservice = await client.PostAsync("http://kragsberger.dk/GryphonSecurityRestFullWebservice/webServices/createAlarmReport.php/", new StringContent(json, Encoding.UTF8, "application/json"));
-                //var resultWebservice = await client.GetAsync("http://kragsberger.dk/rest/" + name);
-
+                    //var resultWebservice = await client.GetAsync("http://kragsberger.dk/rest/" + name);
+                    Debug.WriteLine("her createalarm: " + resultWebservice);
                 resultWebservice.EnsureSuccessStatusCode();
                 Boolean result = Convert.ToBoolean(JsonConvert.DeserializeObject<String>(await resultWebservice.Content.ReadAsStringAsync()));
                 return result;
@@ -122,22 +122,18 @@ namespace GryphonSecurity_v2_2.DataSource
             using (HttpClient client = new HttpClient())
             {
                 String json = JsonConvert.SerializeObject(id);
-                Debug.WriteLine("MAPPER 1");
                     var resultWebservice = await client.PostAsync("http://gryphon.dk/GryphonSecurityRestFullWebservice/webServices/getAddress.php/", new StringContent(json, Encoding.UTF8, "application/json"));
                     //var resultWebservice = await client.PostAsync("http://kragsberger.dk/GryphonSecurityRestFullWebservice/webServices/getAddress.php/", new StringContent(json, Encoding.UTF8, "application/json"));
                 //var resultWebservice = await client.GetAsync("http://kragsberger.dk/rest/" + name);
-                Debug.WriteLine("MAPPER 2");
                 resultWebservice.EnsureSuccessStatusCode();
-                Debug.WriteLine("MAPPER 3");
                 Address result = JsonConvert.DeserializeObject<Address>(await resultWebservice.Content.ReadAsStringAsync());
-                Debug.WriteLine("MAPPER 4");
                 return result;
 
                 }
             }
             catch (JsonReaderException ex)
             {
-                Debug.WriteLine("catch in getAddress");
+                Debug.WriteLine(ex.StackTrace);
                 return null;
             }
         }

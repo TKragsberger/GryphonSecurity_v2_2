@@ -25,8 +25,6 @@ namespace GryphonSecurity_v2_2.Domain
         private Windows.Networking.Proximity.ProximityDevice device;
         private DBFacade dBFacade;
         private Boolean startup = true;
-        private GeoCoordinate presentCoordinate;
-        private GeoCoordinate targetCoordinate;
         private static Controller instance;
         private Boolean nfcCheck = false;
 
@@ -278,7 +276,7 @@ namespace GryphonSecurity_v2_2.Domain
                         );
                     double latitude = geoposition.Coordinate.Point.Position.Latitude;
                     double longitude = geoposition.Coordinate.Point.Position.Longitude;
-                    presentCoordinate = new GeoCoordinate(latitude, longitude);
+                    GeoCoordinate presentCoordinate = new GeoCoordinate(latitude, longitude);
                     address = await calcPosition(tagAddress, presentCoordinate, isConnected);      
                 }
                 catch (Exception ex)
@@ -312,12 +310,13 @@ namespace GryphonSecurity_v2_2.Domain
                     if (!cancellationTokenSource.IsCancellationRequested)
                     {
                         Address address = await dBFacade.getAddress(tagAddress);
+                    Debug.WriteLine("Address: " + address);
                             if (address == null)
                             {
                                 return null;
                             }
                         addressName = address.AddressName;
-                        targetCoordinate = new GeoCoordinate(address.Latitude, address.Longtitude);
+                       GeoCoordinate targetCoordinate = new GeoCoordinate(address.Latitude, address.Longtitude);
                         await getDistance(presentCoordinate, targetCoordinate, addressName);
                     }
                     else
@@ -339,7 +338,7 @@ namespace GryphonSecurity_v2_2.Domain
             Boolean result = false;
                 if (!presentCoordinate.Latitude.Equals(targetCoordinates.Latitude))
                 {
-                    Boolean rangeCheck = getRangeCheck(presentCoordinate);
+                    Boolean rangeCheck = getRangeCheck(presentCoordinate, targetCoordinates);
                     result = await dBFacade.createNFC(new NFC(rangeCheck, tagAddress, DateTime.Now, dBFacade.getLocalStorageUser().Id));
                         if (!result)
                         {
@@ -358,11 +357,12 @@ namespace GryphonSecurity_v2_2.Domain
 
         public NFC checkNFC(GeoCoordinate presentCoordinate, GeoCoordinate targetCoordinates, String tagAddress)
         {
-            Boolean rangeCheck = getRangeCheck(presentCoordinate);
+            
+            Boolean rangeCheck = getRangeCheck(presentCoordinate, targetCoordinates);
             return new NFC(rangeCheck, tagAddress, DateTime.Now, dBFacade.getLocalStorageUser().Id);
         }
         
-        public Boolean getRangeCheck(GeoCoordinate presentCoordinate)
+        public Boolean getRangeCheck(GeoCoordinate presentCoordinate, GeoCoordinate targetCoordinate)
         {
             double distance = targetCoordinate.GetDistanceTo(presentCoordinate);
             Boolean result = false;
@@ -435,8 +435,8 @@ namespace GryphonSecurity_v2_2.Domain
                     Address address = await dBFacade.getAddress(tags[2]);
                     double targetLatitude = address.Latitude;
                     double targetLongtitude = address.Longtitude;
-                    presentCoordinate = new GeoCoordinate(presentLatitude, presentLongitude);
-                    targetCoordinate = new GeoCoordinate(targetLatitude, targetLongtitude);
+                    GeoCoordinate presentCoordinate = new GeoCoordinate(presentLatitude, presentLongitude);
+                    GeoCoordinate targetCoordinate = new GeoCoordinate(targetLatitude, targetLongtitude);
                     nfcs.Add(checkNFC(presentCoordinate, targetCoordinate, address.AddressName));
                 }
             nfcCheck = await dBFacade.createNFCs(nfcs);
