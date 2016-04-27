@@ -74,6 +74,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UnitTestControllerNoNetwork.cs" />
     <Compile Include="LocalizedStrings.cs" />
     <Compile Include="UnitTestController.cs" />
     <Compile Include="MainPage.xaml.cs">

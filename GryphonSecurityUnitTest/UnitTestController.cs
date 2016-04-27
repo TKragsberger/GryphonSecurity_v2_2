@@ -106,16 +106,7 @@ namespace GryphonSecurityTest
 
             
         }
-        [TestMethod]
-        public async Task TestMethodOnLocationScanNoConnection()
-        {
-            //its supposed to save on local storage
-            String expectedResult = "lyngby St.";
-            String actualResult;
-            actualResult= await control.onLocationScan(expectedResult, false);
-            Debug.WriteLine("tagadress: " + actualResult);
-            Assert.AreEqual(expectedResult, actualResult);
-        }
+        
         [TestMethod]
         public async Task TestMethodOnLocationScan()
         {
