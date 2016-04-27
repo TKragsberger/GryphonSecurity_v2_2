@@ -23,54 +23,26 @@ namespace GryphonSecurity_v2_2.Domain.Entity
 
         public Boolean RangeCheck
         {
-            get
-            {
-                return rangeCheck;
-            }
-
-            set
-            {
-                rangeCheck = value;
-            }
+            get { return rangeCheck; }
+            set { rangeCheck = value; }
         }
 
         public string AddressId
         {
-            get
-            {
-                return addressId;
-            }
-
-            set
-            {
-                addressId = value;
-            }
+            get { return addressId; }
+            set { addressId = value; }
         }
 
         public DateTime Time
         {
-            get
-            {
-                return time;
-            }
-
-            set
-            {
-                time = value;
-            }
+            get { return time; }
+            set { time = value; }
         }
 
         public long EmployeeId
         {
-            get
-            {
-                return employeeId;
-            }
-
-            set
-            {
-                employeeId = value;
-            }
+            get { return employeeId; }
+            set { employeeId = value; }
         }
     }
 }

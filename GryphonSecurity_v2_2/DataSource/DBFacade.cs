@@ -9,6 +9,7 @@ namespace GryphonSecurity_v2_2.DataSource
 {
     public class DBFacade
     {
+        //DummyDB is used for localDatabase testing.
         //DummyDB connection = new DummyDB();
         Mapper connection = new Mapper();
         LocalStorage localStorage = new LocalStorage();

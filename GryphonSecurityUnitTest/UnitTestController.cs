@@ -107,20 +107,22 @@ namespace GryphonSecurityTest
             
         }
         [TestMethod]
-        public async Task TestMethodOnLocationScanNoConnectionMaibe()
+        public async Task TestMethodOnLocationScanNoConnection()
         {
-            String expectedResult = "1";
+            //its supposed to save on local storage
+            String expectedResult = "lyngby St.";
             String actualResult;
-            actualResult= await control.onLocationScan("1", true);
+            actualResult= await control.onLocationScan(expectedResult, false);
             Debug.WriteLine("tagadress: " + actualResult);
             Assert.AreEqual(expectedResult, actualResult);
         }
         [TestMethod]
         public async Task TestMethodOnLocationScan()
         {
+            //its supposed to save on database
             String expectedResult = "Lyngby st.";
-            String actuaclResult = "";
-            actuaclResult = await control.onLocationScan("1", true);
+            String actuaclResult;
+            actuaclResult = await control.onLocationScan(expectedResult, true);
             Assert.AreEqual(expectedResult, actuaclResult);
         }
         [TestMethod]
@@ -128,7 +130,7 @@ namespace GryphonSecurityTest
         {
             String expectedResult = "Lyngby st.";
             GeoCoordinate presentCoordinate = new GeoCoordinate(55.767944, 12.505161499999986);
-            String actualResult = await control.calcPosition("1", presentCoordinate, true);
+            String actualResult = await control.calcPosition(expectedResult, presentCoordinate, true);
 
             Assert.AreSame(expectedResult, actualResult);
         }
@@ -140,7 +142,6 @@ namespace GryphonSecurityTest
             Boolean actualResult = control.checkNetworkConnection();
             Assert.AreEqual(expectedResult, actualResult);
         }
-
         [TestMethod]
         public void TestSendPendingNFCs()
         {

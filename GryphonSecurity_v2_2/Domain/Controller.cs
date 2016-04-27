@@ -299,7 +299,7 @@ namespace GryphonSecurity_v2_2.Domain
         {
             String addressName = tagAddress;
             CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
-            
+           
             try
             {
                     if (!isConnected)
