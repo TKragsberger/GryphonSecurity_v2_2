@@ -329,6 +329,9 @@
   <data name="UserCreated" xml:space="preserve">
     <value>Bruger Oprettet</value>
   </data>
+  <data name="UserFillSpaces" xml:space="preserve">
+    <value>Udfyld alle felter</value>
+  </data>
   <data name="UserFirstname" xml:space="preserve">
     <value>Fornavn</value>
   </data>

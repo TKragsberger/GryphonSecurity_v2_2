@@ -329,6 +329,9 @@
   <data name="UserCreated" xml:space="preserve">
     <value>User created</value>
   </data>
+  <data name="UserFillSpaces" xml:space="preserve">
+    <value>Fill all spaces</value>
+  </data>
   <data name="UserFirstname" xml:space="preserve">
     <value>Firstname</value>
   </data>
