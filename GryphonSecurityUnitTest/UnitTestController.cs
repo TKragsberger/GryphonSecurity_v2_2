@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Diagnostics;
 using GryphonSecurity_v2_2.Domain;
 using System.Device.Location;
+using GryphonSecurity_v2_2.DataSource;
 
 namespace GryphonSecurityTest
 {
@@ -14,7 +15,11 @@ namespace GryphonSecurityTest
     {
         
         Controller control = Controller.Instance;
+        Mapper mapper = new Mapper();
         User userTest = new User(1000, "firstnameTest", "lastnameTest");
+        Customer customerTest = new Customer("mike", 123, "hervej123", 2800, "Lyngby", 41836990);
+        NFC nfcTest = new NFC(true, "noget", DateTime.Now, 2);
+        LocalStorage localStorage = new LocalStorage();
         AlarmReport alarmReportTest;
 
         [TestMethod]
@@ -209,6 +214,408 @@ namespace GryphonSecurityTest
                 arrivedAtTest, doneTest, userTest.Id);
         }
 
+        //Mapper test
+
+        [TestMethod]
+        public void TestMethodMapperGetEmployee()
+        {
+            User expectedResult = new User(1,"Per","Ørving");
+            var task = mapper.getEmployee(1);
+            task.Wait();
+            var actualResult = task.Result;
+            Assert.AreEqual(expectedResult.toString(), actualResult.toString());
+        }
+        [TestMethod]
+        public void TestMethodMapperGetCustomer()
+        {
+            Customer expectedResult = new Customer("Mike", 2, "Kollegiebakken", 2800, "Lyngby", 41836990);
+            var task = mapper.getCustomer(2);
+            task.Wait();
+            var actualResult = task.Result;
+            Debug.WriteLine("1: " + actualResult.ToString());
+            Assert.AreEqual(expectedResult.ToString(), actualResult.ToString());
+        }
+        [TestMethod]
+        public void TestMethodMapperCreateAlarmReport()
+        {
+            setupAlarmReport("TestMethodMapperCreateAlarmReport");
+            var task = mapper.createAlarmReport(alarmReportTest);
+            task.Wait();
+            var actualResult = task.Result;
+            Boolean expectedResult = true;
+            Assert.AreEqual(expectedResult, actualResult);
+        }
+        [TestMethod]
+        public void TestMethodMapperCreateAlarmReports()
+        {
+            List<AlarmReport> alarmReports = new List<AlarmReport>();
+            setupAlarmReport("TestMethodMapperCreateAlarmReports1");
+            alarmReports.Add(alarmReportTest);
+            setupAlarmReport("TestMethodMapperCreateAlarmReports2");
+            alarmReports.Add(alarmReportTest);
+            var task = mapper.createAlarmReports(alarmReports);
+            task.Wait();
+            var actualResult = task.Result;
+            Boolean expectecResult = true;
+            Assert.AreEqual(expectecResult, actualResult);
+        }
+        [TestMethod]
+        public void TestMethodMapperCreateCustomers()
+        {
+            Customer testCustomer1 = new Customer("Thomas", 90, "Farum St.", 4400, "Farum", 23458678);
+            Customer testCustomer2 = new Customer("Mike", 99, "Kollegiebakken", 4560, "Kgs. Lyngby", 12387547);
+            List<Customer> testCustomers = new List<Customer>();
+            testCustomers.Add(testCustomer1);
+            testCustomers.Add(testCustomer2);
+            var task = mapper.createCustomers(testCustomers);
+            task.Wait();
+            var actualResult = task.Result;
+            Assert.AreEqual(true, actualResult);
+        }
+        [TestMethod]
+        public void TestMethodMapperCreateCustomer()
+        {
+            Customer testCustomer1 = new Customer("Thomas", 2345678, "Farum St.", 4400, "Farum", 23458678);
+            var task = mapper.createCustomer(testCustomer1);
+            task.Wait();
+            var actualResult = task.Result;
+            Assert.AreEqual(true, actualResult);
+        }
+        [TestMethod]
+        public void TestMethodMapperCreateNFCs()
+        {
+            NFC testNFC1 = new NFC(false, "Lyngby St.", DateTime.Now, 1000);
+            NFC testNFC2 = new NFC(false, "Alarmpanel stuen gammel bygning.", DateTime.Now, 1000);
+            List<NFC> testNFCs = new List<NFC>();
+            testNFCs.Add(testNFC1);
+            testNFCs.Add(testNFC2);
+            var task = mapper.createNFCs(testNFCs);
+            task.Wait();
+            var actualResult = task.Result;
+            Assert.AreEqual(true, actualResult);
+        }
+        [TestMethod]
+        public void TestMethodMapperCreateNFC()
+        {
+            NFC testNFC1 = new NFC(false, "Lyngby St.", DateTime.Now, 1000);
+            var task = mapper.createNFC(testNFC1);
+            task.Wait();
+            var actualResult = task.Result;
+            Assert.AreEqual(true, actualResult);
+        }
+        [TestMethod]
+        public void TestMethodMapperGetAddress()
+        {
+            Address testAddress = new Address("10c5bf4758f64559d4c2ca6adcd8fd08", "Alarmpanel stuen gammel bygning", 55.652763, 12.540680000000066);
+            var task = mapper.getAddress("10c5bf4758f64559d4c2ca6adcd8fd08");
+            task.Wait();
+            var actualResult = task.Result;
+            Assert.AreEqual(testAddress.AddressID, actualResult.AddressID);
+        }
+        //[TestMethod]
+        //public void TestMethodMapperGetAddressFail()
+        //{
+        //    var task = mapper.getAddress("1");
+        //    task.Wait();
+        //    var actualResult = task.Result;
+        //    Assert.AreNotEqual(true, actualResult);
+        //}
+
+        //LocalStorage Test
+
+        [TestMethod]
+        public void TestMethodLocalStorageCreateUser()
+        {
+            Boolean acutalResult = localStorage.createUser(userTest);
+            Boolean expectedResult = true;
+            Assert.AreEqual(expectedResult, acutalResult);
+        }
+        [TestMethod]
+        public void TestMethodLocalStorageGetUser()
+        {
+            localStorage.createUser(userTest);
+            var acutalResult = localStorage.getUser();
+            var expectedResult = userTest;
+            Assert.AreEqual(expectedResult.ToString(), acutalResult.ToString());
+        }
+        [TestMethod]
+        public void TestMethodLocalStorageGetCurrentAlarmReportId()
+        {
+            long acutalResult = localStorage.getCurrentAlarmReportId();
+            long expectedResult = 0;
+            Assert.AreEqual(expectedResult, acutalResult);
+        }
+        [TestMethod]
+        public void TestMethodLocalStorageGetNextAlarmReportId()
+        {
+            long acutalResult = localStorage.getCurrentAlarmReportId();
+            long expectedResult = 0;
+            Assert.AreEqual(expectedResult, acutalResult);
+
+        }
+        [TestMethod]
+        public void TestMethodLocalStorageCurrentNumberOfAlarmReport()
+        {
+            long actualResult = localStorage.currentNumberOfAlarmReports();
+            long expectedResult = 0;
+            Assert.AreEqual(expectedResult, actualResult);
+        }
+        [TestMethod]
+        public void TestMethodLocalStorageAddNumberOfAlarmReports()
+        {
+            localStorage.addNumberOfAlarmReports();
+            long expectedResult = 1;
+            long actualResult = localStorage.currentNumberOfAlarmReports();
+            Assert.AreEqual(expectedResult, actualResult);
+
+        }
+        [TestMethod]
+        public void TestMethodLocalStorageGetCurrentTempAlarmReportId()
+        {
+            long actualResult = localStorage.getCurrentTempAlarmReportId();
+            long expectedResult = 0;
+            Assert.AreEqual(expectedResult, actualResult);
+
+        }
+        [TestMethod]
+        public void TestMethodLocalStorageGetNextTempAlarmReportId()
+        {
+            long actualResult = localStorage.getNextTempAlarmReportId();
+            long expectedResult = 1;
+            Assert.AreEqual(expectedResult, actualResult);
+
+        }
+        [TestMethod]
+        public void TestMethodLocalStorageCurrentNumberOfTempAlarmReports()
+        {
+            long actualResult = localStorage.currentNumberOfTempAlarmReports();
+            long expectedResult = 0;
+            Assert.AreEqual(expectedResult, actualResult);
+
+        }
+        [TestMethod]
+        public void TestMethodLocalStorageAddNumberOfTempAlarmReports()
+        {
+            localStorage.addNumberOfTempAlarmReports();
+            long expectedResult = 1;
+            long actualResult = localStorage.currentNumberOfTempAlarmReports();
+            Assert.AreEqual(expectedResult, actualResult);
+        }
+        [TestMethod]
+        public void TestMethodLocalStorageGetCurrentNfcId()
+        {
+            long actualResult = localStorage.getCurrentNfcId();
+            long expectedResult = 0;
+            Assert.AreEqual(expectedResult, actualResult);
+        }
+        [TestMethod]
+        public void TestMethodLocalStorageGetNextNfcId()
+        {
+            long actualResult = localStorage.getNextNfcId();
+            long expectedResult = 1;
+            Assert.AreEqual(expectedResult, actualResult);
+        }
+        [TestMethod]
+        public void TestMethodLocalStorageCurrentNumberOfNFCs()
+        {
+            long actualResult = localStorage.currentNumberOfNFCs();
+            long expectedResult = 0;
+            Assert.AreEqual(expectedResult, actualResult);
+
+        }
+        [TestMethod]
+        public void TestMethodLocalStorageAddNumberOfNFCs()
+        {
+            localStorage.addNumberOfNFCs();
+            long expectedResult = 1;
+            long actualResult = localStorage.getCurrentNfcId();
+            Assert.AreEqual(expectedResult, actualResult);
+        }
+        [TestMethod]
+        public void TestMethodLocalStorageGetCurrentCustomerId()
+        {
+            long actualResult = localStorage.getCurrentCustomerId();
+            long expectedResult = 0;
+            Assert.AreEqual(expectedResult, actualResult);
+        }
+        [TestMethod]
+        public void TestMethodLocalStorageGetNextCustomerId()
+        {
+            long actualResult = localStorage.getNextCustomerId();
+            long expectedResult = 1;
+            Assert.AreEqual(expectedResult, actualResult);
+
+        }
+        [TestMethod]
+        public void TestMethodLocalStorageCurrentNumberOfCustomers()
+        {
+            long actualResult = localStorage.currentNumberOfCustomers();
+            long expectedResult = 0;
+            Assert.AreEqual(expectedResult, actualResult);
+        }
+        [TestMethod]
+        public void TestMethodLocalStorageAddNumberOfCustomers()
+        {
+            localStorage.addNumberOfCustomers();
+            long expectedResult = 1;
+            long actualResult = localStorage.getCurrentCustomerId();
+            Assert.AreEqual(expectedResult, actualResult);
+        }
+        [TestMethod]
+        public void TestMethodLocalStorageCreateAlarmReport()
+        {
+            setupAlarmReport("TestMethodLocalStorageCreateAlarmReport");
+            Boolean actualResult = localStorage.createAlarmReport(alarmReportTest);
+            Boolean expectedResult = true;
+            Assert.AreEqual(expectedResult, actualResult);
+        }
+        [TestMethod]
+        public void TestMethodLocalStorageGetAlarmReports()
+        {
+            control.createUser(userTest);
+            setupAlarmReport("localGetAlarmReports");
+            localStorage.createAlarmReport(alarmReportTest);
+            List<AlarmReport> list = localStorage.getAlarmReports();
+            int actualResult = list.Count;
+            int expectedResult = 1;
+            localStorage.removeAlarmReports();
+            Assert.AreEqual(expectedResult, actualResult);
+          
+        }
+        [TestMethod]
+        public void TestMethodLocalStorageRemoveAlarmReports()
+        {
+            setupAlarmReport("TestMethodLocalStorageRemoveAlarmReports");
+            localStorage.createAlarmReport(alarmReportTest);
+            Boolean actualResult = localStorage.removeAlarmReports();
+            Boolean expectedResult = true;
+            Assert.AreEqual(expectedResult, actualResult);
+        }
+        [TestMethod]
+        public void TestMethodLocalStorageCreateNFC()
+        {
+            Boolean actualResult = localStorage.createNFC(52, 12, "localCreateNFC");
+            Boolean expectedResult = true;
+            localStorage.removeNFCs();
+            Assert.AreEqual(expectedResult, actualResult);
+        }
+
+        [TestMethod]
+        public void TestMethodLocalStorageGetNFCs()
+        {
+            localStorage.createNFC(52, 12, "LocalGetNFCs");
+            List<List<String>> list = localStorage.getNFCs();
+            int acutalResult = list.Count;
+            int expectedResult = 1;
+            localStorage.removeNFCs();
+            Assert.AreEqual(expectedResult, acutalResult);
+        }
+        [TestMethod]
+        public void TestMethodLocalStorageRemoveNFCs()
+        {
+            localStorage.createNFC(52, 12, "LocalGetNFCs");
+            Boolean acutalResult = localStorage.removeNFCs();
+            Boolean expectedResult = true;
+            Assert.AreEqual(expectedResult, acutalResult);
+        }
+        [TestMethod]
+        public void TestMethodLocalStorageCreateTempAlarmReport()
+        {
+            setupAlarmReport("TestMethodLocalStorageCreateTempAlarmReport");
+            Boolean actualResult = localStorage.createTempAlarmReport(alarmReportTest);
+            Boolean expectedResult = true;
+            localStorage.removeAlarmReports();
+            Assert.AreEqual(expectedResult, actualResult);
+
+        }
+        [TestMethod]
+        public void TestMethodLocalStorageGetTempAlarmReports()
+        {
+            control.createUser(userTest);
+            setupAlarmReport("TestMethodLocalStorageGetTempAlarmReports");
+            localStorage.createTempAlarmReport(alarmReportTest);
+            setupAlarmReport("TestMethodLocalStorageGetTempAlarmRepots1");
+            localStorage.createTempAlarmReport(alarmReportTest);
+            List<AlarmReport> list = localStorage.getTempAlarmReports();
+            int actualResult = list.Count;
+            int expectedResult = 2;
+            localStorage.removeAlarmReports();
+            Assert.AreEqual(expectedResult, actualResult);
+        }
+        [TestMethod]
+        public void TestMethodLocalStorageGetTempAlarmReport()
+        {
+            setupAlarmReport("TestMethodLocalStorageGetTempAlarmReport");
+            AlarmReport expectedResult = alarmReportTest;
+            localStorage.createAlarmReport(alarmReportTest);
+            AlarmReport actuaclResult = localStorage.getTempAlarmReport(1);
+            localStorage.removeAlarmReports();
+            Assert.AreEqual(expectedResult.Name, actuaclResult.Name);
+        }
+        [TestMethod]
+        public void TestMethodLocalStorageRemoveTempAlarmReport()
+        {
+            control.createUser(userTest);
+            setupAlarmReport("localRemoveTempAlarmReport");
+            localStorage.createTempAlarmReport(alarmReportTest);
+            Boolean actualResult = localStorage.removeTempAlarmReport(1);
+            Boolean expectedResult = true;
+            Assert.AreEqual(expectedResult, actualResult);
+        }
+        [TestMethod]
+        public void TestMethodLocalStorageAddRemaningTempAlarmReports()
+        {
+            control.createUser(userTest);
+            List<AlarmReport> list = new List<AlarmReport>();
+            setupAlarmReport("addRemaningTempAlarmReports");
+            list.Add(alarmReportTest);
+            setupAlarmReport("addRemaningTempAlarmReports1");
+            list.Add(alarmReportTest);
+            Boolean acutalResult = localStorage.addRemaningTempAlarmReports(list);
+            Boolean expectedResult = true;
+            localStorage.removeTempAlarmReport(1);
+            localStorage.removeTempAlarmReport(2);
+            Assert.AreEqual(expectedResult, acutalResult);
+        }
+        [TestMethod]
+        public void TestMethodLocalStorageCreateCustomer()
+        {
+            Boolean actualResult = localStorage.createCustomer(customerTest);
+            Boolean expectedResult = true;
+            localStorage.removeCustomers();
+            Assert.AreEqual(expectedResult, actualResult);
+
+        }
+        [TestMethod]
+        public void TestMethodLocalStorageGetCustomers()
+        {
+            localStorage.createCustomer(customerTest);
+            List<Customer> list = localStorage.getCustomers();
+            int actualResult = list.Count;
+            int expectedResult = 1;
+            localStorage.removeCustomers();
+            Assert.AreEqual(expectedResult, actualResult);
+        }
+
+
+        [TestMethod]
+        public void TestMethodLocalStorageRemoveCustomers()
+        {
+            localStorage.createCustomer(customerTest);
+            Boolean actualResult = localStorage.removeCustomers();
+            Boolean expectedResult = true;
+            Assert.AreEqual(expectedResult, actualResult);
+
+        }
+    
+   
+  
+    
+  
+     
+   
+      
+     
 
     }
 }

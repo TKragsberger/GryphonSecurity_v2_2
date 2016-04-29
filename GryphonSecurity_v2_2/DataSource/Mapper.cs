@@ -29,9 +29,9 @@ namespace GryphonSecurity_v2_2.DataSource
                 //var resultWebservice = await client.GetAsync("http://kragsberger.dk/rest/" + name);
 
                 resultWebservice.EnsureSuccessStatusCode();
-                Debug.WriteLine("getEmployee");
-                User user = JsonConvert.DeserializeObject<User>(await resultWebservice.Content.ReadAsStringAsync());
-                return user;
+ 
+                User user = JsonConvert.DeserializeObject<User>(await resultWebservice.Content.ReadAsStringAsync());     
+                    return user;
             }
         }
             catch (JsonReaderException ex)
