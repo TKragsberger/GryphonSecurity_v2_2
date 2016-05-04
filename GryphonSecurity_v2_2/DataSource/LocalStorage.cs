@@ -105,7 +105,7 @@ namespace GryphonSecurity_v2_2.DataSource
         private String KEY_CUSTOMER_CITY = "CUSTOMER_CITY";
         private String KEY_CUSTOMER_PHONENUMBER = "CUSTOMER_PHONENUMBER";
 
-        public Boolean createUser(User user)
+        public Boolean saveUser(User user)
         {
             if (appSettings.Contains(KEY_USER_FIRSTNAME))
             {
@@ -314,7 +314,7 @@ namespace GryphonSecurity_v2_2.DataSource
             appSettings.Save();
         }
 
-        public Boolean createAlarmReport(AlarmReport alarmReport)
+        public Boolean saveAlarmReport(AlarmReport alarmReport)
         {
             Debug.WriteLine("----------------------");
             Debug.WriteLine("createAlarmReport");
@@ -464,7 +464,7 @@ namespace GryphonSecurity_v2_2.DataSource
             return itemsRemoved;
         }
 
-        public Boolean createNFC(double presentLatitude, double presentLongitude, String addressId)
+        public Boolean saveNFC(double presentLatitude, double presentLongitude, String addressId)
         {
             Debug.WriteLine("----------------------");
             Debug.WriteLine("createNFC");
@@ -721,7 +721,7 @@ namespace GryphonSecurity_v2_2.DataSource
             return true;
         }
 
-        public Boolean createCustomer(Customer customer)
+        public Boolean saveCustomer(Customer customer)
         {
             Debug.WriteLine("----------------------");
             Debug.WriteLine("createCreateCustomer");
