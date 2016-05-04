@@ -29,9 +29,9 @@ namespace GryphonSecurity_v2_2.DataSource
                 //var resultWebservice = await client.GetAsync("http://kragsberger.dk/rest/" + name);
 
                 resultWebservice.EnsureSuccessStatusCode();
-                Debug.WriteLine("getEmployee");
-                User user = JsonConvert.DeserializeObject<User>(await resultWebservice.Content.ReadAsStringAsync());
-                return user;
+ 
+                User user = JsonConvert.DeserializeObject<User>(await resultWebservice.Content.ReadAsStringAsync());     
+                    return user;
             }
         }
             catch (JsonReaderException ex)
@@ -65,7 +65,7 @@ namespace GryphonSecurity_v2_2.DataSource
             }
         }
 
-        public async Task<Boolean> createAlarmReport(AlarmReport alarmReport)
+        public async Task<Boolean> sendAlarmReport(AlarmReport alarmReport)
         {
             try
             { 
@@ -90,7 +90,7 @@ namespace GryphonSecurity_v2_2.DataSource
             
         }
 
-        public async Task<Boolean> createAlarmReports(List<AlarmReport> alarmReports)
+        public async Task<Boolean> sendAlarmReports(List<AlarmReport> alarmReports)
         {
             try
             {
@@ -138,7 +138,7 @@ namespace GryphonSecurity_v2_2.DataSource
             }
         }
 
-        public async Task<Boolean> createNFC(NFC nfc)
+        public async Task<Boolean> sendNFC(NFC nfc)
         {
             Debug.WriteLine("NFC "+ nfc.Time);
             try
@@ -162,7 +162,7 @@ namespace GryphonSecurity_v2_2.DataSource
             }
         }
 
-        public async Task<Boolean> createNFCs(List<NFC> nfcs)
+        public async Task<Boolean> sendNFCs(List<NFC> nfcs)
         {
             try
             {
@@ -185,7 +185,7 @@ namespace GryphonSecurity_v2_2.DataSource
             }
         }
 
-        public async Task<Boolean> createCustomer(Customer customer)
+        public async Task<Boolean> sendCustomer(Customer customer)
         {
             try
             {
@@ -210,7 +210,7 @@ namespace GryphonSecurity_v2_2.DataSource
 
         }
 
-        public async Task<Boolean> createCustomers(List<Customer> customers)
+        public async Task<Boolean> sendCustomers(List<Customer> customers)
         {
             try
             {

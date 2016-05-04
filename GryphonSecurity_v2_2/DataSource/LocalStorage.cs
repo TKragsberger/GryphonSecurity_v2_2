@@ -105,7 +105,7 @@ namespace GryphonSecurity_v2_2.DataSource
         private String KEY_CUSTOMER_CITY = "CUSTOMER_CITY";
         private String KEY_CUSTOMER_PHONENUMBER = "CUSTOMER_PHONENUMBER";
 
-        public Boolean createUser(User user)
+        public Boolean saveUser(User user)
         {
             if (appSettings.Contains(KEY_USER_FIRSTNAME))
             {
@@ -144,7 +144,7 @@ namespace GryphonSecurity_v2_2.DataSource
             }
         }
 
-        private long getCurrentAlarmReportId()
+        public long getCurrentAlarmReportId()
         {
             if (!appSettings.Contains(KEY_ID_ALARMREPORT))
             {
@@ -154,7 +154,7 @@ namespace GryphonSecurity_v2_2.DataSource
             return Convert.ToInt64(appSettings[KEY_ID_ALARMREPORT] as String);
         }
 
-        private long getNextAlarmReportId()
+        public long getNextAlarmReportId()
         {
             long nextId = getCurrentAlarmReportId() + 1;
             appSettings.Remove(KEY_ID_ALARMREPORT);
@@ -181,7 +181,7 @@ namespace GryphonSecurity_v2_2.DataSource
             appSettings.Save();
         }
 
-        private long getCurrentTempAlarmReportId()
+        public long getCurrentTempAlarmReportId()
         {
             if (!appSettings.Contains(KEY_ID_TEMP_ALARMREPORT))
             {
@@ -191,7 +191,7 @@ namespace GryphonSecurity_v2_2.DataSource
             return Convert.ToInt64(appSettings[KEY_ID_TEMP_ALARMREPORT] as String);
         }
 
-        private long getNextTempAlarmReportId()
+        public long getNextTempAlarmReportId()
         {
             long nextId = getCurrentTempAlarmReportId() + 1;
             appSettings.Remove(KEY_ID_TEMP_ALARMREPORT);
@@ -218,7 +218,7 @@ namespace GryphonSecurity_v2_2.DataSource
             appSettings.Save();
         }
 
-        private long getCurrentNfcId()
+        public long getCurrentNfcId()
         {
             if (!appSettings.Contains(KEY_ID_NFC))
             {
@@ -228,7 +228,7 @@ namespace GryphonSecurity_v2_2.DataSource
             return Convert.ToInt64(appSettings[KEY_ID_NFC] as String);
         }
 
-        private long getNextNfcId()
+        public long getNextNfcId()
         {
             try
             {
@@ -277,7 +277,7 @@ namespace GryphonSecurity_v2_2.DataSource
             }
         }
 
-        private long getCurrentCustomerId()
+        public long getCurrentCustomerId()
         {
             if (!appSettings.Contains(KEY_ID_CUSTOMER))
             {
@@ -287,7 +287,7 @@ namespace GryphonSecurity_v2_2.DataSource
             return Convert.ToInt64(appSettings[KEY_ID_CUSTOMER] as String);
         }
 
-        private long getNextCustomerId()
+        public long getNextCustomerId()
         {
             long nextId = getCurrentCustomerId() + 1;
             appSettings.Remove(KEY_ID_CUSTOMER);
@@ -314,7 +314,7 @@ namespace GryphonSecurity_v2_2.DataSource
             appSettings.Save();
         }
 
-        public Boolean createAlarmReport(AlarmReport alarmReport)
+        public Boolean saveAlarmReport(AlarmReport alarmReport)
         {
             Debug.WriteLine("----------------------");
             Debug.WriteLine("createAlarmReport");
@@ -464,7 +464,7 @@ namespace GryphonSecurity_v2_2.DataSource
             return itemsRemoved;
         }
 
-        public Boolean createNFC(double presentLatitude, double presentLongitude, String addressId)
+        public Boolean saveNFC(double presentLatitude, double presentLongitude, String addressId)
         {
             Debug.WriteLine("----------------------");
             Debug.WriteLine("createNFC");
@@ -721,7 +721,7 @@ namespace GryphonSecurity_v2_2.DataSource
             return true;
         }
 
-        public Boolean createCustomer(Customer customer)
+        public Boolean saveCustomer(Customer customer)
         {
             Debug.WriteLine("----------------------");
             Debug.WriteLine("createCreateCustomer");

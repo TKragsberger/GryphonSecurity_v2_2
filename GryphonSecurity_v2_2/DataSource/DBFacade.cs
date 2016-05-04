@@ -16,7 +16,7 @@ namespace GryphonSecurity_v2_2.DataSource
 
         public Boolean createUser(User user)
         {
-            return localStorage.createUser(user);
+            return localStorage.saveUser(user);
         }
 
         public async Task<User> getUser(long id)
@@ -36,12 +36,12 @@ namespace GryphonSecurity_v2_2.DataSource
 
         public async Task<Boolean> createAlarmReport(AlarmReport alarmReport)
         {
-            return await connection.createAlarmReport(alarmReport);
+            return await connection.sendAlarmReport(alarmReport);
         }
 
         public async Task<Boolean> createAlarmReports(List<AlarmReport> alarmReports)
         {
-            return await connection.createAlarmReports(alarmReports);
+            return await connection.sendAlarmReports(alarmReports);
         }
 
         public Boolean createTempLocalStorageAlarmReport(AlarmReport alarmReport)
@@ -56,22 +56,22 @@ namespace GryphonSecurity_v2_2.DataSource
 
         public async Task<Boolean> createNFC(NFC nfc)
         {
-            return await connection.createNFC(nfc);
+            return await connection.sendNFC(nfc);
         }
 
         public async Task<Boolean> createNFCs(List<NFC> nfcs)
         {
-            return await connection.createNFCs(nfcs);
+            return await connection.sendNFCs(nfcs);
         }
 
         public Boolean createLocalStorageNFCs(double presentLatitude, double presentLongitude, String tagAddress)
         {
-            return localStorage.createNFC(presentLatitude, presentLongitude, tagAddress);
+            return localStorage.saveNFC(presentLatitude, presentLongitude, tagAddress);
         }
 
         public Boolean createLocalStorageAlarmReport(AlarmReport alarmReport)
         {
-            return localStorage.createAlarmReport(alarmReport);
+            return localStorage.saveAlarmReport(alarmReport);
         }
 
         public List<List<String>> getLocalStorageNFCs()
@@ -127,12 +127,12 @@ namespace GryphonSecurity_v2_2.DataSource
         public async Task<Boolean> createCustomer(Customer customer)
         {
             
-            return await connection.createCustomer(customer);
+            return await connection.sendCustomer(customer);
         }
 
         public Boolean createLocalStorageCustomer(Customer customer)
         {
-            return localStorage.createCustomer(customer);
+            return localStorage.saveCustomer(customer);
         }
 
         public List<Customer> getLocalStorageCustomers()
@@ -147,7 +147,7 @@ namespace GryphonSecurity_v2_2.DataSource
 
         public async Task<Boolean> createCustomers(List<Customer> customers)
         {
-            return await connection.createCustomers(customers);
+            return await connection.sendCustomers(customers);
         }
 
     }
